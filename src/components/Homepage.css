@@ -1,0 +1,81 @@
+.homepage {
+  font-family: 'Arial', sans-serif;
+}
+
+.hero-section {
+  background-image: url('./images//screening.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  padding: 100px 0;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.packages-section .card {
+  transition: transform 0.3s;
+}
+
+.packages-section .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.services-section .card {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.services-section .card:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.05);
+}
+
+.testimonials-section .carousel {
+  padding: 0 50px;
+}
+
+.testimonials-section .testimonial {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section .faq-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-section {
+  background-color: #f8f9fa;
+}
+
+.footer a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer a:hover {
+  color: #adb5bd !important;
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .services-section .card {
+    margin-bottom: 15px;
+  }
+}
