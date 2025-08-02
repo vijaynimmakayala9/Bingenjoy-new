@@ -32,6 +32,8 @@ import load from "./images/Bingenjoylogopng.png";
 import basicPackageImg from "./images/cake 4.jpg";
 import comboPackageImg from "./images/cake 4.jpg";
 
+import { Carousel, Card, Container, Row, Col, Button } from "react-bootstrap";
+
 function Home() {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -431,66 +433,253 @@ function Home() {
   const packages = [
     {
       id: 1,
-      title: "Basic Package",
-      price: "699",
-      description: "Perfect for intimate celebrations",
+      title: "Basic Plan",
+      price: "2000",
+      subtitle: "Simple theatre slot, no setup – just celebrate.",
       features: [
-        "Private cinema room for up to 8 people",
-        "3-hour screening of your choice",
-        "Complimentary popcorn and soft drinks"
+        "Private Theatre Room",
+        "No Cake / Decor",
+        "Up to 6 Guests"
       ],
-      image: basicPackageImg
+      badgeText: "Saved ₹0",
+      buttonText: "Continue with Add-Ons →",
     },
     {
       id: 2,
-      title: "Combo Package",
-      price: "799",
-      description: "Get more magic for less",
+      title: "Standard Plan",
+      price: "3000",
+      subtitle: "Includes cake, lights & decor.",
       features: [
-        "Premium cinema room for up to 15 people",
-        "4-hour screening with intermission",
-        "Gourmet food platter and premium beverages",
-        "Personalised welcome message"
+        "1/2 kg Cake",
+        "LED Decor + Fog",
+        "Photo Session"
       ],
-      image: comboPackageImg
+      badgeText: "Save ₹200",
+      buttonText: "Switch to Combo Plans →",
+    },
+    {
+      id: 3,
+      title: "Premium Plan",
+      price: "4000",
+      subtitle: "More guests, more upgrades, more glam.",
+      features: [
+        "Designer Cake",
+        "LED Pathway + Crown",
+        "30-min Photography"
+      ],
+      badgeText: "Save ₹300",
+      buttonText: "Switch to Combo Plans →",
+    },
+    {
+      id: 4,
+      title: "Special Plan",
+      price: "5000",
+      subtitle: "Our grandest experience, full royal vibes.",
+      features: [
+        "Royal Decor Theme",
+        "Gift Box - Full Lighting",
+        "Cinematic Entry Setup"
+      ],
+      badgeText: "Save ₹400",
+      buttonText: "Switch to Combo Plans →",
     }
   ];
 
 
-  const Testimonial = [
+
+
+  const Reviews = [
     {
-      name: "Priyanka Devasath",
-      image: "https://randomuser.me/api/portraits/women/12.jpg",
+      name: 'G. Harish',
+      location: 'Gachibowli, Hyderabad',
       rating: 5,
-      description: "We had a very good experience at Bingen & Joy private theatres. Budget friendly, food taste was really awesome. Staff was very good and approached very well. Thank you Bingen & Joy.",
+      description: 'We had the best birthday surprise ever! The theatre was beautifully set up and everything was perfect.',
+      occasion: "Daughter’s 1st Birthday",
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132803817-DSC07593.jpg',
     },
     {
-      name: "Santosh Santosh",
-      image: "https://randomuser.me/api/portraits/men/25.jpg",
-      rating: 5,
-      description: "Really amazing event! Haven't seen such ambience in any part of Hyderabad. Really worth what we paid. The ambience is truly amazing.",
-    },
-    {
-      name: "Shubham Khirade",
-      image: "https://randomuser.me/api/portraits/men/34.jpg",
-      rating: 5,
-      description: "It was an amazing experience here! Worth every single penny! You guys must visit. They will organize everything! Best place in Hyderabad to surprise your loved ones!",
-    },
-    {
-      name: "Priyanka Chodisetti",
-      image: "https://randomuser.me/api/portraits/women/47.jpg",
+      name: 'Ravi Kumar',
+      location: 'Jubilee Hills, Hyderabad',
       rating: 4,
-      description: "Nice place to celebrate any occasion.",
+      description: 'Wonderful experience. Everything was well arranged and exceeded expectations!',
+      occasion: 'Wedding Anniversary',
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132797148-DSC07601.jpg',
     },
     {
-      name: "Khadar RGM Basha",
-      image: "https://randomuser.me/api/portraits/men/53.jpg",
+      name: 'Sneha Sharma',
+      location: 'Kondapur, Hyderabad',
       rating: 5,
-      description: "Celebrated my nephew’s birthday here. It was wonderful — a top-rated place for birthday parties.",
+      description: 'It felt so personal and beautiful. Loved the decorations and ambience.',
+      occasion: 'Valentine’s Day',
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132803817-DSC07593.jpg',
+    },
+    {
+      name: 'Rahul Verma',
+      location: 'Banjara Hills, Hyderabad',
+      rating: 5,
+      description: 'Our celebration turned out to be magical, thanks to the amazing setup and staff!',
+      occasion: 'Baby Shower',
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132797148-DSC07601.jpg',
+    },
+    {
+      name: 'Aarti Nair',
+      location: 'Madhapur, Hyderabad',
+      rating: 4,
+      description: 'Highly recommend this place! The ambiance was perfect for our celebration.',
+      occasion: 'Engagement',
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132803817-DSC07593.jpg',
+    },
+    {
+      name: 'Vikram Singh',
+      location: 'Hi-Tech City, Hyderabad',
+      rating: 5,
+      description: 'Superb arrangements. The staff was very friendly and everything went smoothly.',
+      occasion: 'Retirement Party',
+      avatar: 'https://i.ibb.co/4Vb94bc/harish-avatar.png',
+      image: 'https://api.carnivalcastle.com/uploads/galleryImg/1728132797148-DSC07601.jpg',
     },
   ];
 
+  const chunkArray = (arr, size) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, i * size + size)
+    );
 
+  const isMobile = window.innerWidth < 768;
+  const slides = chunkArray(Reviews, isMobile ? 1 : 3);
+
+
+
+  const [index, setIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  const startAutoRotate = () => {
+    intervalRef.current = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % whyUsSlides.length);
+    }, 6000);
+  };
+
+  const stopAutoRotate = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  };
+
+  useEffect(() => {
+    startAutoRotate();
+    return () => stopAutoRotate();
+  }, []);
+
+  const handleSelect = (selectedIndex) => {
+    stopAutoRotate();
+    setIndex(selectedIndex);
+    startAutoRotate(); // restart timer on manual select
+  };
+  const whyUsSlides = [
+    {
+      image: URLS?.Base + Highlights?.image, // Replace with dynamic images
+      title: "🎉 Why Choose BingeNJoy Private Theatre?",
+      subtitle:
+        "At BingeNJoy, we believe every celebration deserves a cinematic experience — intimate, exclusive and unforgettable. Here’s why our private theatre stands out:",
+      points: [
+        "Perfect for Every Occasion: Themed decorations, cakes, fog effects & photography.",
+        "Luxurious Ambience: Recliners, premium sound, elegant decor.",
+        "Budget-Friendly Luxury: Combo offers & rewards for every budget.",
+        "Prime Location in Hyderabad: Easily accessible, cozy, and convenient.",
+        "End-to-End Convenience: WhatsApp support, décor add-ons & great food."
+      ]
+    },
+    {
+      image: "https://api.carnivalcastle.com/uploads/galleryImg/1728132797148-DSC07601.jpg", // Replace with another image
+      title: "🎬 Celebrate Cinematically!",
+      subtitle:
+        "Experience celebrations like never before in our private theatres — where entertainment meets exclusivity.",
+      points: [
+        "Customizable Packages: Tailor your party exactly how you like it.",
+        "Gourmet Snacks & Beverages: From popcorn to premium platters.",
+        "Full HD Projector & Sound: A real theatre vibe, privately yours.",
+        "Cozy for Everyone: Perfect for couples, families, and friends.",
+        "Hassle-Free Booking: Fast, flexible & fully digital!"
+      ]
+    },
+    {
+      image: "https://api.carnivalcastle.com/uploads/galleryImg/1728132803817-DSC07593.jpg", // Replace with another image
+      title: "🌈 Make Every Moment Magical",
+      subtitle:
+        "From surprise proposals to baby showers — bring your vision to life in an immersive, themed theatre setting.",
+      points: [
+        "Baby Showers, Anniversaries & More: Celebrate every milestone.",
+        "Themed Decor & Props: Transform the space into your dream setting.",
+        "Memorable Photo Zones: Instagram-worthy backdrops included.",
+        "Night or Day Slots: Flexible celebration timings.",
+        "Personalized Assistance: Our team helps plan every detail."
+      ]
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Aadhya Rao",
+      role: "Digital Marketer",
+      thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/mqdefault.jpg",
+      videoId: "ysz5S6PUM-U",
+    },
+    {
+      name: "Suresh Kumar",
+      role: "Tech Lead",
+      thumbnail: "https://img.youtube.com/vi/eVTXPUF4Oz4/mqdefault.jpg",
+      videoId: "eVTXPUF4Oz4",
+    },
+    {
+      name: "Devi Sri",
+      role: "Designer",
+      thumbnail: "https://img.youtube.com/vi/ScMzIvxBSi4/mqdefault.jpg",
+      videoId: "ScMzIvxBSi4",
+    },
+    {
+      name: "Aditya Varma",
+      role: "Product Manager",
+      thumbnail: "https://img.youtube.com/vi/TcMBFSGVi1c/mqdefault.jpg",
+      videoId: "TcMBFSGVi1c",
+    },
+    {
+      name: "Kalyani",
+      role: "Software Engineer",
+      thumbnail: "https://img.youtube.com/vi/M7lc1UVf-VE/mqdefault.jpg",
+      videoId: "M7lc1UVf-VE",
+    },
+  ];
+
+  const [selected, setSelected] = useState(testimonials[0]);
+
+
+
+  const BaseUrl = "https://api.carnivalcastle.com/v1/carnivalApi/";
+  const ImageBase = "https://api.carnivalcastle.com/";
+
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const res = await axios.get(`${BaseUrl}admin/address/alladdress`);
+        if (res.data && res.data.success) {
+          setAddresses(res.data.data || []);
+        } else {
+          setAddresses([]);
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+        setAddresses([]);
+      }
+    };
+    fetchAddresses();
+  }, []);
 
   const [lgvis, setLgVis] = useState(false);
 
@@ -521,26 +710,26 @@ function Home() {
 
 
 
- const [lgShow, setLgShow] = useState(false);
-const [PopUp, setPopUp] = useState({});
+  const [lgShow, setLgShow] = useState(false);
+  const [PopUp, setPopUp] = useState({});
 
-useEffect(() => {
-  // First check if popup should be shown at all
-  const hasSeenPopup = localStorage.getItem('hasSeenPopup');
-  
-  // Only proceed if popup hasn't been seen before
-  if (!hasSeenPopup) {
-    axios.get(URLS.GetPopUp).then(res => {
-      if (res.data?.success && res.data.data?.image) {
-        setPopUp(res.data.data);
-        setLgShow(true);
-        localStorage.setItem('hasSeenPopup', 'true'); // Mark as seen
-      }
-    }).catch(error => {
-      console.error("Error loading popup:", error);
-    });
-  }
-}, []); // Empty dependency array = runs only once on mount
+  useEffect(() => {
+    // First check if popup should be shown at all
+    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+
+    // Only proceed if popup hasn't been seen before
+    if (!hasSeenPopup) {
+      axios.get(URLS.GetPopUp).then(res => {
+        if (res.data?.success && res.data.data?.image) {
+          setPopUp(res.data.data);
+          setLgShow(true);
+          localStorage.setItem('hasSeenPopup', 'true'); // Mark as seen
+        }
+      }).catch(error => {
+        console.error("Error loading popup:", error);
+      });
+    }
+  }, []); // Empty dependency array = runs only once on mount
 
   return (
     <>
@@ -581,8 +770,8 @@ useEffect(() => {
         </>
       ) : (
         <>
-          <div className="home-page indexsix bg-dark">
-            <div className="main-wrapper bg-dark">
+          <div className="home-page indexsix">
+            <div className="main-wrapper">
               <>
                 <Header />
                 <div className="scrollbar">
@@ -653,658 +842,117 @@ useEffect(() => {
                   </Slider>
                 </div>
 
-
-                {/* Timings Section */}
-                <section className="py-4 bg-light">
-                  {Offers.length > 0 && (
-                    <div className="container-md">
-                      <Slider {...settings4}>
-                        {Offers.map((data, i) => {
-                          // Replace "Carnival Castle" with "Binge N Joy" in both title and description
-                          const updatedTitle = data.title?.replace(/Carnival Castle/g, "Binge N Joy");
-                          const updatedDescription = data.description?.replace(/Carnival Castle/g, "Binge N Joy");
-
-                          return (
-                            <div className="px-2" key={i}>
-                              <div
-                                className="row g-0 rounded-4 shadow-sm overflow-hidden"
-                                style={{ backgroundColor: "#E9DCFF", border: "solid 3px purple" }}
-                              >
-                                {/* Text Column */}
-                                <div className="col-md-8 col-12 p-4">
-                                  <h5 className="fw-bold mb-2" style={{ color: "#681DC0" }}>
-                                    {updatedTitle}
-                                  </h5>
-                                  <p className="mb-0 text-dark">{updatedDescription}</p>
-                                </div>
-
-                                {/* Timer Column */}
-                                <div className="col-md-4 col-12 d-flex align-items-center justify-content-center p-4">
-                                  <div className="d-flex justify-content-center gap-3 text-center">
-                                    <div className="time-part">
-                                      <div className="fs-4 fw-bold">{hours}</div>
-                                      <div className="small text-muted">Hrs</div>
-                                    </div>
-                                    <div className="fs-4 fw-bold">:</div>
-                                    <div className="time-part">
-                                      <div className="fs-4 fw-bold">{minutes}</div>
-                                      <div className="small text-muted">Mins</div>
-                                    </div>
-                                    <div className="fs-4 fw-bold">:</div>
-                                    <div className="time-part">
-                                      <div className="fs-4 fw-bold">{seconds}</div>
-                                      <div className="small text-muted">Sec</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </Slider>
+                <section className="py-5 bg-light">
+                  <div className="container">
+                    <div className="text-center mb-5">
+                      <h2 className="display-5 fw-bold">Our Packages</h2>
+                      <p className="fs-5 text-muted"><i>Choose Wisely</i></p>
                     </div>
-                  )}
-                </section>
 
-
-                <Modal
-                  size="md"
-                  show={lgvis}
-                  onHide={() => setLgVis(false)}
-                  aria-labelledby="example-modal-sizes-title-lg"
-                >
-                  <Modal.Header
-                    closeButton
-                    className="bg-light-grey gradient-border"
-                  >
-                    <Modal.Title
-                      id="example-modal-sizes-title-lg gradient-border"
-                      style={{ textAlign: "center" }}
-                      className="text-gold-gradient"
-                    >
-                      REQUEST CALLBACK
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body className="bg-dark gradient-border">
-                    <div className="row justify-content-md-center">
-                      <div className="col-lg-12 mt-40 gradient-border">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <div className="booking-form align-items-center justify-content-center">
-                              {/* <form
-                            className="mt-4 mb-3"
-                            onSubmit={(e) => {
-                              formsubmit(e);
-                            }}
+                    <div className="row gy-4 justify-content-center">
+                      {packages.map((pkg) => (
+                        <div className="col-xl-3 col-lg-4 col-md-6 col-sm-10" key={pkg.id}>
+                          <div
+                            className="position-relative card border-0 shadow rounded-4 h-100 text-center gradient45"
                           >
-                            <>
-                              <div className="mb-4">
-                                <input
-                                  required
-                                  type="text"
-                                  name="name"
-                                  placeholder="Enter Full Name"
-                                  value={form.name}
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  className="form-control "
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <input
-                                  required
-                                  placeholder="Enter Mobile Number"
-                                  type="text"
-                                  name="mobileNumber"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  maxlength="10"
-                                  minLength="10"
-                                  pattern="[0-9]{10}"
-                                  value={form.mobileNumber}
-                                  onKeyPress={(e) => {
-                             
-                                    const charCode = e.which
-                                      ? e.which
-                                      : e.keyCode;
-                                    if (charCode < 48 || charCode > 57) {
-                                      e.preventDefault();
-                                    }
-                                  }}
-                                  className="form-control "
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <input
-                                  required
-                                  type="email"
-                                  name="email"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  placeholder="Enter Email"
-                                  value={form.email}
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <input
-                                  required
-                                  type="text"
-                                  name="description"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  placeholder="Enter Description"
-                                  value={form.description}
-                                  className="form-control"
-                                />
-                              </div>
-                              <button
-                                type="submit"
-                                className="btn course-btn mb-3 text-white"
-                                style={{ float: "right" }}
-                              >
-                                Submit
-                              </button>
-                            </>
-                          </form> */}
-                              <form
-                                className="mt-4 mb-3"
-                                onSubmit={(e) => {
-                                  formsubmit(e);
-                                }}
-                              >
-                                <>
-                                  <div className="section-title text-center">
-                                    <h2 className="title">Enquiry Now</h2>
-                                    <hr className="gradient-border"></hr>
-                                  </div>
-                                  <div className="mb-3 input-group">
-                                    <span className="input-group-text">
-                                      <FontAwesomeIcon icon={faUser} />
-                                    </span>
-                                    <input
-                                      required
-                                      type="text"
-                                      name="name"
-                                      placeholder="Enter Full Name*"
-                                      value={form.name}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                      }}
-                                      className="form-control "
-                                    />
-                                  </div>
-
-                                  <div className="mb-3 input-group">
-                                    <span className="input-group-text">
-                                      <FontAwesomeIcon icon={faPhone} />
-                                    </span>
-                                    <input
-                                      required
-                                      placeholder="Enter Mobile Number*"
-                                      type="text"
-                                      name="mobileNumber"
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                      }}
-                                      maxlength="10"
-                                      minLength="10"
-                                      pattern="[0-9]{10}"
-                                      value={form.mobileNumber}
-                                      onKeyPress={(e) => {
-                                        const charCode = e.which
-                                          ? e.which
-                                          : e.keyCode;
-                                        if (charCode < 48 || charCode > 57) {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                      className="form-control "
-                                    />
-                                  </div>
-
-                                  <div className="mb-3 input-group">
-                                    <span className="input-group-text">
-                                      <FontAwesomeIcon icon={faEnvelope} />
-                                    </span>
-                                    <input
-                                      required
-                                      type="email"
-                                      name="email"
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                      }}
-                                      placeholder="Enter Email*"
-                                      value={form.email}
-                                      className="form-control"
-                                    />
-                                  </div>
-
-                                  <div className="mb-3 input-group">
-                                    <span className="input-group-text">
-                                      <FontAwesomeIcon icon={faCalendarAlt} />
-                                    </span>
-                                    <input
-                                      required
-                                      type="text"
-                                      name="description"
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                      }}
-                                      placeholder="Enter Description*"
-                                      value={form.description}
-                                      className="form-control"
-                                    />
-                                  </div>
-
-                                  <div className="mb-3 input-group">
-                                    <span className="input-group-text">
-                                      <FontAwesomeIcon icon={faCalendarAlt} />
-                                    </span>
-                                    <input
-                                      required
-                                      type="text"
-                                      name="eventName"
-                                      placeholder="Enter Event Name*"
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                      }}
-                                      value={form.eventName}
-                                      className="form-control"
-                                    />
-                                  </div>
-                                  <button
-                                    type="submit"
-                                    className="btn main-booknow mb-3 float-end"
-                                  >
-                                    Submit
-                                  </button>
-                                </>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Modal.Body>
-                </Modal>
-
-                {/* Birthdays, annverydays, etc  */}
-                {/* <section className="pt-2 pb-5">
-                  <div className="container-md">
-                    <div className="row align-items-center">
-                      <div className="col-lg-12">
-                      </div>
-                      <div className="col-lg-12">
-                        <div>
-                          <div>
+                            {/* Ribbon Badge */}
                             <div
+                              className="position-absolute top-0 start-50 translate-middle"
                               style={{
-                                backgroundImage: `url(${backgroundImageUrl})`,
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat",
-                                backgroundPosition: "center",
-                                height: "80px",
-                                width: "100%",
+                                backgroundColor: "#a259ff",
+                                color: "#fff",
+                                padding: "4px 16px",
+                                borderRadius: "10px 10px 0 0",
+                                fontSize: "14px",
+                                fontWeight: "bold"
                               }}
                             >
-                              <div className="row m-4">
-                                {LatestInfos?.map((data, i) => {
-                                  return (
-                                    <>
-                                      <div
-                                        className="col"
-                                        key={i}
-                                        style={{ textAlign: "center" }}
-                                      >
-                                        <div className="pt-2">
-                                          <h6
-                                            style={{
-                                              color: "black",
-                                              fontSize: "12px",
-                                            }}
-                                          >
-                                            {data?.title}
-                                          </h6>
-                                          <b style={{ color: "black" }}>
-                                            {data?.count}
-                                          </b>
-                                        </div>
-                                      </div>
-                                    </>
-                                  );
-                                })}
-                              </div>
+                              {pkg.badgeText}
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section> */}
 
-                <section className="pt-2 bg-light">
-                  <div className="container-md">
-                    <div className="row align-items-center">
-                      <div className="col-lg-12">
-                        <div className="row">
-                          {LatestInfos?.map((data, i) => {
-                            return (
-                              <div
-                                className="col-lg-3 col-md-6 col-sm-12 text-center mb-1"
-                                key={i}
+                            <div className="card-body d-flex flex-column p-4 mt-4">
+                              <h4 className="fw-bold mb-2">{pkg.title}</h4>
+                              <p className="text-muted" style={{ fontStyle: "italic", fontSize: "14px" }}>
+                                {pkg.subtitle}
+                              </p>
+
+                              <ul className="list-unstyled text-start my-4 px-3">
+                                {pkg.features.map((feature, index) => (
+                                  <li key={index} className="d-flex align-items-center mb-2">
+                                    <span className="me-2 text-success fw-bold">✔</span> {feature}
+                                  </li>
+                                ))}
+                              </ul>
+
+                              <p className="fw-semibold mb-4">Starts from ₹{pkg.price}</p>
+                              <button
+                                className="btn text-white mt-auto"
+                                style={{
+                                  backgroundColor: "#a259ff",
+                                  borderRadius: "10px"
+                                }}
                               >
-                                <div className="card   p-3 box-dark shadow-sm" style={{ backgroundColor: "#E9DCFF", border: "solid 3px purple" }}>
-                                  <div className="card-body">
-                                    <h4 className="" style={{ color: "#681DC0" }}>
-                                      {data?.title}
-                                    </h4>
-                                    <b className="text-dark">{data?.count}</b>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
+                                {pkg.buttonText}
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </section>
 
-
-
-
-
-
-                <section className="pb-4 pt-1 bg-light">
-                  <div className="container-md">
-                    <div className="section-wraper row d-flex align-items-center">
-                      <div className="col-md-6 section-header mb-0">
-                        <h2 className="" style={{ color: "#681DC0" }}>Our Theaters</h2>
-                      </div>
-                      <div className="col-md-6 text-end">
-                        <a
-                          href="/Theaters"
-                          className="fw-bold"
-                          style={{ marginRight: "25px", color: "#681DC0" }}
-                        >
-                          View all
-                        </a>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <Slider {...settings2}>
-                        {Theaters?.map((data, i) => (
-                          <div className="col-md-4" key={i}>
-                            <div className="item">
-                              <div className="profile-widget m-1">
-                                <div className="doc-img">
-                                  <a
-                                    href="/Theaters"
-                                    onMouseEnter={() => setHoveredIndex(i)}
-                                    onMouseLeave={() => setHoveredIndex(null)}
-                                  >
-                                    {/* when there is no video dispalying the same image in the the */}
-                                    {data.video ? (
-                                      <video
-                                        src={URLS.Base + data.video}
-                                        className="img-fluid video-mobile"
-                                        id="theaters"
-                                        style={{
-                                          height: "250px", // Same height as image
-                                          borderRadius: "10px",
-                                          width: "100%", // Same width as image
-                                          cursor: "pointer",
-                                          display: "block",
-                                          objectFit: "cover",
-                                        }}
-                                        autoPlay
-                                        loop
-                                        muted
-                                      />
-                                    ) : (
-                                      <img
-                                        // src={URLS.Base + data.image[0]}
-                                        src={URLS.Base + data.image}
-                                        alt=""
-                                        className="img-fluid video-theatres"
-                                        id="theaters"
-                                        style={{
-                                          height: "250px", // Same height as video
-                                          borderRadius: "5px",
-                                          width: "100%", // Same width as video
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    )}
-                                    {data.video ? (
-                                      <img
-                                        // src={URLS.Base + data.image[0]}
-                                        src={URLS.Base + data.image}
-                                        alt=""
-                                        className="img-fluid theatres"
-                                        id="theaters"
-                                        style={{
-                                          height: "250px", // Same height as video
-                                          borderRadius: "10px",
-                                          width: "100%", // Same width as video
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    ) : (
-                                      <img
-                                        // src={URLS.Base + data.image[0]}
-                                        src={URLS.Base + data.image}
-                                        alt=""
-                                        className="img-fluid  vdeoimage"
-                                        id="theaters"
-                                        style={{
-                                          height: "280px", // Same height as video
-                                          borderRadius: "10px",
-                                          width: "100%", // Same width as video
-                                          cursor: "pointer",
-                                          objectFit: "cover",
-                                        }}
-                                      />
-                                    )}
-                                  </a>
-                                </div>
-                                <div className="row row-sm text-center">
-                                  <div className="col-12 rounded p-2 me-2 d-flex justify-content-between align-items-center" style={{ background: "#CCACF5" }}>
-                                    <h5
-                                      className="title text-dark"
-                                      style={{ marginLeft: "20px" }}
-                                    >
-                                      {data.name}
-                                    </h5>
-                                    <button
-                                      className="btn text-light theaters-btn"
-                                      style={{
-                                        boxShadow: "none",
-                                        marginRight: "20px",
-                                        backgroundColor: "#510FA0"
-                                      }}
-                                      onClick={handleTheater}
-                                    >
-                                      Book Now
-                                    </button>
-                                  </div>
-
-                                  {/* Uncomment if you want to show offer price
-              <div className="col-12 mt-2">
-                <h5 className="title" style={{ color: "#A020F0" }}>
-                  ₹ {data.offerPrice}/-
-                </h5>
-              </div>
-              */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </Slider>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="services-section py-5 text-dark" style={{ backgroundColor: "#E9DCFF" }}>
-                  <div className="container">
-                    <h2 className="text-center mb-5" style={{ color: "#681DC0" }}>Our Services</h2>
-
-                    {/* Large Card Wrapper */}
-                    <div className="card text-dark p-4 rounded-4 shadow-lg border-0" style={{ backgroundColor: "#fff" }}>
-                      <div className="row g-4">
-                        {/* Service Card 1 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3"
-                            style={{ background: "linear-gradient(to bottom left, #C69FF4, #FFFAFB)" }}
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={beverages}
-                                alt="Food & Beverages"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title" style={{ color: "#510FA0" }}>Food & Beverages</h5>
-                              <p className="card-text">Choose the perfect food combo for your celebration.</p>
-                              <a href="/Food" className="mt-auto" style={{ color: "#510FA0" }}>
-                                View more <i className="fas fa-arrow-right"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Service Card 2 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3"
-                            style={{ background: "linear-gradient(to bottom left, #C69FF4, #FFFAFB)" }}
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={screening}
-                                alt="Screening"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title" style={{ color: "#510FA0" }}>Screening</h5>
-                              <p className="card-text">Bring your OTT accounts and relive the theatre magic!</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Service Card 3 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3"
-                            style={{ background: "linear-gradient(to bottom left, #C69FF4, #FFFAFB)" }}
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={cake4}
-                                alt="Cakes"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title" style={{ color: "#510FA0" }}>Cakes</h5>
-                              <p className="card-text">Choose the perfect cake for your celebration from our selection.</p>
-                              <a href="/cakes" className=" mt-auto" style={{ color: "#510FA0" }}>
-                                View more <i className="fas fa-arrow-right"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Service Card 4 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3"
-                            style={{ background: "linear-gradient(to bottom left, #C69FF4, #FFFAFB)" }}
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={roses}
-                                alt="Bouquets"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title" style={{ color: "#510FA0" }}>Bouquets</h5>
-                              <p className="card-text">Add a beautiful rose bouquet to enhance your celebration.</p>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </section>
 
 
                 <section className="occasions-section py-5 text-dark" style={{ backgroundColor: "#fff" }}>
                   <div className="container">
-                    <h2 className="text-center mb-5" style={{ color: "#681DC0" }}>Our Occasions</h2>
+                    <h2 className="text-center mb-5 light-text">
+                      What Can You Celebrate at Carnival Castle?
+                    </h2>
 
-                    {/* Modify occasions data before rendering */}
                     {(() => {
-                      const modifiedOccasions = occasions.map(occasion => {
-                        // Custom descriptions for each occasion
+                      const modifiedOccasions = occasions.map((occasion) => {
                         let description = "";
                         switch (occasion.name) {
                           case "Anniversary":
-                            description = "Celebrate your love and commitment in a private, luxurious theatre at Binge N Joy. Enjoy a personalized ambiance, delicious food, and exceptional picture quality.";
+                            description =
+                              "Celebrate your love and commitment in a private, luxurious theatre at Binge N Joy. Enjoy a personalized ambiance, delicious food, and exceptional picture quality.";
                             break;
                           case "Bride To Be":
-                            description = "Celebrate your upcoming wedding with a special private screening. Enjoy a memorable day filled with personalized decor, scrumptious food, and a luxurious theatre experience.";
+                            description =
+                              "Celebrate your upcoming wedding with a special private screening. Enjoy a memorable day filled with personalized decor, scrumptious food, and a luxurious theatre experience.";
                             break;
                           case "Groom To Be":
-                            description = "Make the groom’s last night as a bachelor memorable with a private screening and special services. Enjoy delicious food, exceptional sound, and an intimate theatre experience.";
+                            description =
+                              "Make the groom’s last night as a bachelor memorable with a private screening and special services. Enjoy delicious food, exceptional sound, and an intimate theatre experience.";
                             break;
                           case "Dad To Be":
-                            description = "Celebrate the soon-to-be father in a private, luxurious setting with custom decor and exceptional service. Enjoy great food, a perfect movie, and a memorable experience.";
+                            description =
+                              "Celebrate the soon-to-be father in a private, luxurious setting with custom decor and exceptional service. Enjoy great food, a perfect movie, and a memorable experience.";
                             break;
                           case "Mom To Be":
-                            description = "Celebrate the expecting mother in a private theatre with amazing decor and personalized services. Enjoy a relaxing, unforgettable experience with great food and movies.";
+                            description =
+                              "Celebrate the expecting mother in a private theatre with amazing decor and personalized services. Enjoy a relaxing, unforgettable experience with great food and movies.";
                             break;
                           case "Love Proposal":
-                            description = "Plan the perfect surprise proposal at Binge N Joy Private Theatres. With a magical atmosphere, your proposal will be an unforgettable moment, complete with beautiful decor and food.";
+                            description =
+                              "Plan the perfect surprise proposal at Binge N Joy Private Theatres. With a magical atmosphere, your proposal will be an unforgettable moment, complete with beautiful decor and food.";
                             break;
                           case "Marriage Proposal":
-                            description = "Propose in the most romantic and unforgettable way at Binge N Joy. Enjoy a private theatre with personalized decor, delicious food, and everything you need for the perfect proposal.";
+                            description =
+                              "Propose in the most romantic and unforgettable way at Binge N Joy. Enjoy a private theatre with personalized decor, delicious food, and everything you need for the perfect proposal.";
                             break;
                           case "Farewell":
-                            description = "Bid farewell in style at Binge N Joy Private Theatres. Celebrate the memories with a private screening, delicious food, and the perfect ambiance for your farewell.";
+                            description =
+                              "Bid farewell in style at Binge N Joy Private Theatres. Celebrate the memories with a private screening, delicious food, and the perfect ambiance for your farewell.";
                             break;
                           case "Bon voyage":
-                            description = "Send off a loved one with a special farewell event at Binge N Joy Private Theatres. Enjoy a private screening with gourmet food and personalized decor for the perfect bon voyage.";
+                            description =
+                              "Send off a loved one with a special farewell event at Binge N Joy Private Theatres. Enjoy a private screening with gourmet food and personalized decor for the perfect bon voyage.";
                             break;
                           default:
-                            description = "Binge N Joy Private Theatres is the perfect place to celebrate any special occasion. Enjoy an intimate and luxurious setting with exceptional picture and sound quality, delicious food, and attentive staff.";
+                            description =
+                              "Binge N Joy Private Theatres is the perfect place to celebrate any special occasion. Enjoy an intimate and luxurious setting with exceptional picture and sound quality, delicious food, and attentive staff.";
                             break;
                         }
 
@@ -1316,11 +964,11 @@ useEffect(() => {
                       });
 
                       return (
-                        <div className="card text-white p-4 rounded-4 shadow-lg border-0" style={{ backgroundColor: "#E9DCFF" }}>
+                        <div className="card text-white p-4 rounded-4 border-0" style={{ backgroundColor: "#E9DCFF" }}>
                           <div className="row g-4">
                             {modifiedOccasions.map((occasion, index) => (
-                              <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={index}>
-                                <div className="card h-100 text-center bg-light rounded-4 shadow-sm p-3" style={{ border: "solid 3px #681DC0" }}>
+                              <div className="col-12 col-md-6 col-lg-4" key={index}>
+                                <div className="card h-100 text-center bg-light rounded-4 gradient45 p-3">
                                   <div className="card-body d-flex flex-column align-items-center">
                                     <img
                                       src={URLS.Base + occasion.image}
@@ -1347,13 +995,14 @@ useEffect(() => {
                           {/* Proceed Button */}
                           <div className="text-center mt-5">
                             <button
-                              className="btn px-5 py-2 rounded-pill fw-bold"
-                              style={{ backgroundColor: "#681DC0", color: "#fff" }}
-                              onClick={() => navigate('/theatres')} // Make sure you have this function defined
+                              className="btn px-5 py-2 rounded-3 fw-bold dark-back text-light"
+                              style={{ width: "80%", maxWidth: "500px" }}
+                              onClick={() => navigate('/theatres')}
                             >
                               Proceed <i className="bi bi-arrow-right ms-2"></i>
                             </button>
                           </div>
+
                         </div>
                       );
                     })()}
@@ -1361,121 +1010,293 @@ useEffect(() => {
                 </section>
 
 
-                {/* WHY US Section */}
-                <section className="py-5 text-dark" style={{ backgroundColor: "#E9DCFF" }}>
-                  <div className="container-md">
-                    <div className="row align-items-center g-4">
 
-                      {/* Left Image (keep from backend) */}
-                      <div className="col-lg-6">
-                        <img
-                          src={URLS?.Base + Highlights?.image}
-                          alt="highlight"
-                          className="img-fluid rounded-4 shadow"
-                        />
-                      </div>
+                <section className="services-section py-5 text-dark bg-white">
+                  <div className="container">
+                    <h2 className="text-center mb-5 dark-text fw-bold">Experiance Our Services</h2>
 
-                      {/* Right Static Content */}
-                      <div className="col-lg-6">
-                        <div className="ps-lg-4">
-                          <h2 className="mb-3" style={{ color: "#681DC0" }}>
-                            🎉 Why Choose BingeNJoy Private Theatre?
-                          </h2>
-                          <h4 className="fw-semibold mb-3">
-                            At BingeNJoy, we believe every celebration deserves a cinematic experience — intimate, exclusive and unforgettable. Here’s why our private theatre stands out:
-                          </h4>
-
-                          <div className="d-flex align-items-start mb-2">
-                            <i className="fas fa-check-circle me-2 text-warning mt-1"></i>
-                            <p className="mb-0">
-                              🎂 <strong>Perfect for Every Occasion:</strong> Be it a birthday bash, bride-to-be celebration, mom-to-be gathering, or a surprise date night, BingeNJoy provides themed decorations, cakes, entry fog effects, and even photography to make your day extra special.
-                            </p>
-                          </div>
-
-                          <div className="d-flex align-items-start mb-2">
-                            <i className="fas fa-check-circle me-2 text-warning mt-1"></i>
-                            <p className="mb-0">
-                              🌟 <strong>Luxurious Ambience:</strong> Step into a space thoughtfully designed with decor, plush recliners, and premium sound systems. It’s not just watching a movie — it’s celebrating in style.
-                            </p>
-                          </div>
-
-                          <div className="d-flex align-items-start mb-2">
-                            <i className="fas fa-check-circle me-2 text-warning mt-1"></i>
-                            <p className="mb-0">
-                              💸 <strong>Budget-Friendly Luxury:</strong> We believe unforgettable experiences shouldn't break the bank. Our transparent pricing, combo offers, and membership rewards ensure premium experiences at affordable rates.
-                            </p>
-                          </div>
-
-                          <div className="d-flex align-items-start mb-2">
-                            <i className="fas fa-check-circle me-2 text-warning mt-1"></i>
-                            <p className="mb-0">
-                              📍 <strong>Prime Location in the City:</strong> Located in the heart of Hyderabad, BingeNJoy is easily accessible for students, working professionals, and families looking for a unique yet cozy place to celebrate.
-                            </p>
-                          </div>
-
-                          <div className="d-flex align-items-start mb-2">
-                            <i className="fas fa-check-circle me-2 text-warning mt-1"></i>
-                            <p className="mb-0">
-                              🛎️ <strong>End-to-End Convenience:</strong> From easy online booking to WhatsApp support, custom décor add-ons, and continental food & drinks, we take care of every detail so you can sit back and enjoy the magic.
-                            </p>
-                          </div>
-
-                          <div className="mt-4">
-                            <button
-                              onClick={() => window.location.href = "/theaters"}
-                              className="btn"
-                              style={{ backgroundColor: "#681DC0", color: "#fff" }}
-                            >
-                              <i className="fas fa-ticket-alt me-2" />
-                              Book Now
-                            </button>
+                    {/* Large Card Wrapper */}
+                    <div className="card text-dark p-4 rounded-4  border-0" style={{ backgroundColor: "#fff" }}>
+                      <div className="row g-4">
+                        {/* Service Card 1 */}
+                        <div className="col-12 col-sm-6 col-lg-3">
+                          <div
+                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
+                          >
+                            <div className="card-body d-flex flex-column align-items-center">
+                              <img
+                                src={beverages}
+                                alt="Food & Beverages"
+                                className="rounded-circle mb-3"
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                  objectFit: "cover",
+                                  border: "2px solid #E9BE5F"
+                                }}
+                              />
+                              <h5 className="card-title light-text">Food & Beverages</h5>
+                              <p className="card-text">Choose the perfect food combo for your celebration.</p>
+                              <a href="/Food" className="mt-auto light-text">
+                                View more <i className="fas fa-arrow-right"></i>
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
+                        {/* Service Card 2 */}
+                        <div className="col-12 col-sm-6 col-lg-3">
+                          <div
+                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
+                          >
+                            <div className="card-body d-flex flex-column align-items-center">
+                              <img
+                                src={screening}
+                                alt="Screening"
+                                className="rounded-circle mb-3"
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                  objectFit: "cover",
+                                  border: "2px solid #E9BE5F"
+                                }}
+                              />
+                              <h5 className="card-title light-text">Screening</h5>
+                              <p className="card-text">Bring your OTT accounts and relive the theatre magic!</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Service Card 3 */}
+                        <div className="col-12 col-sm-6 col-lg-3">
+                          <div
+                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
+                          >
+                            <div className="card-body d-flex flex-column align-items-center">
+                              <img
+                                src={cake4}
+                                alt="Cakes"
+                                className="rounded-circle mb-3"
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                  objectFit: "cover",
+                                  border: "2px solid #E9BE5F"
+                                }}
+                              />
+                              <h5 className="card-title light-text">Cakes</h5>
+                              <p className="card-text">Choose the perfect cake for your celebration from our selection.</p>
+                              <a href="/cakes" className=" mt-auto light-text">
+                                View more <i className="fas fa-arrow-right"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Service Card 4 */}
+                        <div className="col-12 col-sm-6 col-lg-3">
+                          <div
+                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
+                          >
+                            <div className="card-body d-flex flex-column align-items-center">
+                              <img
+                                src={roses}
+                                alt="Bouquets"
+                                className="rounded-circle mb-3"
+                                style={{
+                                  height: "100px",
+                                  width: "100px",
+                                  objectFit: "cover",
+                                  border: "2px solid #E9BE5F"
+                                }}
+                              />
+                              <h5 className="card-title light-text">Bouquets</h5>
+                              <p className="card-text">Add a beautiful rose bouquet to enhance your celebration.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </section>
 
 
+                {/* WHY US Section */}
+                <section className="py-5 lighter-back">
+                  <Container>
+                    <div className="position-relative">
+                      <Carousel
+                        activeIndex={index}
+                        onSelect={handleSelect}
+                        controls={false}
+                        indicators={false}
+                        fade={false}
+                        pause={false} // allows auto + manual without stopping on hover
+                        touch={true}
+                      >
+                        {whyUsSlides.map((slide, idx) => (
+                          <Carousel.Item key={idx}>
+                            <Row className="align-items-center g-4 flex-column flex-md-row text-center text-md-start">
+                              {/* Left - Image */}
+                              <Col md={6}>
+                                <img
+                                  src={slide.image}
+                                  alt="Highlight"
+                                  className="img-fluid rounded-4 shadow w-100"
+                                  style={{ maxHeight: "420px", objectFit: "cover" }}
+                                />
+                              </Col>
 
-                {/* Gallery */}
-                <section className="pb-3 pb-3 " style={{ backgroundColor: "#fff" }} >
-                  <div className="container-md">
-                    <div className="section-wraper row d-flex align-items-center">
-                      <div className="col-md-6 section-header mb-0 mt-3 mb-3">
-                        <h2 className="" style={{ color: "#681DC0" }}>Gallery</h2>
-                      </div>
-                      <div className="col-md-6 text-end">
-                        <a href="/gallery" className="fw-bold" style={{ color: "#681DC0" }}>
-                          View all
-                        </a>
-                      </div>
-                      <div className="row justify-content-center">
-                        {/* <div>
-                          <div className="row mb-4">
-                            {images?.map((image, index) => {
-                              return (
-                                <div
-                                  className="col-md-4 col-12 mt-3 mb-4"
-                                  key={index}
-                                >
-                                  <div className="image-container">
-                                    <img
-                                      src={URLS?.Base + image?.image}
-                                      alt={image.alt}
-                                    />
-                                    <i
-                                      className="fa fa-search-plus zoom-icon"
-                                      aria-hidden="true"
-                                    ></i>
+                              {/* Right - Text */}
+                              <Col md={6}>
+                                <div className="ps-md-4 mt-4 mt-md-0">
+                                  <h2 className="mb-3" style={{ color: "#681DC0" }}>{slide.title}</h2>
+                                  <h6 className="fw-semibold mb-4">{slide.subtitle}</h6>
+                                  <ul className="list-unstyled">
+                                    {slide.points.map((point, i) => (
+                                      <li
+                                        key={i}
+                                        className="mb-2 d-flex align-items-start justify-content-center justify-content-md-start"
+                                      >
+                                        <i className="fas fa-check-circle text-warning me-2 mt-1"></i>
+                                        <span className="text-dark">{point}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  <div className="mt-4 text-end">
+                                    <Button
+                                      onClick={() => window.location.href = "/theaters"}
+                                      className="rounded-3 px-4 py-2 fw-semibold dark-back"
+                                    >
+                                      <i className="fas fa-ticket-alt me-2" />
+                                      Book Now
+                                    </Button>
                                   </div>
                                 </div>
-                              );
-                            })}
-                          </div>
-                        </div> */}
+                              </Col>
+                            </Row>
+                          </Carousel.Item>
+                        ))}
+                      </Carousel>
 
+                      {/* Bottom Indicators */}
+                      <div className="d-flex justify-content-center mt-4">
+                        {whyUsSlides.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => handleSelect(i)}
+                            className={`carousel-indicator mx-1 rounded-circle ${index === i ? 'bg-warning' : 'bg-secondary'}`}
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              border: "none",
+                              transition: "0.3s",
+                            }}
+                          ></button>
+                        ))}
+                      </div>
+                    </div>
+                  </Container>
+
+                  <style jsx>{`
+        .carousel-indicator {
+          opacity: 0.6;
+          cursor: pointer;
+        }
+        .carousel-indicator.bg-primary {
+          opacity: 1;
+        }
+      `}</style>
+                </section>
+
+
+                <section className="py-5 bg-white position-relative">
+                  <Container>
+                    <h2 className="text-center fw-bold mb-3 dark-text">What Our Customers Say</h2>
+                    <p className="text-center mb-5 fs-5 light-text">
+                      Real stories. Real celebrations. Real magic at Carnival Castle.
+                    </p>
+
+                    <Carousel controls interval={5000} pause="hover" fade={false} wrap>
+                      {slides.map((group, idx) => (
+                        <Carousel.Item key={idx}>
+                          <Row className="g-4 justify-content-center">
+                            {group.map((review, index) => (
+                              <Col lg={4} md={6} sm={12} key={index}>
+                                {/* Added mb-4 class for bottom margin */}
+                                <div className="review-card position-relative rounded-4 overflow-hidden shadow mb-4" style={{ height: '400px' }}>
+                                  <img
+                                    src={review.image}
+                                    alt="Review background"
+                                    className="w-100 h-100 object-fit-cover"
+                                    style={{ filter: 'brightness(70%)' }}
+                                  />
+
+                                  {/* Bottom overlay card */}
+                                  <div
+                                    className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
+                                    style={{
+                                      height: 'auto',
+                                      minHeight: '45%',
+                                      width: "90%",
+                                      backgroundColor: 'rgba(233, 220, 255, 0.95)',
+                                      backdropFilter: 'blur(4px)',
+                                    }}
+                                  >
+                                    <div className="d-flex align-items-center mb-3">
+                                      <img
+                                        src={review.avatar}
+                                        alt="avatar"
+                                        className="rounded-circle me-3 border-2 border-light"
+                                        width="60"
+                                        height="60"
+                                      />
+                                      <div>
+                                        <h6 className="mb-0 fw-bold text-dark">{review.name}</h6>
+                                        <small className="text-dark">{review.location}</small>
+                                      </div>
+                                    </div>
+                                    <div className="text-warning mb-2 fs-5">
+                                      {'★'.repeat(review.rating)}
+                                      {'☆'.repeat(5 - review.rating)}
+                                    </div>
+                                    <p className="mb-2 text-dark" style={{ fontSize: '0.9rem' }}>
+                                      {review.description}
+                                    </p>
+                                    {review.occasion && (
+                                      <p className="mb-0 text-dark" style={{ fontSize: '0.85rem' }}>
+                                        <strong>Occasion:</strong> {review.occasion}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </Col>
+                            ))}
+                          </Row>
+                        </Carousel.Item>
+                      ))}
+                    </Carousel>
+                  </Container>
+                  <style jsx>{`
+    .carousel-indicators {
+      display: none !important;
+    }
+  `}</style>
+                </section>
+
+
+
+                {/* Gallery */}
+                <section className="pb-3 lighter-back">
+                  <div className="container-md">
+                    <div className="section-wraper row d-flex align-items-center">
+                      <div className="col-md-12 section-header mb-0 mt-3">
+                        <h2 className="text-center fw-bold mb-3 dark-text">Gallery</h2>
+                        <p className="text-center mb-5 fs-5 light-text">See how our guests made memories at Carnival Castle.</p>
+                      </div>
+
+                      <div className="row justify-content-center">
                         <div className="container-md">
                           <div>
                             <Galleria
@@ -1493,7 +1314,7 @@ useEffect(() => {
                               thumbnail={thumbnailTemplate}
                             />
                             <div>
-                              <div className="row mb-4">
+                              <div className="row mb-2">
                                 {images.map((image, index) => {
                                   return (
                                     <div
@@ -1530,28 +1351,30 @@ useEffect(() => {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="col-md-12 text-end">
+
+                      {/* View All Button - Centered at Bottom */}
+                      <div className="col-md-12 text-center mt-3 mb-4">
                         <a
-                          href="https://www.instagram.com/carnival_castle_hyderabad/"
-                          target="_blank"
-                          className="bright-all-links fw-bold"
+                          href="/gallery"
+                          className="btn btn-primary fw-bold dark-back"
                         >
-                          Our Instagram <i className="fab fa-instagram" />
+                          View Gallery<i className="bi bi-arrow-right ms-2"></i>
+
                         </a>
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                 </section>
 
 
 
-                <section className="py-5" style={{ backgroundColor: "#E9DCFF", color: "#681DC0" }}>
+                <section className="py-5 bg-white">
                   <div className="container">
-                    <div className="row justify-content-between align-items-center rounded-4 p-4 shadow" style={{ backgroundColor: "#FCCC00" }}>
+                    <div className="row justify-content-between align-items-center rounded-4 p-4 shadow lighter-back">
                       {/* Text Column */}
                       <div className="col-12 col-md-8 mb-3 mb-md-0">
-                        <h4 className="fw-bold text-purple mb-2">Follow Our Journey on Instagram</h4>
-                        <p className="text-dark m-0">Get inspired by our latest creations and behind-the-scenes moments.</p>
+                        <h4 className="fw-bold dark-text mb-2">Follow Our Journey on Instagram</h4>
+                        <p className="text-muted m-0">Get inspired by our latest creations and behind-the-scenes moments.</p>
                       </div>
 
                       {/* Button Column */}
@@ -1572,6 +1395,106 @@ useEffect(() => {
                       </div>
                     </div>
                   </div>
+                </section>
+
+
+                <section className="py-5 position-relative text-dark" style={{ backgroundColor: "#E6D8F5" }}>
+                  <Container fluid="lg">
+                    <Row className="align-items-center">
+                      {/* LEFT SECTION */}
+                      <Col lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
+                        <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
+                        <p className="light-text fs-6">
+                          Real stories. Real celebrations. Real magic at Carnival Castle.
+                        </p>
+                      </Col>
+
+                      {/* RIGHT SECTION */}
+                      <Col lg={9}>
+                        <div className="d-flex align-items-center justify-content-center overflow-auto gap-3">
+                          {/* Side Testimonials */}
+                          {testimonials
+                            .filter((item) => item.videoId !== selected.videoId)
+                            .map((user, idx) => (
+                              <div
+                                key={idx}
+                                className="side-card d-flex align-items-center justify-content-center rounded shadow"
+                                style={{
+                                  width: "80px",
+                                  height: "280px",
+                                  backgroundImage: `url(${user.thumbnail})`,
+                                  backgroundSize: "cover",
+                                  backgroundPosition: "center",
+                                  cursor: "pointer",
+                                  position: "relative",
+                                }}
+                                onClick={() => setSelected(user)}
+                              >
+                                <h6 className="vertical-text text-white fw-bold m-0">{user.name}</h6>
+                                <div className="overlay"></div>
+                              </div>
+                            ))}
+
+                          {/* Main Testimonial */}
+                          <div
+                            className="main-video-card position-relative rounded shadow overflow-hidden"
+                            style={{
+                              width: "300px",
+                              height: "400px",
+                              backgroundColor: "#000",
+                            }}
+                          >
+                            <iframe
+                              width="100%"
+                              height="80%"
+                              src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
+                              title={selected.name}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            ></iframe>
+
+                            {/* Label */}
+                            <div className="position-absolute bottom-0 start-0 end-0 p-3">
+                              <div className="bg-white d-inline-block px-3 py-2 rounded-4 w-100 shadow-sm">
+                                <strong className="dark-text">{selected.name}</strong><br />
+                                <small className="text-dark">{selected.role}</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Container>
+
+                  {/* Styles */}
+                  <style jsx>{`
+        .side-card {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .vertical-text {
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          transform: rotate(180deg);
+          font-size: 1rem;
+          z-index: 2;
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.4);
+          z-index: 1;
+        }
+
+        .main-video-card iframe {
+          border: none;
+        }
+      `}</style>
                 </section>
 
 
@@ -1620,13 +1543,76 @@ useEffect(() => {
                           </Accordion>
                         </div>
                       </div>
+                      {/* Book Now Button */}
+                      <div className="col-md-12 text-center mt-3 mb-4">
+                        <a
+                          href="/theaters"
+                          className="btn btn-primary fw-bold dark-back"
+                        >
+                          Book Now
+
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </section>
 
 
+                <section className="pt-5 bg-white" >
+                  <div className="container-fluid text-center pt-2" style={{ backgroundColor: "#e7d2f3", borderRadius: "2rem 2rem 0 0" }}>
+                    <h2 className="fw-bold mb-5 dark-text">Our Branches</h2>
+
+                    <div className="row justify-content-center">
+                      {addresses.map((addr, idx) => (
+                        <div className="col-md-6 col-lg-5 mb-4" key={idx}>
+                          <div
+                            className="p-4 shadow-sm h-100"
+                            style={{
+                              backgroundColor: "#f5eafc",
+                              borderRadius: "2rem",
+                              transition: "0.3s",
+                            }}
+                          >
+                            <h4 className="fw-bold text-center mb-3" style={{ color: "#5b179b" }}>
+                              {addr.name}
+                            </h4>
+                            <p
+                              className="text-muted mb-3 text-center"
+                              style={{ fontStyle: "italic", fontSize: "0.95rem" }}
+                            >
+                              {addr.addressLine1}, {addr.addressLine2}
+                            </p>
+
+                            <div className="text-center">
+                              <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                  `${addr.addressLine1}, ${addr.addressLine2}`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-decoration-none fw-semibold"
+                                style={{ color: "#6d28d9" }}
+                              >
+                                <i className="bi bi-geo-alt-fill me-2 light-text"></i>See on map
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Extra Styles */}
+                  <style jsx>{`
+        .text-purple {
+          color: #5b179b;
+        }
+      `}</style>
+                </section>
+
+
                 {/* ENQUIRY */}
-                <section className="pt-5 pb-5 p-relative" style={{ backgroundColor: "#E9DCFF" }}>
+                {/* <section className="pt-5 pb-5 p-relative" style={{ backgroundColor: "#E9DCFF" }}>
                   <div className="p-3">
                     <div className="row justify-content-md-center">
                       <div className="pl-30">
@@ -1766,41 +1752,41 @@ useEffect(() => {
                       </div>
                     </div>
                   </div>
-                </section>
+                </section> */}
 
 
-              // Your modal component
-              <Modal
-  size="md"
-  show={lgShow}
-  onHide={() => setLgShow(false)}
-  aria-labelledby="example-modal-sizes-title-lg"
-  centered
->
-  <div style={{ position: "relative", width: "100%" }}>
-    <img
-      src={URLS.Base + PopUp.image}
-      alt="Promotional popup"
-      style={{ width: "100%", objectFit: "cover" }}
-    />
-    <button
-      style={{
-        position: "absolute",
-        top: "10px",
-        right: "10px",
-        background: "rgba(0, 0, 0, 0.5)",
-        border: "none",
-        color: "white",
-        padding: "5px 10px",
-        borderRadius: "5px",
-        cursor: "pointer",
-      }}
-      onClick={() => setLgShow(false)}
-    >
-      &times;
-    </button>
-  </div>
-</Modal>
+              {/*  Your modal component */}
+                <Modal
+                  size="md"
+                  show={lgShow}
+                  onHide={() => setLgShow(false)}
+                  aria-labelledby="example-modal-sizes-title-lg"
+                  centered
+                >
+                  <div style={{ position: "relative", width: "100%" }}>
+                    <img
+                      src={URLS.Base + PopUp.image}
+                      alt="Promotional popup"
+                      style={{ width: "100%", objectFit: "cover" }}
+                    />
+                    <button
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        border: "none",
+                        color: "white",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setLgShow(false)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                </Modal>
                 <ToastContainer />
                 <Footer />
               </>
