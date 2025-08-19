@@ -13,8 +13,17 @@ code {
 }
 
 /* Bingenjoy new color codes */
+
+.lightest-back {
+  background-color: #F1E9FE!important;
+}
+
 .lighter-back {
-  background-color: #E9DCFF;
+  background-color: #E9DCFF!important;
+}
+
+.darkest-back {
+  background-color: #330C5F !important;
 }
 
 .dark-back {
@@ -25,8 +34,28 @@ code {
   background-color: #9D4DFF !important;
 }
 
+.lightdark-back {
+  background: linear-gradient(45deg, #C69FF4, #C69FF4)!important;
+}
+
 .gradient45 {
   background: linear-gradient(45deg, #FFFAFB, #C69FF4)!important;
+}
+
+.gradient135 {
+  background: linear-gradient(45deg, #C69FF4, #FFFAFB)!important;
+}
+
+.gradientright {
+  background: linear-gradient(to right, #FFFAFB, #C69FF4)!important;
+}
+
+.gradientleft {
+  background: linear-gradient(to left, #FFFAFB, #C69FF4)!important;
+}
+
+.gradientdark {
+  background: linear-gradient(to right, #BEBEBE, #BEBEBE)!important;
 }
 
 .dark-text {

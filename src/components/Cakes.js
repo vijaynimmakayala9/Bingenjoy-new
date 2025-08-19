@@ -100,15 +100,15 @@ function Cakes() {
             <main className="main-wrapper">
               <section
                 id="parallax"
-                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix bg-dark border-gradient border-gradient-gold only-bottom-border"
+                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
                 style={{ backgroundColor: "#AD3DF0" }}
               >
                 <div className="container">
                   <div className="row">
                     <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                       <div className="breadcrumb-wrap text-center">
-                        <div className="breadcrumb-title mb-30">
-                          <h1 style={{ color: "white", marginTop: "20px" }}>
+                        <div className="breadcrumb-title mb-30 dark-text">
+                          <h1 style={{ marginTop: "20px" }}>
                             Cakes
                           </h1>
                         </div>
@@ -118,12 +118,12 @@ function Cakes() {
                 </div>
               </section>
           
-              <section className="pb-3 pb-3 bg-dark">
+              <section className="pb-3 pb-3 lightest-back">
                 <div className="container">
                   <div className="row">
                     <div className="col-6">
                       <div className="section-title mb-2 pt-4">
-                        <h2 className="text-gold-gradient">
+                        <h2 className="light-text">
                           {isChecked ? "Eggless" : "Egg"}
                         </h2>
                       </div>
@@ -171,8 +171,9 @@ function Cakes() {
                             <Col
                               md={12}
                               style={{
-                                backgroundColor: "#595B56",
-                                border: "1px dashed gold",
+                                backgroundColor: "#fff",
+                                border: "1px dashed white",
+                                borderRadius: "10px"
                               }}
                             >
                               <div
@@ -180,11 +181,11 @@ function Cakes() {
                                   padding: "5px",
                                   background: "#A020F0",
                                 }}
-                                className="mt-2 mb-3 bg-dark"
+                                className="mt-2 mb-3 bg-white"
                               >
                                 <div className="row">
                                   <div className="col">
-                                    <h5 className="text-gold-gradient">
+                                    <h5 className="light-text">
                                       Premium Cakes
                                     </h5>
                                   </div>
@@ -214,12 +215,12 @@ function Cakes() {
                                           <div className="food-img">
                                             <img
                                               src={URLS.Base + data.image}
-                                              className="img-fluid"
+                                              className="img-fluid rounded-circle"
                                               alt=""
                                             />
                                           </div>
-                                          <div className="food-desc bg-dark">
-                                            <p className="fd-title text-gold-gradient">
+                                          <div className="food-desc bg-white">
+                                            <p className="fd-title text-black">
                                               {data.name}
                                             </p>
                                           </div>
@@ -246,8 +247,9 @@ function Cakes() {
                             <Col
                               md={12}
                               style={{
-                                backgroundColor: "#595B56",
-                                border: "1px dashed gold",
+                                backgroundColor: "#fff",
+                                border: "1px dashed white",
+                                borderRadius: "10px"
                               }}
                             >
                               <div
@@ -255,11 +257,11 @@ function Cakes() {
                                   padding: "5px",
                                   background: "#A020F0",
                                 }}
-                                className="mt-2 mb-3 bg-dark"
+                                className="mt-2 mb-3 bg-white"
                               >
                                 <div className="row">
                                   <div className="col">
-                                    <h5 className="text-gold-gradient">
+                                    <h5 className="light-text">
                                       Normal Cakes
                                     </h5>
                                   </div>
@@ -289,12 +291,12 @@ function Cakes() {
                                           <div className="food-img">
                                             <img
                                               src={URLS.Base + data.image}
-                                              className="img-fluid"
+                                              className="img-fluid rounded-circle"
                                               alt=""
                                             />
                                           </div>
-                                          <div className="food-desc bg-dark">
-                                            <p className="fd-title text-gold-gradient">
+                                          <div className="food-desc bg-white">
+                                            <p className="fd-title text-black">
                                               {data.name}
                                             </p>
                                             <p
@@ -306,10 +308,10 @@ function Cakes() {
                                                 paddingBottom: "3px",
                                               }}
                                             >
-                                              <small className="text-gold-gradient">
+                                              <small className="text-black">
                                                 ₹
                                               </small>
-                                              <b className="text-gold-gradient">
+                                              <b className="text-black">
                                                 {data.price} /-
                                               </b>
                                             </p>

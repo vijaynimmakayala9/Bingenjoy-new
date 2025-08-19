@@ -89,7 +89,7 @@ const CakesComponent = () => {
 
   const [selectedWeights, setSelectedWeights] = useState(JSON.parse(sessionStorage.getItem("selectedWeights")) || {});
   console.log(selectedWeights)
-  
+
   const handleImageClick = (cake, index) => {
     // const { _id } = cake;
     // setSelectedWeights((prevWeights) => ({
@@ -102,32 +102,32 @@ const CakesComponent = () => {
         ...prevWeights,
         [cake._id]: "500",
       };
-  
+
       // Store the updated weights in sessionStorage
       sessionStorage.setItem("selectedWeights", JSON.stringify(updatedWeights || "500"));
       return updatedWeights;
     });
-    
-  
+
+
     // Update selected cakes
     setSelectedCakes((prevSelectedCakes) => {
       console.log(prevSelectedCakes, "prevSelectedCakes");
-  
+
       // Check if the cake is already selected based on _id
       const isSelected = prevSelectedCakes.some((selectedCake) => selectedCake._id === cake._id);
-  
+
       // If the cake is already selected, remove it; otherwise, add it
       const newSelectedCakes = isSelected
         ? prevSelectedCakes.filter((selectedCake) => selectedCake._id !== cake._id)
         : [...prevSelectedCakes, cake];
-  
+
       // Log the new selection
       console.log(newSelectedCakes, "newSelectedCakes");
-  
+
       return newSelectedCakes;
     });
   };
-  
+
 
   // const handleImageClick = (cake, index) => {
   //   setSelectedWeights((prevWeights) => ({
@@ -253,13 +253,13 @@ const CakesComponent = () => {
 
   // const handleChange = (event, cake) => {
   //   const selectedWeight = event.target;
-    
+
   //   setSelectedWeights((prevWeights) => ({
   //     ...prevWeights,
   //     [cake._id]: selectedWeight,
   //   }));
   // };
-  
+
 
 
   const handleChange = async (event, index, cake) => {
@@ -281,7 +281,7 @@ const CakesComponent = () => {
         ...prevWeights,
         [cake._id]: selectedWeight,
       };
-  
+
       // Store the updated weights in sessionStorage
       sessionStorage.setItem("selectedWeights", JSON.stringify(updatedWeights));
       return updatedWeights;
@@ -365,16 +365,16 @@ const CakesComponent = () => {
     const priceFactor = weight === "500" ? 1 : weight === "1" ? 2 : weight === "2" ? 4 : weight === "3" ? 6 : 1;
     return total + (cake.price * priceFactor);
   }, 0);
-  
 
-  
+
+
   const handleSubmit = async () => {
 
     sessionStorage.setItem("cartCakes", JSON.stringify(selectedCakes))
-    sessionStorage.setItem("cartcakeslength", JSON.stringify(selectedWeights[selectedCakes.map((data)=>(data))._id]))
+    sessionStorage.setItem("cartcakeslength", JSON.stringify(selectedWeights[selectedCakes.map((data) => (data))._id]))
     sessionStorage.setItem("cakeprice", totalPrice)
     navigate("/AddOnscomponent");
-  
+
     // const bodyData = {
     //   products: selectedCakes,
     //   subTotal: sessionStorage.getItem("subtotal"),
@@ -441,13 +441,13 @@ const CakesComponent = () => {
               <div className="container"></div>
             </section>
             <section
-              className="shop-area pt-5 pb-5 p-relative bg-dark text-white"
+              className="shop-area pt-5 pb-5 p-relative lightest-back"
               style={{ background: "white" }}
             >
               <div className="container">
                 <button
                   type="button"
-                  className="btn main-booknow"
+                  className="btn light-back shadow-lg text-light"
                   onClick={handleClick}
                 >
                   {" "}
@@ -455,7 +455,7 @@ const CakesComponent = () => {
                 </button>
                 <div className="row mb-4">
                   {/* Cakes Selection */}
-                  <div className="col-md-8 ">
+                  <div className="col-md-8 bg-white rounded-2">
                     <div className="d-flex align-items-center m-3 ">
                       <h5 style={{ marginRight: "20px" }}>Select Cake</h5>
                       <div className="form-check form-switch">
@@ -478,7 +478,7 @@ const CakesComponent = () => {
                   </div>
 
                   {/* Cakes Display */}
-                  <div className="col-lg-8 col-md-6 mx-auto gradient-border bg-light-grey ">
+                  <div className="col-lg-8 col-md-6 mx-auto bg-white ">
                     <div className="alert alert-warning m-3">
                       <i
                         className="fa fa-exclamation-triangle me-2"
@@ -499,7 +499,13 @@ const CakesComponent = () => {
                           key={index}
                         >
                           <div
-                            className="card shadow-lg mx-auto"
+                            className={selectedCakes.some(
+                              (cake2) =>
+                                String(cake2._id) === String(cake._id)
+                            )
+                              ? "card-body bg-light-grey text-white card shadow-lg mx-auto "
+                              : "card-body bg-white text-black card shadow-lg mx-auto"
+                            }
                             style={{
                               // height: "74%",
                               height: "auto",
@@ -508,42 +514,42 @@ const CakesComponent = () => {
                               position: "relative",
                               marginBottom: "12px",
                               cursor: "pointer",
-                              border: "2px solid #F5E7B6",
                             }}
                             onClick={() => handleImageClick(cake, index)}
                           >
                             <img
                               src={URLS.Base + cake.image}
-                              className="card-img-top"
+                              className="card-img-top rounded-circle"
                               alt={cake.name}
                               style={{
                                 height: "150px",
+                                width: "150px",
                                 objectFit: "cover",
                               }}
                             />
 
                             <div
                               className={selectedCakes.some(
-                                  (cake2) =>
-                                    String(cake2._id) === String(cake._id)
-                                )
-                                  ? "card-body bg-dark text-white cakebackground"
-                                  : "card-body bg-dark text-white"
+                                (cake2) =>
+                                  String(cake2._id) === String(cake._id)
+                              )
+                                ? "card-body bg-light-grey text-white"
+                                : "card-body bg-white text-black"
                               }
-                              // className="card-body bg-dark text-white "
-                              // style={{
-                              //   background:
-                              //     selectedCakes.includes(cake) ||
-                              //     newCakes.find(
-                              //       (cartCake) =>
-                              //         String(cartCake._id) === cake._id
-                              //     )
-                              //       ? "var(--gold-gradient) !important" // MILK
-                              //       : "#212529", // dark
-                              //   borderRadius: "3px",
-                              // }}
+                            // className="card-body bg-dark text-white "
+                            // style={{
+                            //   background:
+                            //     selectedCakes.includes(cake) ||
+                            //     newCakes.find(
+                            //       (cartCake) =>
+                            //         String(cartCake._id) === cake._id
+                            //     )
+                            //       ? "var(--gold-gradient) !important" // MILK
+                            //       : "#212529", // dark
+                            //   borderRadius: "3px",
+                            // }}
 
-                              // className=
+                            // className=
                             >
                               <h6 className="card-title d-flex align-items-center">
                                 {cake.name}
@@ -619,9 +625,9 @@ const CakesComponent = () => {
                       <span style={{ color: "red" }}>
                         <b>Note :</b>
                         <div >
-                               <span>Customized cakes must be ordered 3days Prior..</span><br/>
-                               <span> For customized cakes plz contact us...</span>
-                               </div>
+                          <span>Customized cakes must be ordered 3days Prior..</span><br />
+                          <span> For customized cakes plz contact us...</span>
+                        </div>
                       </span>
                     </div>
                     <div className="alert alert-warning mt-3">
@@ -640,13 +646,13 @@ const CakesComponent = () => {
                   {/* Summary Section */}
                   <div className="col-lg-4 col-md-5">
                     <div className="position-sticky" style={{ top: "20px" }}>
-                      <div className="bg-light-grey mb-3">
+                      <div className="bg-white mb-3">
                         <div className="card-body mt-3">
-                          <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded gradient-border">
+                          <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded ">
                             <div>Total:</div>
                             <div>
                               ₹
-                              {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons")|| 0) + parseFloat(totalPrice || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
+                              {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(totalPrice || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
 
                               {/* {(parseFloat(sessionStorage.getItem("theaterPrice")) + parseFloat(sessionStorage.getItem("addons")|| 0) + parseFloat(totalPrice)).toFixed(2)} */}
                             </div>
@@ -673,9 +679,8 @@ const CakesComponent = () => {
                               </h2>
                               <div
                                 id="collapseOne"
-                                className={`accordion-collapse collapse ${
-                                  isOpen ? "show" : ""
-                                }`} // Conditional class for open state
+                                className={`accordion-collapse collapse ${isOpen ? "show" : ""
+                                  }`} // Conditional class for open state
                                 aria-labelledby="headingOne"
                                 data-bs-parent="#accordionExample"
                               >
@@ -727,34 +732,34 @@ const CakesComponent = () => {
                                         No cakes in the cart
                                       </div>
                                     ) : (selectedCakes.map((cake, index) => (
-                                        <div
-                                          key={index}
-                                          style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            marginBottom: "8px",
-                                          }}
-                                        >
-                                          <div>
-                                            {cake.name} (x {selectedWeights[cake._id] == "500"?selectedWeights[cake._id] + "Gm":selectedWeights[cake._id] + "Kg"})
-                                          </div>
-                                          <div>₹  {selectedWeights[cake._id] == "500"
-                                                ? cake.price
-                                                : selectedWeights[cake._id] ==1 ? cake.price * 2
-                                                : selectedWeights[cake._id] == 2
-                                                ?cake.price * 4
-                                                : selectedWeights[cake._id] == 3
-                                                ?cake.price * 6
+                                      <div
+                                        key={index}
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                          marginBottom: "8px",
+                                        }}
+                                      >
+                                        <div>
+                                          {cake.name} (x {selectedWeights[cake._id] == "500" ? selectedWeights[cake._id] + "Gm" : selectedWeights[cake._id] + "Kg"})
+                                        </div>
+                                        <div>₹  {selectedWeights[cake._id] == "500"
+                                          ? cake.price
+                                          : selectedWeights[cake._id] == 1 ? cake.price * 2
+                                            : selectedWeights[cake._id] == 2
+                                              ? cake.price * 4
+                                              : selectedWeights[cake._id] == 3
+                                                ? cake.price * 6
                                                 : 1 || 1}
-                                            
-                                            {/* {cake.price * selectedWeights[cake._id]} */}
-                                            
-                                            {/* {cake.quantity == "500"
+
+                                          {/* {cake.price * selectedWeights[cake._id]} */}
+
+                                          {/* {cake.quantity == "500"
                                               ? cake.price
                                               : cake.price} */}
-                                          </div>
                                         </div>
-                                      ))
+                                      </div>
+                                    ))
                                     )}
                                     <hr />
                                     <div
@@ -765,9 +770,9 @@ const CakesComponent = () => {
                                       }}
                                     >
                                       <div>Addons</div>
-                                      <div>{sessionStorage.getItem("addons")|| 0}</div>
+                                      <div>{sessionStorage.getItem("addons") || 0}</div>
                                     </div>
-                                   
+
                                     <hr />
                                     <div
                                       style={{
@@ -777,9 +782,9 @@ const CakesComponent = () => {
                                     >
                                       <div>Sub Total</div>
                                       <div>
-                                        
+
                                         ₹
-                                        {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons")|| 0) + parseFloat(totalPrice || 0)}
+                                        {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(totalPrice || 0)}
                                       </div>
                                     </div>
                                     <hr />
@@ -807,7 +812,7 @@ const CakesComponent = () => {
                                       <div>Total Amount</div>
                                       <div>
                                         ₹
-                                        {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons")|| 0) + parseFloat(totalPrice || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
+                                        {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(totalPrice || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
 
                                       </div>
                                     </div>
@@ -822,11 +827,11 @@ const CakesComponent = () => {
                       <button
                         type="submit"
                         onClick={handleSubmit}
-                        className="btn btn-success w-100 mt-2 main-booknow"
+                        className="btn btn-success w-100 mt-2"
                         style={{
-                          // backgroundColor: "#a020f0",
+                          backgroundColor: "#330C5F",
                           boxShadow: "none",
-                          color: "black",
+                          color: "white",
                           border: "none",
                         }}
                       >

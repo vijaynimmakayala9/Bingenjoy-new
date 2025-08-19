@@ -9,7 +9,7 @@ import { URLS } from "../Url";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate } from "react-router-dom";
-import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from "react-icons/fa";
+import { FaMapMarkerAlt, FaCalendarAlt, FaClock, FaLocationArrow, FaMap, FaTheaterMasks } from "react-icons/fa";
 import Modal from 'react-bootstrap/Modal';
 
 const Basicplan = () => {
@@ -152,23 +152,11 @@ const Basicplan = () => {
       )
       .then((res) => {
         console.log("Response from API:", res.data);
-
-        const bookingId = res.data.bookingId;
-
-    // Store bookingId in both sessionStorage and localStorage
-    sessionStorage.setItem("bookingid", bookingId);
-    localStorage.setItem("bookingid", bookingId); // Store in localStorage as well
-
-    // Store other necessary data in sessionStorage
-    sessionStorage.setItem("userDetails", JSON.stringify(data));
-    sessionStorage.setItem("countPeople", data.noOfPersons);
-    sessionStorage.setItem("adonsJSON", JSON.stringify([]));
-    sessionStorage.setItem("data", JSON.stringify(data));
-
-    // Show an alert with the bookingId
-    
-    // Optional: You can also store the orderId if needed
-    localStorage.setItem("orderId", res.data.orderId);
+        sessionStorage.setItem("bookingid", res.data.bookingId);
+        sessionStorage.setItem("userDetails", JSON.stringify(data));
+        sessionStorage.setItem("countPeople", data.noOfPersons);
+        sessionStorage.setItem("adonsJSON", JSON.stringify([]));
+        sessionStorage.setItem("data", JSON.stringify(data));
 
         GetUniqueId();
 
@@ -324,42 +312,49 @@ const Basicplan = () => {
           <div className="container"></div>
         </section>
         <section
-          className="shop-area pt-5 pb-5 p-relative bg-dark text-white"
-          style={{ background: "white" }}
+          className="shop-area pt-5 pb-5 p-relative lighter-back"
         >
           <div className="container">
             <button
               type="button"
-              className="btn mb-3 main-booknow"
+              className="btn mb-3 light-back shadow-lg text-light"
               onClick={handleBackClick}
             >
               <i className="far fa-arrow-alt-circle-left"></i> Back
             </button>
             <div className="row">
               <div className="col-8">
-                <div className="bg-light-grey p-2 rounded w-100 mx-auto gradient-border">
+                <div className="bg-white p-2 rounded w-100 mx-auto shadow-lg">
                   <div className="row">
                     <div className="col-12">
                       <h4>Overview</h4>
                     </div>
-                    <div className="col-12 col-md-4 d-flex align-items-center mb-2">
-                      <FaMapMarkerAlt style={{ color: "var(--gold-gradient)" }} />
-                      <span className="ms-2">
-                        {sessionStorage.getItem("theaterName")}, Hyderabad
-                      </span>
+                    <div className="col-12">
+                      <div className="bg-white p-2 rounded w-100 mx-auto">
+                        <div className="row g-3 align-items-center flex-nowrap flex-wrap justify-content-between">
+                          <div className="col-auto d-flex align-items-center">
+                            <FaTheaterMasks style={{ color: "var(--gold-gradient)" }} />
+                            <span className="ms-2">{sessionStorage.getItem("theaterName")}</span>
+                          </div>
+
+                          <div className="col-auto d-flex align-items-center">
+                            <FaMapMarkerAlt style={{ color: "var(--gold-gradient)" }} />
+                            <span className="ms-2">Hyderabad</span>
+                          </div>
+
+                          <div className="col-auto d-flex align-items-center">
+                            <FaCalendarAlt style={{ color: "var(--gold-gradient)" }} />
+                            <span className="ms-2">{sessionStorage.getItem("date")}</span>
+                          </div>
+
+                          <div className="col-auto d-flex align-items-center">
+                            <FaClock style={{ color: "var(--gold-gradient)" }} />
+                            <span className="ms-2">{sessionStorage.getItem("slot")}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="col-12 col-md-3 d-flex align-items-center mb-2">
-                      <FaCalendarAlt style={{ color: "var(--gold-gradient)" }} />
-                      <span className="ms-2">
-                        {sessionStorage.getItem("date")}
-                      </span>
-                    </div>
-                    <div className="col-12 col-md-5 d-flex align-items-center mb-2">
-                      <FaClock style={{ color: "var(--gold-gradient)" }} />
-                      <span className="ms-2">
-                        {sessionStorage.getItem("slot")}
-                      </span>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -367,7 +362,7 @@ const Basicplan = () => {
             <div className="container mt-4">
               <form onSubmit={handleSubmit}>
                 <div className="row mb-4">
-                  <div className="col-md-8 bg-light-grey gradient-border">
+                  <div className="col-md-8 bg-white shadow-sm rounded">
                     <div className="mb-3 mt-4">
                       <div className="">
                         <h5 className="card-title">Booking Details</h5>
@@ -474,7 +469,7 @@ const Basicplan = () => {
                                   <div className="coupon-details">Includes Theatre and Decoration</div>
                                   <div className="coupon-details">Add-ons: Cake, Fog Entry, Etc will be in next step</div>
 
-                                  
+
                                   <div className="coupon-minimum">
                                   </div>
                                 </div>
@@ -490,8 +485,8 @@ const Basicplan = () => {
                                   </div>
                                   <div className="coupon-details">Flat 30% Off on Plans</div>
                                   <div className="coupon-details">Starts from ₹4100/</div>
-                                   <div className="coupon-details">Including: Theatre, Decoration, Cake, Photography etc..</div>
-                                    <div className="coupon-details">Total 14 services</div>
+                                  <div className="coupon-details">Including: Theatre, Decoration, Cake, Photography etc..</div>
+                                  <div className="coupon-details">Total 14 services</div>
                                   <div className="coupon-code">
                                   </div>
                                   <div className="coupon-minimum">
@@ -503,9 +498,9 @@ const Basicplan = () => {
                               <button
                                 className="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center"
                                 style={{
-                                  background: isCouponApplied ? "var(--gold-gradient)" : "var(--gold-gradient)",
+                                  background: isCouponApplied ? "#330C5F" : "#330C5F",
                                   border: "none",
-                                  color: "black",
+                                  color: "white",
                                   fontWeight: "600",
                                 }}
                                 type="submit"
@@ -522,9 +517,9 @@ const Basicplan = () => {
 
                   <div className="col-lg-4 col-md-5">
                     <div className="position-sticky" style={{ top: "20px" }}>
-                      <div className="bg-light-grey mb-3">
+                      <div className="bg-white mb-3">
                         <div className="card-body mt-3">
-                          <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded gradient-border">
+                          <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded">
                             <div>Total:</div>
                             <div>
                               {couponData.couponCode === "FLAT700COMBO" ? (
@@ -541,7 +536,7 @@ const Basicplan = () => {
                         <div className="card-body">
                           <div className="accordion" id="accordionExample">
                             <div className="accordion-item">
-                              <h2 className="accordion-header" id="headingOne">
+                              <h2 className="accordion-header bg-white" id="headingOne">
                                 <button
                                   className="accordion-button"
                                   type="button"
@@ -680,6 +675,7 @@ const Basicplan = () => {
                           </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -737,26 +733,26 @@ const Basicplan = () => {
     }
 
     .coupon-box.selected {
-      border-color: var(--gold);
-      background: var(--gold-gradient);
+      border-color: #C69FF4;
+      background: linear-gradient(to right, #9D4DFF, #C69FF4)!important;
 
     .coupon-header {
       font-weight: 700;
       font-size: 1.2rem;
-      color: black;
+      color: white;
       margin-bottom: 10px;
       text-transform: uppercase;
     }
 
     .coupon-details {
       font-size: 1rem;
-      color: #000;
+      color: #fff;
       margin-bottom: 8px;
     }
 
     .coupon-code {
       font-size: 0.85rem;
-      color: #000;
+      color: #fff;
       margin-bottom: 6px;
     }
 

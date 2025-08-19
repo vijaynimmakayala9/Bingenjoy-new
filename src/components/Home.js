@@ -441,7 +441,6 @@ function Home() {
         "No Cake / Decor",
         "Up to 6 Guests"
       ],
-      badgeText: "Saved ₹0",
       buttonText: "Continue with Add-Ons →",
     },
     {
@@ -454,7 +453,6 @@ function Home() {
         "LED Decor + Fog",
         "Photo Session"
       ],
-      badgeText: "Save ₹200",
       buttonText: "Switch to Combo Plans →",
     },
     {
@@ -467,7 +465,6 @@ function Home() {
         "LED Pathway + Crown",
         "30-min Photography"
       ],
-      badgeText: "Save ₹300",
       buttonText: "Switch to Combo Plans →",
     },
     {
@@ -480,7 +477,6 @@ function Home() {
         "Gift Box - Full Lighting",
         "Cinematic Entry Setup"
       ],
-      badgeText: "Save ₹400",
       buttonText: "Switch to Combo Plans →",
     }
   ];
@@ -856,7 +852,7 @@ function Home() {
                             className="position-relative card border-0 shadow rounded-4 h-100 text-center gradient45"
                           >
                             {/* Ribbon Badge */}
-                            <div
+                            {/* <div
                               className="position-absolute top-0 start-50 translate-middle"
                               style={{
                                 backgroundColor: "#a259ff",
@@ -868,7 +864,7 @@ function Home() {
                               }}
                             >
                               {pkg.badgeText}
-                            </div>
+                            </div> */}
 
                             <div className="card-body d-flex flex-column p-4 mt-4">
                               <h4 className="fw-bold mb-2">{pkg.title}</h4>
@@ -891,6 +887,7 @@ function Home() {
                                   backgroundColor: "#a259ff",
                                   borderRadius: "10px"
                                 }}
+                                onClick={()=>navigate('/theaters')}
                               >
                                 {pkg.buttonText}
                               </button>
@@ -997,7 +994,7 @@ function Home() {
                             <button
                               className="btn px-5 py-2 rounded-3 fw-bold dark-back text-light"
                               style={{ width: "80%", maxWidth: "500px" }}
-                              onClick={() => navigate('/theatres')}
+                              onClick={() => navigate('/theaters')}
                             >
                               Proceed <i className="bi bi-arrow-right ms-2"></i>
                             </button>
@@ -1506,7 +1503,7 @@ function Home() {
                       <div className="row justify-content-center">
                         <div className="col-xl-6 col-lg-8">
                           <div className="section-title text-center mb-5 pt-3">
-                            <h2 className="" style={{ color: "#681DC0" }}>
+                            <h2 className="dark-text">
                               Frequently Asked Questions
                             </h2>
                           </div>

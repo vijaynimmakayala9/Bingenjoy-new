@@ -29,7 +29,7 @@ const BookingForm = () => {
 
     GetTheatersData();
     GetPoliciesData();
-    
+
     return () => {
       document.body.removeChild(script);
     };
@@ -44,23 +44,23 @@ const BookingForm = () => {
   };
 
   const GetPoliciesData = () => {
-  axios.post(URLS.GetPolicies, {}, {}).then((res) => {
-    if (res.status === 200) {
-      let updatedTerms = res.data.policy.termsAndCondition;
+    axios.post(URLS.GetPolicies, {}, {}).then((res) => {
+      if (res.status === 200) {
+        let updatedTerms = res.data.policy.termsAndCondition;
 
-      // Replace the terms and conditions text
-      updatedTerms = updatedTerms.replace(
-        /https:\/\/carnivalcastle\.com/g, 
-        'https://bingenjoy.com'
-      ).replace(
-        /Carnival Castle/g, 
-        'Binge n Joy'
-      );
+        // Replace the terms and conditions text
+        updatedTerms = updatedTerms.replace(
+          /https:\/\/carnivalcastle\.com/g,
+          'https://bingenjoy.com'
+        ).replace(
+          /Carnival Castle/g,
+          'Binge n Joy'
+        );
 
-      setpolicys({ termsAndCondition: updatedTerms });
-    }
-  });
-};
+        setpolicys({ termsAndCondition: updatedTerms });
+      }
+    });
+  };
 
 
   const handleSubmit = (e) => {
@@ -73,98 +73,98 @@ const BookingForm = () => {
   };
 
   const handleConfirmPayment = async () => {
-  setShowPopup(false);
-  setIsLoading1(true);
+    setShowPopup(false);
+    setIsLoading1(true);
 
-  try {
-    // Construct payload from sessionStorage
-    const payload = {
-      bookingId: sessionStorage.getItem("bookingid"),
-      totalPrice: parseFloat(sessionStorage.getItem("TotalPrice")),
-      subTotal:
-        parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
-        parseFloat(sessionStorage.getItem("cakeprice") || 0) +
-        parseFloat(sessionStorage.getItem("occprice") || 0) +
-        (parseFloat(sessionStorage.getItem("addons")) || 0),
-      advancePayment: parseFloat(sessionStorage.getItem("advancePayment")),
-      theatrePrice: parseFloat(sessionStorage.getItem("theaterPrice")),
-      couponId: sessionStorage.getItem("coupon_Id"),
-      couponAmount: parseFloat(sessionStorage.getItem("coupondis") || 0),
-      extraAddedPersonsForTheatre: sessionStorage.getItem("countPeople"),
-      extraPersonPrice: parseFloat(sessionStorage.getItem("extraPersonperprice") || 0),
-      cashType: "online",
-      remainingAmount: parseFloat(sessionStorage.getItem("TotalPrice")) - parseFloat(sessionStorage.getItem("advancePayment")),
-      create_type: "web",
-    };
-
-    const res = await axios.post(
-      `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      }
-    );
-
-    if (res.status === 200 && res.data.success) {
-      const orderData = res.data.data;
-
-      const options = {
-        key: orderData.keyId,
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: "Carnival Castle",
-        description: "Booking Payment",
-        order_id: orderData.orderId,
-        handler: async (response) => {
-          await completeBooking(response.razorpay_payment_id);
-        },
-        prefill: {
-          name: sessionStorage.getItem("name"),
-          email: sessionStorage.getItem("email"),
-          contact: sessionStorage.getItem("phone"),
-        },
-        theme: {
-          color: "#015A65",
-        },
-        modal: {
-          ondismiss: () => {
-            toast.info("Payment window closed");
-          },
-        },
+    try {
+      // Construct payload from sessionStorage
+      const payload = {
+        bookingId: sessionStorage.getItem("bookingid"),
+        totalPrice: parseFloat(sessionStorage.getItem("TotalPrice")),
+        subTotal:
+          parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
+          parseFloat(sessionStorage.getItem("cakeprice") || 0) +
+          parseFloat(sessionStorage.getItem("occprice") || 0) +
+          (parseFloat(sessionStorage.getItem("addons")) || 0),
+        advancePayment: parseFloat(sessionStorage.getItem("advancePayment")),
+        theatrePrice: parseFloat(sessionStorage.getItem("theaterPrice")),
+        couponId: sessionStorage.getItem("coupon_Id"),
+        couponAmount: parseFloat(sessionStorage.getItem("coupondis") || 0),
+        extraAddedPersonsForTheatre: sessionStorage.getItem("countPeople"),
+        extraPersonPrice: parseFloat(sessionStorage.getItem("extraPersonperprice") || 0),
+        cashType: "online",
+        remainingAmount: parseFloat(sessionStorage.getItem("TotalPrice")) - parseFloat(sessionStorage.getItem("advancePayment")),
+        create_type: "web",
       };
 
-      const rzp1 = new window.Razorpay(options);
-      rzp1.open();
-    } else {
-      toast.error(res.data.message || "Failed to initialize Razorpay order");
-    }
-  } catch (error) {
-    console.error("Payment init error:", error);
-    toast.error(error.response?.data?.message || "Failed to start payment");
+      const res = await axios.post(
+        `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    if (error.response?.status === 400 || error.response?.status === 406) {
-      setTimeout(() => navigate("/theaters"), 2000);
+      if (res.status === 200 && res.data.success) {
+        const orderData = res.data.data;
+
+        const options = {
+          key: orderData.keyId,
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "Carnival Castle",
+          description: "Booking Payment",
+          order_id: orderData.orderId,
+          handler: async (response) => {
+            await completeBooking(response.razorpay_payment_id);
+          },
+          prefill: {
+            name: sessionStorage.getItem("name"),
+            email: sessionStorage.getItem("email"),
+            contact: sessionStorage.getItem("phone"),
+          },
+          theme: {
+            color: "#015A65",
+          },
+          modal: {
+            ondismiss: () => {
+              toast.info("Payment window closed");
+            },
+          },
+        };
+
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+      } else {
+        toast.error(res.data.message || "Failed to initialize Razorpay order");
+      }
+    } catch (error) {
+      console.error("Payment init error:", error);
+      toast.error(error.response?.data?.message || "Failed to start payment");
+
+      if (error.response?.status === 400 || error.response?.status === 406) {
+        setTimeout(() => navigate("/theaters"), 2000);
+      }
+    } finally {
+      setIsLoading1(false);
     }
-  } finally {
-    setIsLoading1(false);
-  }
-};
+  };
 
 
   const completeBooking = async (paymentId) => {
     try {
       const extrapersiontheater = parseFloat(sessionStorage.getItem("countPeople"));
       const maxPeopletheater = parseFloat(sessionStorage.getItem("maxPeople"));
-      
+
       const totoalbasicprice =
         parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
         parseFloat(sessionStorage.getItem("cakeprice") || 0) +
         parseFloat(sessionStorage.getItem("occprice") || 0) +
         (parseFloat(sessionStorage.getItem("addons")) || 0) -
         parseFloat(sessionStorage.getItem("couponAmount") || 0);
-      
+
       const totoalbasicpricesubtotal =
         parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
         parseFloat(sessionStorage.getItem("cakeprice") || 0) +
@@ -203,22 +203,22 @@ const BookingForm = () => {
       if (res.status === 200) {
         // Submit cakes if any
         await submitCakes();
-        
-     // Store in localStorage
-  localStorage.setItem("invoicePath", res.data.invoicePath);
-  localStorage.setItem("orderId", res.data.orderId);
-  localStorage.setItem("bookingid", res.data.bookingId); // Store bookingId here
 
-  // Alert to show that bookingId is saved and display it
-  alert(`Booking successful! Your Booking ID is: ${res.data.bookingId}\nThe booking ID has been saved in localStorage.`);
+        // Store in localStorage
+        localStorage.setItem("invoicePath", res.data.invoicePath);
+        localStorage.setItem("orderId", res.data.orderId);
+        localStorage.setItem("bookingid", res.data.bookingId); // Store bookingId here
 
-  // Navigate to Thank You page
-  navigate("/payment-success");
+        // Alert to show that bookingId is saved and display it
+        alert(`Booking successful! Your Booking ID is: ${res.data.bookingId}\nThe booking ID has been saved in localStorage.`);
+
+        // Navigate to Thank You page
+        navigate("/payment-success");
       }
     } catch (error) {
       console.error("Booking completion error:", error);
       toast.error(error.response?.data?.message || "Booking completion failed");
-      
+
       if (error.response?.status === 400) {
         navigate("/PaymentFail");
       } else if (error.response?.status === 406) {
@@ -276,12 +276,12 @@ const BookingForm = () => {
             <section className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix">
               <div className="container"></div>
             </section>
-            
-            <section className="shop-area pt-4 pb-5 p-relative bg-dark" style={{ background: "white" }}>
+
+            <section className="shop-area pt-4 pb-5 p-relative lightest-back" style={{ background: "white" }}>
               <div className="container mx-auto p-4">
                 <button
                   type="button"
-                  className="btn btn-primary mb-3 main-booknow back-button"
+                  className="btn light-back shadow-lg text-light mb-3 "
                   onClick={() => navigate("/AddOnscomponent")}
                 >
                   <i className="far fa-arrow-alt-circle-left"></i> Back
@@ -289,7 +289,7 @@ const BookingForm = () => {
 
                 <div className="row">
                   <div className="col-12">
-                    <div className="shadow-lg bg-light-grey text-white p-4 d-flex flex-column gradient-border terms-container">
+                    <div className="shadow-lg bg-white text-black p-4 d-flex flex-column rounded-2 terms-container">
                       <div
                         className="mt-2 flex-grow-1 terms-content"
                         dangerouslySetInnerHTML={{
@@ -317,7 +317,7 @@ const BookingForm = () => {
                           </button>
                         ) : (
                           <button
-                            className="btn btn-outline-success main-booknow"
+                            className="btn darkest-back text-white"
                             onClick={handleSubmit}
                             disabled={!isAgreed || !razorpayLoaded}
                           >
@@ -332,46 +332,46 @@ const BookingForm = () => {
             </section>
             <Footer />
           </main>
-{/* Payment Confirmation Modal */}
-{showPopup && (
-  <div className="modal fade show" style={{ display: 'block', zIndex: 1050 }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div className="modal-dialog" role="document">
-      <div className="modal-content">
-        
-        {/* Modal Header */}
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">Confirm Your Booking</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCancel}>
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+          {/* Payment Confirmation Modal */}
+          {showPopup && (
+            <div className="modal fade show" style={{ display: 'block', zIndex: 1050 }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
 
-        {/* Modal Body */}
-        <div className="modal-body">
-          <p className="confirmation-text">
-            You're about to proceed with the payment. The advance amount will be charged immediately. Are you sure you want to continue?
-          </p>
-          
-          {/* Price Details */}
-          <div className="price-details">
-            <div>
-              <p><strong>Advance Amount:</strong> ₹{sessionStorage.getItem("advancePayment")}</p>
-            </div>
-            <div>
-              <p><strong>Total Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
-            </div>
-          </div>
-        </div>
+                  {/* Modal Header */}
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Confirm Your Booking</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCancel}>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
 
-        {/* Modal Footer */}
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
-          <button type="button" className="btn btn-primary" onClick={handleConfirmPayment}>Confirm Payment</button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+                  {/* Modal Body */}
+                  <div className="modal-body">
+                    <p className="confirmation-text">
+                      You're about to proceed with the payment. The advance amount will be charged immediately. Are you sure you want to continue?
+                    </p>
+
+                    {/* Price Details */}
+                    <div className="price-details">
+                      <div>
+                        <p><strong>Advance Amount:</strong> ₹{sessionStorage.getItem("advancePayment")}</p>
+                      </div>
+                      <div>
+                        <p><strong>Total Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
+                    <button type="button" className="btn light-back text-white" onClick={handleConfirmPayment}>Confirm Payment</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
 
           <ToastContainer />

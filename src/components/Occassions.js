@@ -224,13 +224,13 @@ const Occassions = () => {
               <div className="container"></div>
             </section>
             <section
-              className="shop-area pt-5 pb-5 p-relative bg-dark text-white"
+              className="shop-area pt-5 pb-5 p-relative lightest-back"
               style={{ background: "white" }}
             >
               <div className="container">
                 <button
                   type="button"
-                  className="btn main-booknow"
+                  className="btn light-back shadow-lg text-light"
                   onClick={handleClick}
                 >
                   {" "}
@@ -240,7 +240,7 @@ const Occassions = () => {
                   <div className="row mb-4">
                     {/* Occasions */}
                     {/* <div className="col-md-8 shadow-lg"> */}
-                    <div className="col-md-8 bg-light-grey gradient-border">
+                    <div className="col-md-8 bg-white rounded-2">
                       <h3 className="mt-3">Select Occasion</h3>
                       <div className="row">
                         {Occation.map((ele, ind) => (
@@ -251,14 +251,11 @@ const Occassions = () => {
                           
                           >
                             <div 
+                            className={`${selectedOccasion?._id === ele?._id ? `gradientdark` : `bg-transparent`}`}
                               style={{
                                 cursor: "pointer",
-                                border:"2px solid #E9BE5F",
-                                margin:"1px",
-                                background:
-                                  selectedOccasion?._id === ele?._id
-                                    ? "var(--gold-gradient)"
-                                    : "transparent",
+                                border:"2px solid #fff",
+                                margin:"1px",                                
                                 color:
                                   selectedOccasion?._id === ele?._id
                                     ? "black"
@@ -273,7 +270,7 @@ const Occassions = () => {
                                 src={URLS.Base + ele.image}
                                 alt="occasions images"
                                 // className="rounded-circle img-fluid"
-                                className="img-fluid"
+                                className="img-fluid rounded-circle"
                                 style={{
                                   height: "150px",
                                   width: "150px",
@@ -321,9 +318,9 @@ const Occassions = () => {
                     {/* Booking Summary */}
                     <div className="col-lg-4 col-md-5">
                       <div className="position-sticky" style={{ top: "20px" }}>
-                        <div className="bg-light-grey mb-3">
+                        <div className="bg-white mb-3">
                           <div className="card-body mt-3">
-                            <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded gradient-border">
+                            <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded ">
                               <div>Total:</div>
                               <div>
                                 ₹
@@ -507,11 +504,11 @@ const Occassions = () => {
                         <button
                           type="submit"
                           onClick={() => handleSubmit()}
-                          className="btn btn-success w-100 mt-2 main-booknow"
+                          className="btn btn-success w-100 mt-2 "
                           style={{
-                            // backgroundColor: "#a020f0",
+                            backgroundColor: "#330C5F",
                             boxShadow: "none",
-                            color: "black",
+                            color: "white",
                             border: "none",
                           }}
                         >

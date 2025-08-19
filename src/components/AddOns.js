@@ -229,20 +229,26 @@ const AddOns = () => {
           <Header />
           <main className="main-wrapper">
             <section
-              className="shop-area pt-5 pb-5 p-relative bg-dark text-white"
+              id="parallax"
+              className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix"
+            >
+              <div className="container"></div>
+            </section>
+            <section
+              className="shop-area pt-5 pb-5 p-relative lightest-back"
               style={{ background: "white" }}
             >
               <div className="container">
                 <button
                   type="button"
-                  className="btn main-booknow"
+                  className="btn light-back shadow-lg text-light"
                   onClick={handleClick}
                 >
                   <i className="far fa-arrow-alt-circle-left"></i> Back
                 </button>
                 <div className="container mt-4">
                   <div className="row mb-4">
-                    <div className="col-md-8 bg-light-grey gradient-border">
+                    <div className="col-md-8 bg-white rounded-2">
                       {addOns && addOns.length > 0 ? (
                         addOns.map((data, key) => (
                           <div key={key}>
@@ -264,17 +270,16 @@ const AddOns = () => {
                                       }}
                                     >
                                       <div
-                                        className="d-flex flex-column justify-content-between align-items-center w-100"
-                                        style={{
-                                          padding: "10px",
-                                          border: "2px solid #E9BE5F",
-                                          borderRadius: "10px",
-                                          background: selectedOccasions?.some(
+                                        className={`d-flex flex-column justify-content-between align-items-center w-100 ${selectedOccasions?.some(
                                             (addIds) =>
                                               addIds._id === String(ele._id)
                                           )
-                                            ? "var(--gold-gradient)"
-                                            : "transparent",
+                                            ? "gradientdark"
+                                            : "bg-transparent"}`}
+                                        style={{
+                                          padding: "10px",
+                                          border: "",
+                                          borderRadius: "10px",
                                           color: selectedOccasions?.some(
                                             (addIds) =>
                                               addIds._id === String(ele._id)
@@ -287,7 +292,7 @@ const AddOns = () => {
                                           <img
                                             src={URLS.Base + ele.image}
                                             alt={ele.name}
-                                            className="img-fluid"
+                                            className="img-fluid rounded-circle"
                                             style={{
                                               height: "150px",
                                               width: "150px",
@@ -337,9 +342,9 @@ const AddOns = () => {
 
                     <div className="col-lg-4 col-md-5">
                       <div className="position-sticky" style={{ top: "20px" }}>
-                        <div className="bg-light-grey mb-3">
+                        <div className="bg-white mb-3">
                           <div className="card-body mt-3">
-                            <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded gradient-border">
+                            <div className="d-flex justify-content-between align-items-center shadow-none p-3 mb-2 rounded">
                               <div>Total:</div>
                               <div>₹ {totalAmount.toFixed(2)}</div>
                             </div>
@@ -516,7 +521,7 @@ const AddOns = () => {
                         <button
                           type="submit"
                           onClick={handleSubmit}
-                          className="btn btn-success w-100 mt-2 main-booknow"
+                          className="btn w-100 mt-2 darkest-back text-white"
                           style={{
                             boxShadow: "none",
                             color: "black",

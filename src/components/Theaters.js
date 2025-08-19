@@ -35,6 +35,14 @@ function Theaters() {
     return `${year}-${month}-${day}`;
   };
 
+  const [expandedCards, setExpandedCards] = useState({});
+  const toggleView1 = (cardIndex) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [cardIndex]: !prev[cardIndex], // toggle only this card
+    }));
+  };
+
 
   const [date, setDate] = useState(getTodayDateString());
   const [activeshow, setActiveshow] = useState([]);
@@ -63,6 +71,7 @@ function Theaters() {
 
   // Also update the handleLocationSelect function to pass the current date
   const handleLocationSelect = async (address) => {
+    console.log("Book Now clicked:", address);
     setLocation(address);
     if (address._id) {
       setLocationModalOpen(false);
@@ -91,6 +100,7 @@ function Theaters() {
         "https://api.carnivalcastle.com/v1/carnivalApi/web/getalltheatres/forweb",
         { slotDate: formattedDate }
       );
+      console.log(res.data)
 
       if (res.data && res.data.success) {
         // Filter theaters by matching addressId
@@ -142,7 +152,7 @@ function Theaters() {
           return {
             ...theater,
             availableSlots: processedSlots,
-            availableSlotsCount: processedSlots.filter(s => !s.isDisabled).length
+            // availableSlotsCount: processedSlots.filter(s => !s.isDisabled).length            
           };
         });
 
@@ -166,6 +176,13 @@ function Theaters() {
     }
   };
 
+
+  const handleCarouselSelect = (selectedIndex, theaterIndex) => {
+    setActiveIndices(prev => ({
+      ...prev,
+      [theaterIndex]: selectedIndex
+    }));
+  };
 
 
   const closeComingSoonModal = () => {
@@ -363,7 +380,7 @@ function Theaters() {
     setnintymin(durationInMinutes || 0);
     sessionStorage.setItem("nintymin", durationInMinutes || 0);
     if (durationInMinutes === 90) {
-      setModalPop(true);
+      setModalPop(false);
     }
   };
 
@@ -445,94 +462,131 @@ function Theaters() {
             <div
               className="modal fade show"
               tabIndex="-1"
-              style={{ display: "block", backgroundColor: "rgba(0,0,0,0.7)" }}
+              style={{
+                display: "block",
+                backgroundColor: "white",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 1050
+              }}
               aria-modal="true"
               role="dialog"
             >
+              {/* Back Button - Added at top left */}
+              <button
+                className="btn position-absolute d-flex align-items-center justify-content-center"
+                style={{
+                  top: "16px",
+                  left: "16px",
+                  zIndex: 1060,
+                  borderRadius: "8px",
+                  padding: "6px 12px",
+                  fontSize: "14px",
+                  backgroundColor: "#E9DCFF", // Semi-transparent light background
+                  color: "#000",
+                  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+                  border: "none"
+                }}
+                onClick={() => navigate(-1)}
+              >
+                <i className="fas fa-arrow-left me-2"></i>
+                <span className="d-none d-sm-inline">Back</span>
+              </button>
+              <div className="text-center d-flex justify-content-center align-items-center mt-5">
+                <div>
+                  <h2 className="dark-text">Choose your nearest location</h2>
+                  <p className="light-text"><i>We’ve got the vibe, you bring the party.</i></p>
+                </div>
+              </div>
+
               <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div
-                  className="modal-content p-3 p-md-4 bg-light-grey text-white"
-                  style={{ border: "2px solid white", borderRadius: "12px" }}
+                  className="modal-content p-3 p-md-4 lightdark-back"
+                  style={{ border: "2px solid #E9DCFF", borderRadius: "12px" }}
                 >
-                  <h5 className="text-center mb-3 mb-md-4 fs-5 fs-md-4">Select Your Location</h5>
+                  <h5 className="text-center mb-3 mb-md-4 fs-5 fs-md-4">Our Theatre Locations</h5>
                   <div className="row">
                     {addresses && addresses.length > 0 ? (
                       addresses.map((address, index) => (
-                        <div className="col-12 col-md-6 mb-4" key={index}>
+                        <div className="col-12 col-md-6 mb-4 d-flex" key={index}>
                           <div
-                            className="card h-100 text-white shadow-sm"
+                            className="card text-black shadow-lg gradient135 d-flex flex-column w-100"
                             style={{
-                              backgroundColor: "#2c2c2c",
+                              backgroundColor: "#E9DCFF",
                               borderRadius: "1rem",
                               overflow: "hidden",
-                              border: "2px solid white",
+                              border: "2px solid #E9DCFF",
                             }}
                           >
-                            {address.image ? (<>
-                              <img
-                                src={BaseUrl + address.image}
-                                alt={address.city}
-                                className="img-fluid"
-                                style={{
-                                  width: "100%",
-                                  objectFit: "cover",
-                                  minHeight: "250px",
-                                  maxHeight: "300px",
-                                }}
-                              />
+                            {/* Image Section */}
+                            <div style={{ flexShrink: 0 }}>
+                              {address.image ? (
+                                <>
+                                  <img
+                                    src={BaseUrl + address.image}
+                                    alt={address.city}
+                                    className="img-fluid"
+                                    style={{
+                                      width: "100%",
+                                      objectFit: "cover",
+                                      height: "250px",
+                                    }}
+                                  />
+                                  <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                      `${address.addressLine1}, ${address.addressLine2}`
+                                    )}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      position: "absolute",
+                                      bottom: "130px",
+                                      right: "10px",
+                                      borderRadius: "50%",
+                                      zIndex: 10,
+                                    }}
+                                    title="View on Google Maps"
+                                  >
+                                    <img
+                                      src="https://bnbtplstorageaccount.blob.core.windows.net/googleicons/map (1).svg"
+                                      alt="Google Maps"
+                                      style={{ width: "75px", height: "75px" }}
+                                    />
+                                  </a>
+                                </>
+                              ) : (
+                                <div
+                                  className="d-flex align-items-center justify-content-center"
+                                  style={{
+                                    height: "250px",
+                                    backgroundColor: "#444",
+                                    fontSize: "3rem",
+                                  }}
+                                >
+                                  <i className="bi bi-image text-dark"></i>
+                                </div>
+                              )}
+                            </div>
 
-                              <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                                  `${address.addressLine1}, ${address.addressLine2}`
-                                )}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                  position: "absolute",
-                                  bottom: "130px",
-                                  right: "10px",
-                                  borderRadius: "50%",
-                                  padding: "0px",
-                                  zIndex: 10,
-                                }}
-                                title="View on Google Maps"
-                              >
-                                <img
-                                  src="https://bnbtplstorageaccount.blob.core.windows.net/googleicons/map (1).svg"
-                                  alt="Google Maps"
-                                  style={{ width: "75px", height: "75px", display: "block" }}
-                                />
-                              </a>
-                            </>
-                            ) : (
-                              <div
-                                className="d-flex align-items-center justify-content-center"
-                                style={{
-                                  minHeight: "250px",
-                                  width: "100%",
-                                  backgroundColor: "#444",
-                                  fontSize: "3rem",
-                                }}
-                              >
-                                <i className="bi bi-image text-white"></i>
-                              </div>
-                            )}
-
-                            <div className="card-body d-flex flex-column justify-content-between p-3">
+                            {/* Content Section */}
+                            <div className="card-body d-flex flex-column justify-content-between p-3" style={{ flex: 1 }}>
                               <div>
-                                <h5 className="card-title fw-semibold mb-1 text-white">
-                                  <i className="fa-solid fa-map-location-dot me-2" style={{ color: "green" }}></i>
+                                <h5 className="card-title fw-semibold mb-1 text-dark">
+                                  <i className="fa-solid fa-map-location-dot me-2" style={{ color: "#000" }}></i>
                                   {address.name}, {address.city}
                                 </h5>
                                 {address.landmark && (
-                                  <p className="mb-0 text-white" style={{ fontSize: "0.9rem" }}>
-                                    <i className="fa-solid fa-location-dot me-2" style={{ color: "#ccc" }}></i>
+                                  <p className="mb-0 text-dark" style={{ fontSize: "0.9rem" }}>
+                                    <i className="fa-solid fa-location-dot me-2" style={{ color: "#000" }}></i>
                                     {address.landmark}
                                   </p>
                                 )}
                               </div>
                               <button
-                                className="btn btn-light text-dark w-100 mt-3"
+                                className="btn light-back text-white w-100 mt-3"
                                 onClick={() => handleLocationSelect(address)}
                               >
                                 Book Now
@@ -558,7 +612,7 @@ function Theaters() {
               tabIndex="-1"
               style={{
                 display: "block",
-                backgroundColor: "rgba(0,0,0,0.7)",
+                backgroundColor: "#E9DCFF",
               }}
               aria-modal="true"
               role="dialog"
@@ -568,9 +622,9 @@ function Theaters() {
                 role="document"
               >
                 <div
-                  className="modal-content p-4 bg-light-grey text-white"
+                  className="modal-content p-4 lighter-back"
                   style={{
-                    border: "2px solid white",
+                    border: "2px solid #E9DCFF",
                     borderRadius: "12px",
                   }}
                 >
@@ -596,58 +650,82 @@ function Theaters() {
               <main className="main-wrapper">
                 <section
                   id="parallax"
-                  className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix bg-dark border-gradient border-gradient-gold only-bottom-border"
+                  className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
                 >
                   <div className="container">
                     <div className="row">
                       <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                         <div className="breadcrumb-wrap text-center">
-                          <div className="breadcrumb-title mb-30">
-                            <h1 style={{ color: "white", marginTop: "20px" }}>
-                              Theaters in {location.city}
+                          <div className="breadcrumb-title mb-30 dark-text">
+                            <h1 style={{ marginTop: "20px" }}>
+                              Choose your dream theatre setup in {location.city}
                             </h1>
                           </div>
+                          <p className="light-text"><i>From royal vibes to romantic corners - pick your perfect match!</i></p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </section>
                 <section
-                  className="shop-area pt-5 pb-5 p-relative bg-dark"
+                  className="shop-area pt-5 pb-5 p-relative lightest-back"
                   style={{ background: "#F8EBFF" }}
                 >
                   <div className="container-md">
                     <div className="row mb-3">
                       <div className="col-12">
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                          <div className="text-center">
-                            <label className="mb-2 servicesLink bright-all-links">
-                              Check Slot Availability
-                            </label>
-                            <br />
-                            <input
-                              type="date"
-                              id="buttondisplay"
-                              name="theaterdate"
-                              className={`form-control border-primary ${isDisabled ? "bg-light" : ""
-                                }`}
-                              disabled={isDisabled}
-                              value={date}
-                              min={getTodayDateString()}
-                              onChange={handleDateChange}
-                            />
+                        <div
+                          className="p-3 rounded shadow-sm"
+                          style={{
+                            backgroundColor: "#FAF9F7",
+                            border: "1px solid #E0E0E0",
+                            borderRadius: "8px",
+                            maxWidth: "500px",
+                            margin: "0 auto",
+                          }}
+                        >
+                          <label className="fw-bold text-dark mb-2" style={{ fontSize: "18px" }}>
+                            Select Your Date
+                          </label>
+
+                          <div className="d-flex gap-2">
+                            <div className="input-group">
+                              <span className="input-group-text bg-white border-end-0">
+                                <i className="bi bi-calendar-event"></i>
+                              </span>
+                              <input
+                                type="date"
+                                id="buttondisplay"
+                                name="theaterdate"
+                                className={`form-control border-start-0 ${isDisabled ? "bg-light" : ""}`}
+                                style={{ borderLeft: "none" }}
+                                disabled={isDisabled}
+                                value={date}
+                                min={getTodayDateString()}
+                                onChange={handleDateChange}
+                              />
+                            </div>
+
+
                           </div>
+
+                          <p className="mt-2 mb-0" style={{ fontStyle: "italic", fontSize: "14px", color: "#555" }}>
+                            <i className="fa-solid fa-burger light-text"></i> Food and Beverages can be ordered at theater
+                          </p>
                         </div>
-                        <hr />
                       </div>
+
                     </div>
-                    <hr />
+                    <br />
+
 
                     <div className="container">
                       <div className="row">
                         {theaters && theaters.length > 0 ? (
                           theaters.map((data, i) => {
                             const isBookNowActive = selectedSlot[i] !== undefined;
+                            const colors = ["danger", "success", "warning", "primary"];
+                            const bgColor = colors[i % colors.length];
 
                             return (
                               <div
@@ -655,11 +733,11 @@ function Theaters() {
                                 key={i}
                               >
                                 <div
-                                  className="card rounded bg-light-grey text-white flex-fill"
+                                  className="card rounded gradientright shadow-lg text-dark flex-fill"
                                   style={{
                                     minHeight: "820px",
                                     overflow: "hidden",
-                                    border: "2px solid white",
+                                    //border: "2px solid #C69FF4",
                                   }}
                                 >
                                   <div style={cardHeaderStyle}>
@@ -673,42 +751,96 @@ function Theaters() {
                                         <Carousel
                                           interval={3000}
                                           controls={false}
+                                          activeIndex={activeIndices[i] || 0}
+                                          onSelect={(selectedIndex) => handleCarouselSelect(selectedIndex, i)}
                                         >
                                           {data.image &&
                                             data.image.map((img, idx) => (
                                               <Carousel.Item key={idx}>
-                                                <img
-                                                  src={BaseUrl + img}
-                                                  alt=""
-                                                  className="img-fluid"
+                                                <div style={{ position: "relative" }}>
+                                                  <span
+                                                    className={`badge bg-${bgColor} text-white`}
+                                                    style={{
+                                                      position: "absolute",
+                                                      top: "10px",
+                                                      right: "10px",
+                                                      zIndex: 2,
+                                                      fontSize: "0.75rem",
+                                                    }}
+                                                  >
+                                                    {data.availableSlotsCount > 0
+                                                      ? `${data.availableSlotsCount} slots available`
+                                                      : "0 slots available"}
+                                                  </span>
+                                                  <span
+                                                    style={{
+                                                      position: "absolute",
+                                                      bottom: "10px",
+                                                      left: "10px",
+                                                      zIndex: 2,
+                                                      fontSize: "0.75rem",
+                                                    }}
+                                                  >
+                                                    <a
+                                                      href={data.link}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="btn btn-sm btn-light ms-2 fw-bold"
+                                                    >
+                                                      <i class="fa-brands fa-youtube text-danger fa-xl"></i>
+                                                       Watch Now
+                                                    </a>
+                                                  </span>
+                                                  <img
+                                                    src={BaseUrl + img}
+                                                    alt=""
+                                                    className="img-fluid"
+                                                    style={{
+                                                      height: "250px",
+                                                      borderRadius: "10px",
+                                                      width: "100%",
+                                                      cursor: "pointer",
+                                                      objectFit: "cover",
+                                                    }}
+                                                  />
+                                                </div>
+                                              </Carousel.Item>
+                                            ))}
+
+                                          {data.video && (
+                                            <Carousel.Item>
+                                              <div style={{ position: "relative" }}>
+                                                <span
+                                                  className={`badge bg-${bgColor} text-white`}
+                                                  style={{
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    right: "10px",
+                                                    zIndex: 2,
+                                                    fontSize: "0.75rem",
+                                                  }}
+                                                >
+                                                  {data.availableSlotsCount > 0
+                                                    ? `${data.availableSlotsCount} slots available`
+                                                    : "0 slots available"}
+                                                </span>
+                                                <video
+                                                  src={URLS.Base + data.video}
+                                                  className="img-fluid video-mobile"
                                                   style={{
                                                     height: "250px",
                                                     borderRadius: "10px",
                                                     width: "100%",
                                                     cursor: "pointer",
+                                                    display: "block",
                                                     objectFit: "cover",
                                                   }}
+                                                  autoPlay
+                                                  loop
+                                                  muted
+                                                  preload="auto"
                                                 />
-                                              </Carousel.Item>
-                                            ))}
-                                          {data.video && (
-                                            <Carousel.Item>
-                                              <video
-                                                src={URLS.Base + data.video}
-                                                className="img-fluid video-mobile"
-                                                style={{
-                                                  height: "250px",
-                                                  borderRadius: "10px",
-                                                  width: "100%",
-                                                  cursor: "pointer",
-                                                  display: "block",
-                                                  objectFit: "cover",
-                                                }}
-                                                autoPlay
-                                                loop
-                                                muted
-                                                preload="auto"
-                                              />
+                                              </div>
                                             </Carousel.Item>
                                           )}
                                         </Carousel>
@@ -719,85 +851,104 @@ function Theaters() {
                                   <div className="card-body d-flex flex-column justify-content-between">
                                     <div>
                                       <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <h5
-                                          className="card-title m-0"
-                                          style={{ fontSize: "1.05rem" }}
-                                        >
-                                          {data.name}
-                                        </h5>
-                                        <span
-                                          className="badge bg-danger text-white"
-                                          style={{ fontSize: "0.75rem" }}
-                                        >
-                                          {data.availableSlotsCount > 0
-                                            ? `${data.availableSlotsCount} slots available`
-                                            : "0 slots available"}
-                                        </span>
+                                        <div>
+                                          <h5
+                                            className="card-title m-0 dark-text"
+                                            style={{ fontSize: "1.25rem", fontWeight: "700" }}
+                                          >
+                                            {data.name}
+                                          </h5>
+                                          {location && (
+                                            <p className="fs-7 ">
+                                              <strong>
+                                                <i className="fa-solid fa-location-dot " style={{ color: "#000" }}></i>{location.name}, {location.city}
+                                              </strong>
+                                            </p>
+                                          )}
+                                        </div>
+
+                                        <div>
+                                          <p
+                                            className="card-price mb-2 dark-text"
+
+                                          >
+                                            <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}> ₹ {data.offerPrice}/-{" "}</span>
+                                            <br />
+                                            {/* <span style={{ fontSize: "0.87rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}><del> ₹ {data.price}/-{" "}</del></span> */}
+                                          </p>
+                                        </div>
                                       </div>
-                                      <p
-                                        className="card-price mb-2"
-                                        style={{ fontSize: "0.875rem" }}
-                                      >
-                                        ₹ <del>{data.price}</del> {data.offerPrice}{" "}
-                                        /-
-                                      </p>
+
                                       <div className="row mb-2">
                                         <div className="col-6">
                                           <p
-                                            className="card-details mb-2"
+                                            className="card-details mb-2 light-text"
                                             style={{ fontSize: "0.75rem" }}
                                           >
-                                            <i className="bi bi-currency-exchange"></i>{" "}
-                                            Extra Person Price:{" "}
-                                            {data.extraPersonprice}
+                                            <span className="fw-bold rounded-pill bg-white p-2">Extra Person Price: ₹{data.extraPersonprice}/-</span>{" "}
+
                                           </p>
                                         </div>
                                         <div className="col-6">
                                           <p
-                                            className="card-details mb-2"
+                                            className="card-details mb-2 light-text"
                                             style={{ fontSize: "0.75rem" }}
                                           >
-                                            <i className="bi bi-person"></i> Max
-                                            People: {data.maxPeople}
+
+                                            <span className="fw-bold rounded-pill bg-white p-2"><i className="bi bi-person-fill"></i> Max {data.maxPeople} People </span>
                                           </p>
                                         </div>
                                       </div>
                                       <p
-                                        className="card-details mb-2"
+                                        className="card-details mb-2 light-text"
                                         style={{ fontSize: "0.75rem" }}
                                       >
-                                        <i className="bi bi-tv"></i> Features
-                                        <ul style={{ paddingLeft: "1.5rem" }}>
-                                          {isExpanded
-                                            ? data.features.map(
-                                              (feature, index) => (
-                                                <li key={index}>{feature}</li>
-                                              )
+                                        <span className="fw-bold">
+                                          <i className="bi bi-tv-fill"></i> Features
+                                        </span>
+
+                                        <div className="row mt-1">
+                                          {(expandedCards[i] ? data.features : data.features.slice(0, 4)).map(
+                                            (feature, index) => (
+                                              <div key={index} className="col-6 mb-1 d-flex align-items-start">
+                                                <i
+                                                  className="bi bi-star-fill"
+                                                  style={{
+                                                    fontSize: "0.65rem",
+                                                    color: "#40008C",
+                                                    marginRight: "6px",
+                                                    marginTop: "2px",
+                                                  }}
+                                                ></i>
+                                                <span>{feature}</span>
+                                              </div>
                                             )
-                                            : data.features
-                                              .slice(0, 3)
-                                              .map((feature, index) => (
-                                                <li key={index}>{feature}</li>
-                                              ))}
-                                          <span
-                                            onClick={toggleView}
+                                          )}
+                                        </div>
+
+                                        {data.features.length > 4 && (
+                                          <div
+                                            onClick={() => toggleView1(i)}
                                             style={{
                                               cursor: "pointer",
-                                              color: "white",
+                                              color: "#40008C",
                                               textDecoration: "underline",
                                               fontSize: "0.75rem",
+                                              marginTop: "4px",
                                             }}
                                           >
-                                            {isExpanded ? "View Less" : "View More"}
-                                          </span>
-                                        </ul>
+                                            {expandedCards[i] ? "View Less" : "View More"}
+                                          </div>
+                                        )}
                                       </p>
+
+
                                       <p
-                                        className="card-details mb-2"
+                                        className="card-details mb-2 light-text"
                                         style={{ fontSize: "0.75rem" }}
                                       >
-                                        <i className="bi bi-info-circle"></i>{" "}
-                                        Description:{" "}
+                                        <i className="bi bi-info-circle-fill"></i>{" "}
+                                        <span className="fw-bold">Description:</span>{" "}
                                         {data.description
                                           .split(" ")
                                           .slice(0, 15)
@@ -805,90 +956,90 @@ function Theaters() {
                                         {data.description.split(" ").length > 25 &&
                                           "..."}
                                       </p>
-                                      <p>
-                                        <a
-                                          href={data.link}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="btn btn-sm btn-danger ms-2"
-                                        >
-                                          Watch Now
-                                        </a>
-                                      </p>
                                     </div>
 
-                                    <div>
-                                      <div className="slot-selection mb-3">
-                                        <p
-                                          className="slot-title mb-2"
-                                          style={{ fontSize: "0.875rem" }}
-                                        >
-                                          Choose Your Slot:
-                                        </p>
-                                        <div className="row">
-                                          {data.availableSlots && data.availableSlots.map(
-                                            (slot, index) => {
-                                              const fromTime12 =
-                                                convertTo12HourFormat(
-                                                  slot.fromTime
-                                                );
-                                              const toTime12 =
-                                                convertTo12HourFormat(slot.toTime);
+                                    <div className="slot-selection mb-3">
+                                      <p className="slot-title mb-2 dark-text" style={{ fontSize: "0.875rem" }}>
+                                        <span className="fw-bold">Choose Your Slot:</span>
+                                      </p>
 
-                                              return (
-                                                <div
-                                                  className="col-6 mb-2"
-                                                  key={index}
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          flexWrap: "wrap", // allow wrapping on smaller screens
+                                          gap: "0.5rem",
+                                          justifyContent: "flex-start",
+                                        }}
+                                      >
+                                        {data.availableSlots &&
+                                          data.availableSlots.map((slot, index) => {
+                                            const fromTime12 = convertTo12HourFormat(slot.fromTime);
+                                            const toTime12 = convertTo12HourFormat(slot.toTime);
+                                            const isSelected = selectedSlot[i] === slot;
+
+                                            return (
+                                              <div
+                                                key={index}
+                                                style={{
+                                                  flex: "1 1 100px", // responsive flex: grow, shrink, basis
+                                                  minWidth: "80px",
+                                                  maxWidth: "120px",
+                                                  textAlign: "center",
+                                                }}
+                                              >
+                                                <button
+                                                  className="btn"
+                                                  onClick={(e) => handleSlot(e, slot, i)}
+                                                  style={{
+                                                    width: "100%",
+                                                    backgroundColor: slot.isBooked
+                                                      ? "#757575"
+                                                      : isSelected
+                                                        ? "#A05DF1"
+                                                        : "#fff",
+                                                    border: "1px solid #40008C",
+                                                    color: slot.isBooked
+                                                      ? "white"
+                                                      : isSelected
+                                                        ? "white"
+                                                        : "black",
+                                                    textDecoration: slot.isBooked ? "line-through" : "none",
+                                                    fontSize: "0.8rem",
+                                                    padding: "6px 8px",
+                                                    borderRadius: "10px",
+                                                  }}
+                                                  disabled={slot.isBooked}
+                                                  value={`${fromTime12} / ${toTime12}`}
                                                 >
-                                                  <button
-                                                    className={`btn w-100 ${slot.isBooked
-                                                      ? "btn-secondary"
-                                                      : "btn text-dark"
-                                                      } ${selectedSlot[i] === slot
-                                                        ? "selectedbtns"
-                                                        : "bg-white"
-                                                      }`}
-                                                    onClick={(e) =>
-                                                      handleSlot(e, slot, i)
-                                                    }
-                                                    style={{
-                                                      color: slot.isBooked
-                                                        ? "black"
-                                                        : "",
-                                                      textDecoration: slot.isBooked
-                                                        ? "line-through"
-                                                        : "none",
-                                                      fontSize: "0.8rem",
-                                                      padding: "5px",
-                                                    }}
-                                                    disabled={slot.isBooked}
-                                                    value={`${fromTime12} / ${toTime12}`}
-                                                  >
-                                                    {fromTime12} - {toTime12}
-                                                  </button>
-                                                </div>
-                                              );
-                                            }
-                                          )}
-                                        </div>
+                                                  {fromTime12} - {toTime12}
+                                                </button>
+                                              </div>
+                                            );
+                                          })}
                                       </div>
 
+
+
+                                      {/* Book Now button */}
                                       <div className="col-12 mt-3">
                                         <button
                                           disabled={!isBookNowActive}
                                           onClick={() => handleBasicPlan(data, i)}
-                                          className="btn main-booknow"
+                                          className="btn"
                                           style={{
                                             width: "100%",
-                                            color: "black",
+                                            color: "white",
                                             border: "none",
                                             boxShadow: "none",
+                                            backgroundColor: isBookNowActive ? "#40008C" : "#A88FC7",
                                           }}
                                         >
                                           Book Now
                                         </button>
                                       </div>
                                     </div>
+
+
                                   </div>
                                 </div>
                               </div>
@@ -904,6 +1055,41 @@ function Theaters() {
                   </div>
                 </section>
               </main>
+
+              <section className="p-5 px-2 px-md-4 d-flex justify-content-center lightest-back">
+                <div
+                  className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 p-4 lighter-back shadow-lg"
+                  style={{
+                    borderRadius: '12px'
+                  }}
+                >
+                  {/* Text Section */}
+                  <div>
+                    <h5 className="fw-bold mb-1 text-dark">
+                      Hurry! Slots get booked fast.
+                    </h5>
+                    <p className="fst-italic text-secondary m-0">
+                      Extra charges apply if guests exceed max limit.
+                    </p>
+                  </div>
+
+                  {/* Button Section */}
+                  <div>
+                    <a
+                      href="#"
+                      className="btn text-white fw-semibold"
+                      style={{
+                        backgroundColor: '#a341e0',
+                        padding: '10px 24px',
+                        borderRadius: '12px',
+                        fontSize: '16px',
+                      }}
+                    >
+                      Book Your Experience Now
+                    </a>
+                  </div>
+                </div>
+              </section>
 
               <Modal
                 size="md"
@@ -1048,7 +1234,7 @@ function Theaters() {
                       </div>
                     </div>
                   </div>
-                </Modal.Body>
+                </Modal.Body>border
               </Modal>
 
               <Modal
@@ -1060,18 +1246,18 @@ function Theaters() {
               >
                 <Modal.Header
                   closeButton
-                  className=" gradient-border bg-light-grey"
+                  className="lighter-back"
                 >
                   <Modal.Title
                     id="example-modal-sizes-title-lg gradient-border"
                     style={{ textAlign: "center" }}
                   >
-                    <span className="text-gold-gradient"> Note : </span>
+                    <span className="light-text"> Note : </span>
                   </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="bg-dark gradient-border">
-                  <div className="row justify-content-md-center text-white">
-                    <div className="col-lg-12 mt-40 gradient-border bg-dark">
+                <Modal.Body className="lighter-back ">
+                  <div className="row justify-content-md-center text-dark">
+                    <div className="col-lg-12 mt-40  lighter-back">
                       <h6 className="p-4 text-center">
                         You have selected a slot with 1.5 hours duration and will
                         be charged accordingly. Proceed further if you are okay
@@ -1081,7 +1267,7 @@ function Theaters() {
                         <button
                           onClick={() => handleclose()}
                           type="button"
-                          className="btn course-btn mb-4 text-center btn-outline text-white"
+                          className="btn light-back text-light mb-4 text-center"
                         >
                           okay !
                         </button>
