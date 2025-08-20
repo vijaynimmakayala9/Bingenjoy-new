@@ -65,15 +65,15 @@ function Food() {
           <main className="main-wrapper">
             <section
               id="parallax"
-              className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix bg-dark border-gradient border-gradient-gold only-bottom-border"
+              className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
               style={{ backgroundColor: "#AD3DF0" }}
             >
               <div className="container">
                 <div className="row">
                   <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                     <div className="breadcrumb-wrap text-center">
-                      <div className="breadcrumb-title mb-30">
-                        <h1 style={{ color: "white", marginTop: "20px" }}>
+                      <div className="breadcrumb-title mb-30 dark-text">
+                        <h1 style={{ marginTop: "20px" }}>
                           Food
                         </h1>
                       </div>
@@ -82,12 +82,12 @@ function Food() {
                 </div>
               </div>
             </section>
-            <section className="pb-3 bg-dark">
+            <section className="pb-3 lightest-back">
               <div className="container">
                 <div className="row">
                   <div className="col-6">
                     <div className="section-title mb-4 pt-4">
-                      <h2 className="text-gold-gradient">
+                      <h2 className="light-text">
                         {showVeg ? "Veg & Non-veg" : "All Items"}
                       </h2>
                     </div>

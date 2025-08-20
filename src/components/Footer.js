@@ -5,7 +5,7 @@ import logo from "./images/Bingenjoylogopng.png"; // Update path if needed
 function Footer() {
   return (
     <div>
-      <footer className="footer footersix">
+      <footer className="footer footersix bg-black">
         <div className="footer-top">
           <div className="container-md">
             <div className="row">
