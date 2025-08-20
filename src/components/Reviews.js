@@ -100,7 +100,7 @@ function Gallery() {
             <main class="main-wrapper">
               <section
                 id="parallax"
-                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix bg-dark border-gradient border-gradient-gold only-bottom-border"
+                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
                 // style={{ backgroundImage: "url(img/bgss.jpg)" }}
                 // style={{background: 'linear-gradient(329deg, rgba(191, 63, 249, 1) 0%, rgba(113, 51, 210, 1) 100%)'
                 // }}
@@ -109,8 +109,8 @@ function Gallery() {
                   <div className="row">
                     <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                       <div className="breadcrumb-wrap text-center">
-                        <div className="breadcrumb-title mb-30">
-                          <h1 style={{ color: "white", marginTop: "20px"  }}>Reviews</h1>
+                        <div className="breadcrumb-title mb-30 dark-text">
+                          <h1 style={{ marginTop: "20px"  }}>Reviews</h1>
                         </div>
                         {/* <nav aria-label="breadcrumb">
                           <ol className="breadcrumb">
@@ -132,14 +132,14 @@ function Gallery() {
                   </div>
                 </div>
               </section>
-              <section className="popular-events bg-dark">
+              <section className="popular-events lightest-back">
                   <div className="container-md">
                     <div className="section-wrapper row d-flex align-items-center mb-4">
                       <div className="col-md-6 section-header mb-0">
-                        <h2 className="text-black text-gold-gradient">Google Reviews</h2>
+                        <h2 className="light-text">Google Reviews</h2>
                       </div>
-                      <div className="col-md-6 text-md-end">
-                        <a href="/Reviews" className="view-all">
+                      <div className="col-md-6 text-md-end d-none">
+                        <a href="/Reviews" className="dark-text">
                           View all
                         </a>
                       </div>
@@ -149,7 +149,7 @@ function Gallery() {
                       {Testimonial?.map((data, i) => (
                         <div className="col-md-4 col-sm-6 mb-4" key={i}>
                           <div
-                            className="testimonial-card d-flex flex-column flex-sm-row align-items-start"
+                            className="lightdark-back testimonial-card d-flex flex-column flex-sm-row align-items-start"
                             style={{
                               padding: "20px",
                               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -181,7 +181,7 @@ function Gallery() {
                             >
                               <div
                                 className="testimonial-stars mb-2"
-                                style={{ color: "#28a745" }}
+                                style={{ color: "#ffc107" }}
                               >
                                 {Array.from({ length: 5 }, (_, index) => (
                                   <FaStar
@@ -189,14 +189,14 @@ function Gallery() {
                                     style={{
                                       color:
                                         index < Math.round(data.rating)
-                                          ? "#28a745"
-                                          : "#ddd",
+                                          ? "#ffc107"
+                                          : "#fff",
                                     }}
                                   />
                                 ))}
                               </div>
                               <h5
-                                className="mb-2"
+                                className="mb-2 dark-text"
                                 style={{
                                   fontWeight: "bold",
                                 }}
@@ -207,7 +207,7 @@ function Gallery() {
                                 className="mb-0"
                                 style={{
                                   fontSize: "14px",
-                                  color: "#333",
+                                  color: "#000",
                                 }}
                               >
                                 {data.description}

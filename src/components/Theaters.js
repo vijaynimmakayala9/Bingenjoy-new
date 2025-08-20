@@ -968,7 +968,7 @@ function Theaters() {
                                           display: "flex",
                                           flexWrap: "wrap", // allow wrapping on smaller screens
                                           gap: "0.5rem",
-                                          justifyContent: "flex-start",
+                                          justifyContent: "center",
                                         }}
                                       >
                                         {data.availableSlots &&

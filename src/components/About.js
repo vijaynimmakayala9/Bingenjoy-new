@@ -73,14 +73,14 @@ function About() {
               {/* Top Banner */}
               <section
                 id="parallax"
-                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix bg-dark border-gradient border-gradient-gold only-bottom-border"
+                className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
               >
                 <div className="container">
                   <div className="row">
                     <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                       <div className="breadcrumb-wrap text-center">
-                        <div className="breadcrumb-title mb-30">
-                          <h1 style={{ color: "white", marginTop: "20px" }}>
+                        <div className="breadcrumb-title mb-30 dark-text">
+                          <h1 style={{ marginTop: "20px" }}>
                             About Us
                           </h1>
                         </div>
@@ -91,7 +91,7 @@ function About() {
               </section>
 
               {/* About Section */}
-              <section className="pt-4 pb-4 p-relative bg-dark">
+              <section className="pt-4 pb-4 p-relative lightest-back">
                 <div className="container-md">
                   <div className="row align-items-center">
                     {/* Left Side Image */}
@@ -112,11 +112,11 @@ function About() {
                     {/* Right Side Static Content */}
                     <div className="col-lg-6">
                       <div>
-                        <h3 className="text-white">
+                        <h3 className="light-text">
                           <b>About BingeNJoy</b>
                         </h3>
                       </div>
-                      <p className="text-white pt-3">
+                      <p className="text-dark pt-3">
                         At <strong>BingeNJoy</strong>, we believe that every celebration deserves a personal touch. Our elegantly designed private theatres in Hyderabad offer the perfect blend of comfort and style, featuring plush recliner seating, continental food and beverages, and a curated selection of regular and custom cakes.
                         <br /><br />
                         Enjoy a premium cinema experience with Ultra HD to 4K projections and Dolby 5.1 to 7.1 Atmos surround sound. We go beyond just movie screenings — with professional photography, fog entry for dramatic arrivals, and seamless event management to make every moment special.
@@ -133,12 +133,12 @@ function About() {
               </section>
 
               {/* Features Section */}
-              <section className="blog-wrapper bg-dark" style={{ background: "#F8EBFF" }}>
+              <section className="blog-wrapper lightest-back" style={{ background: "#F8EBFF" }}>
                 <div className="container-md">
                   <div className="row justify-content-center">
                     <div className="col-xl-6 col-lg-8">
                       <div className="section-title text-center mb-5 pt-3">
-                        <h2 className="text-gold-gradient">Our Features</h2>
+                        <h2 className="dark-text">Our Features</h2>
                       </div>
                     </div>
                   </div>
@@ -153,13 +153,13 @@ function About() {
                           </div>
                           <div className="blog-content">
                             <a href="javascript:void(0);" className="post-date">
-                              <span className="btn bg-sunray">
+                              <span className="btn lioght-back text-white">
                                 <a href="/theaters">
                                   <b className="title-name">{data.name}</b>
                                 </a>
                               </span>
                             </a>
-                            <p className="mb-3 text-white">{data.description}</p>
+                            <p className="mb-3 text-dark fw-bold">{data.description}</p>
                           </div>
                         </div>
                       </div>
