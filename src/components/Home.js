@@ -434,51 +434,105 @@ function Home() {
     {
       id: 1,
       title: "Basic Plan",
-      price: "2000",
-      subtitle: "Simple theatre slot, no setup – just celebrate.",
-      features: [
-        "Private Theatre Room",
-        "No Cake / Decor",
-        "Up to 6 Guests"
-      ],
-      buttonText: "Continue with Add-Ons →",
+      price: "2149",
+      subtitle: "Simple theatre slot, no setup",
+      detailedFeatures: {
+        "Theatre Hall": true,
+        "Decoration": true,
+        "Fog Entry (1 Pot)": false,
+        "Candle Path": false,
+        "HBD LED": false,
+        "Name with LED (6)": false,
+        "AGE Number LED": false,
+        "HBD with Rose petals": false,
+        "Photo Clipping (10)": false,
+        "Birthday Sash": false,
+        "Birthday Crown, Spects": false,
+        "Rose Bouquet (12 Roses)": false,
+        "Customisation cake (1 kg)": false,
+        "Photography (30 Mins)": false,
+        "Cold fire entry (6 pieces)": false,
+        "Videography(Edited 1 Min Reel)": false,
+        "Hall fog (4 Pots)": false,
+      },
+      badgeText: "Saved ₹0",
+      buttonText: "Proceed →",
     },
     {
       id: 2,
       title: "Standard Plan",
-      price: "3000",
       subtitle: "Includes cake, lights & decor.",
-      features: [
-        "1/2 kg Cake",
-        "LED Decor + Fog",
-        "Photo Session"
-      ],
-      buttonText: "Switch to Combo Plans →",
+      detailedFeatures: {
+        "Theatre + Decoration": true,
+        "Fog Entry (1 Pot)": true,
+        "Candle Path": true,
+        "HBD LED": true,
+        "Name with LED (6)": true,
+        "AGE Number LED": true,
+        "HBD with Rose Petals": true,
+        "Photo Clipping (10)": true,
+        "Birthday Sash": true,
+        "Birthday Crown, Spects": true,
+        "Rose": true,
+        "Regular Cake - 1/2 kg": true,
+        "Photography (15 Mins)": true,
+        "Cold fire entry (6 pieces)": false,
+        "Videography(Edited 1 Min Reel)": false,
+        "Hall fog (4 Pots)": false,
+      },
+      badgeText: "Save ₹200",
+      buttonText: "Proceed →",
     },
     {
       id: 3,
-      title: "Premium Plan",
-      price: "4000",
-      subtitle: "More guests, more upgrades, more glam.",
-      features: [
-        "Designer Cake",
-        "LED Pathway + Crown",
-        "30-min Photography"
-      ],
-      buttonText: "Switch to Combo Plans →",
+      title: "Special Plan",
+      subtitle: "Our grandest experience, full royal vibes.",
+      detailedFeatures: {
+        "Theatre + Decoration": true,
+        "Fog Entry (1 Pot)": true,
+        "Candle Path": true,
+        "HBD LED": true,
+        "Name with LED (6)": true,
+        "AGE Number LED": true,
+        "HBD with Rose petals": true,
+        "Photo Clipping (10)": true,
+        "Birthday Sash": true,
+        "Birthday Crown, Spects": true,
+        "Rose Bouquet (6 Roses)": true,
+        "Customisation cake (1 kg)": true,
+        "Photography (30 Mins)": true,
+        "Cold fire entry (4 pieces)": true,
+        "Videography(Edited 1 Min Reel)": false,
+        "Hall fog (4 Pots)": false,
+      },
+      badgeText: "Save ₹400",
+      buttonText: "Proceed →",
     },
     {
       id: 4,
-      title: "Special Plan",
-      price: "5000",
-      subtitle: "Our grandest experience, full royal vibes.",
-      features: [
-        "Royal Decor Theme",
-        "Gift Box - Full Lighting",
-        "Cinematic Entry Setup"
-      ],
-      buttonText: "Switch to Combo Plans →",
-    }
+      title: "Premium Plan",
+      subtitle: "More guests, more upgrades, more glam.",
+      detailedFeatures: {
+        "Theatre + Decoration": true,
+        "Fog Entry (1 Pot)": true,
+        "Candle Path": true,
+        "HBD LED": true,
+        "Name with LED (6)": true,
+        "AGE Number LED": true,
+        "HBD with Rose petals": true,
+        "Photo Clipping (10)": true,
+        "Birthday Sash": true,
+        "Birthday Crown, Spects": true,
+        "Rose Bouquet (12 Roses)": true,
+        "Customisation cake (1 kg)": true,
+        "Photography (30 Mins)": true,
+        "Cold fire entry (6 pieces)": true,
+        "Videography(Edited 1 Min Reel)": true,
+        "Hall fog (4 Pots)": true,
+      },
+      badgeText: "Save ₹300",
+      buttonText: "Proceed →",
+    },
   ];
 
 
@@ -841,53 +895,56 @@ function Home() {
                 <section className="py-5 bg-light">
                   <div className="container">
                     <div className="text-center mb-5">
-                      <h2 className="display-5 fw-bold">Our Packages</h2>
-                      <p className="fs-5 text-muted"><i>Choose Wisely</i></p>
+                      <h2 className="display-5 fw-bold dark-text">Our Packages</h2>
+                      <p className="fs-5 light-text">
+                        <i>Choose Wisely</i>
+                      </p>
                     </div>
 
-                    <div className="row gy-4 justify-content-center">
+                    {/* ✅ Grid for md & larger devices */}
+                    <div className="row g-4 justify-content-center d-none d-md-flex">
                       {packages.map((pkg) => (
                         <div className="col-xl-3 col-lg-4 col-md-6 col-sm-10" key={pkg.id}>
-                          <div
-                            className="position-relative card border-0 shadow rounded-4 h-100 text-center gradient45"
-                          >
-                            {/* Ribbon Badge */}
-                            {/* <div
-                              className="position-absolute top-0 start-50 translate-middle"
-                              style={{
-                                backgroundColor: "#a259ff",
-                                color: "#fff",
-                                padding: "4px 16px",
-                                borderRadius: "10px 10px 0 0",
-                                fontSize: "14px",
-                                fontWeight: "bold"
-                              }}
-                            >
-                              {pkg.badgeText}
-                            </div> */}
+                          <div className="card border-0 shadow rounded-4 h-100 text-center gradient45 position-relative">
+                            <div className="card-body d-flex flex-column p-4">
+                              {/* Title + Subtitle */}
+                              <div className="mb-3">
+                                <h4 className="fw-bold mb-1">{pkg.title}</h4>
+                                <p
+                                  className="text-muted mb-0"
+                                  style={{ fontStyle: "italic", fontSize: "14px" }}
+                                >
+                                  {pkg.subtitle}
+                                </p>
+                              </div>
 
-                            <div className="card-body d-flex flex-column p-4 mt-4">
-                              <h4 className="fw-bold mb-2">{pkg.title}</h4>
-                              <p className="text-muted" style={{ fontStyle: "italic", fontSize: "14px" }}>
-                                {pkg.subtitle}
-                              </p>
-
-                              <ul className="list-unstyled text-start my-4 px-3">
-                                {pkg.features.map((feature, index) => (
+                              {/* Features */}
+                              <ul className="list-unstyled text-start flex-grow-1 mb-1 px-2">
+                                {Object.keys(pkg.detailedFeatures).map((feature, index) => (
                                   <li key={index} className="d-flex align-items-center mb-2">
-                                    <span className="me-2 text-success fw-bold">✔</span> {feature}
+                                    <span
+                                      className={`me-2 fw-bold ${pkg.detailedFeatures[feature] ? "text-success" : "text-danger"
+                                        }`}
+                                    >
+                                      {pkg.detailedFeatures[feature] ? "✅" : "❌"}
+                                    </span>
+                                    <span className="text-dark">{feature}</span>
                                   </li>
                                 ))}
                               </ul>
 
-                              <p className="fw-semibold mb-4">Starts from ₹{pkg.price}</p>
+                              {/* Price */}
+                              {pkg?.price ? (
+                                <p className="fw-semibold mb-4 mt-auto">
+                                  Starts from ₹{pkg.price}
+                                </p>
+                              ) : null}
+
+                              {/* Button */}
                               <button
-                                className="btn text-white mt-auto"
-                                style={{
-                                  backgroundColor: "#a259ff",
-                                  borderRadius: "10px"
-                                }}
-                                onClick={()=>navigate('/theaters')}
+                                className="btn text-white w-100"
+                                style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
+                                onClick={() => navigateTheater("/theaters")}
                               >
                                 {pkg.buttonText}
                               </button>
@@ -895,6 +952,111 @@ function Home() {
                           </div>
                         </div>
                       ))}
+                    </div>
+
+                    {/* ✅ Carousel for mobile only */}
+                    <div
+                      id="packagesCarousel"
+                      className="carousel slide d-block d-md-none"
+                      data-bs-ride="carousel"
+                      data-bs-interval="3000"
+                      data-bs-wrap="true"
+                      data-bs-pause="false"
+                    >
+                      {/* Indicators */}
+                      <div className="carousel-indicators">
+                        {packages.map((_, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            data-bs-target="#packagesCarousel"
+                            data-bs-slide-to={index}
+                            className={index === 0 ? "active" : ""}
+                            aria-current={index === 0 ? "true" : "false"}
+                            aria-label={`Slide ${index + 1}`}
+                          ></button>
+                        ))}
+                      </div>
+
+                      {/* Carousel Items */}
+                      <div className="carousel-inner">
+                        {packages.map((pkg, index) => (
+                          <div
+                            className={`carousel-item ${index === 0 ? "active" : ""}`}
+                            key={pkg.id}
+                          >
+                            <div className="d-flex justify-content-center">
+                              <div className="col-10">
+                                <div className="card border-0 shadow rounded-4 text-center gradient45">
+                                  <div className="card-body d-flex flex-column p-4">
+                                    {/* Title + Subtitle */}
+                                    <div className="mb-3">
+                                      <h4 className="fw-bold mb-1">{pkg.title}</h4>
+                                      <p
+                                        className="text-muted mb-0"
+                                        style={{ fontStyle: "italic", fontSize: "14px" }}
+                                      >
+                                        {pkg.subtitle}
+                                      </p>
+                                    </div>
+
+                                    {/* Features */}
+                                    <ul className="list-unstyled text-start flex-grow-1 mb-1 px-2">
+                                      {Object.keys(pkg.detailedFeatures).map((feature, idx) => (
+                                        <li key={idx} className="d-flex align-items-center mb-2">
+                                          <span
+                                            className={`me-2 fw-bold ${pkg.detailedFeatures[feature] ? "text-success" : "text-danger"
+                                              }`}
+                                          >
+                                            {pkg.detailedFeatures[feature] ? "✅" : "❌"}
+                                          </span>
+                                          <span className="text-dark">{feature}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+
+                                    {/* Price */}
+                                    {pkg?.price ? (
+                                      <p className="fw-semibold mb-4 mt-auto">
+                                        Starts from ₹{pkg.price}
+                                      </p>
+                                    ) : null}
+
+                                    {/* Button */}
+                                    <button
+                                      className="btn text-white w-100"
+                                      style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
+                                      onClick={() => navigateTheater("/theaters")}
+                                    >
+                                      {pkg.buttonText}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Controls */}
+                      <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#packagesCarousel"
+                        data-bs-slide="prev"
+                      >
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                      </button>
+                      <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#packagesCarousel"
+                        data-bs-slide="next"
+                      >
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                      </button>
                     </div>
                   </div>
                 </section>
@@ -981,7 +1143,7 @@ function Home() {
                                     <h5 className="card-title" style={{ color: "#681DC0" }}>
                                       {occasion.name}
                                     </h5>
-                                    <p className="card-text fw-semibold mb-1 text-warning">₹{occasion.price}</p>
+                                    
                                     <p className="card-text small">{occasion.description}</p>
                                   </div>
                                 </div>
