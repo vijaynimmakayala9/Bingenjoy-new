@@ -134,7 +134,9 @@ const BookingForm = () => {
             },
           },
         };
-
+         console.log("tttttttttttttttttttttttt", payload)
+        console.log("sssssssssssssssssssssssssssss", payload)
+        console.log("fffffffffffffffffffffffffffffffffff", options)
         const rzp1 = new window.Razorpay(options);
         rzp1.open();
       } else {

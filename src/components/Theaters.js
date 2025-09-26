@@ -788,7 +788,7 @@ function Theaters() {
                                                       className="btn btn-sm btn-light ms-2 fw-bold"
                                                     >
                                                       <i class="fa-brands fa-youtube text-danger fa-xl"></i>
-                                                       Watch Now
+                                                      Watch Now
                                                     </a>
                                                   </span>
                                                   <img

@@ -165,6 +165,7 @@ const AddOns = () => {
             JSON.stringify(selectedOccasions)
           );
           sessionStorage.setItem("addons", totalPrice.toString());
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", bodyData)
           navigate("/BookingSummary");
         } else if (res.status === 403) {
           toast.error(

@@ -373,6 +373,7 @@ const CakesComponent = () => {
     sessionStorage.setItem("cartCakes", JSON.stringify(selectedCakes))
     sessionStorage.setItem("cartcakeslength", JSON.stringify(selectedWeights[selectedCakes.map((data) => (data))._id]))
     sessionStorage.setItem("cakeprice", totalPrice)
+     console.log("dddddddddddddddddddddddddd:", selectedCakes, totalPrice);
     navigate("/AddOnscomponent");
 
     // const bodyData = {

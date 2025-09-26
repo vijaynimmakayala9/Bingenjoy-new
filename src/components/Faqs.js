@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 
 function Enquiry() {
   const [Faqs, setFaqs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch FAQ data
   useEffect(() => {

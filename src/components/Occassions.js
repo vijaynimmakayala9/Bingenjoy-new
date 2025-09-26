@@ -167,6 +167,7 @@ const Occassions = () => {
               toast.error("Please fill out the text field!");
               return;
             }
+             console.log("dddddddddddddddddddddddddd:", dataArray);
             navigate("/CakesComponent");
           } else if (res.status === 403) {
             toast.error(

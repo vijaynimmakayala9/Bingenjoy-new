@@ -160,6 +160,8 @@ const Basicplan = () => {
 
         GetUniqueId();
 
+        console.log("dddddddddddddddddddddddddd:", dataArray);
+
         if (couponData.couponCode === "FLAT700COMBO") {
           navigateOccassions("/ComboOccassions");
         } else {
