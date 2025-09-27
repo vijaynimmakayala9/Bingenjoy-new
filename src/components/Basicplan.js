@@ -162,11 +162,11 @@ const Basicplan = () => {
 
         console.log("dddddddddddddddddddddddddd:", dataArray);
 
-        if (couponData.couponCode === "FLAT700COMBO") {
-          navigateOccassions("/ComboOccassions");
-        } else {
-          navigateOccassions("/Occassions");
-        }
+        sessionStorage.setItem("userData", JSON.stringify(dataArray));
+
+
+        navigateOccassions("/ComboOccassions");
+
       })
       .catch((error) => {
         console.error("API error:", error);
@@ -453,7 +453,7 @@ const Basicplan = () => {
 
                         <div className="row mb-3">
                           <div className="col-md-12 mt-3 mb-5">
-                            <label htmlFor="discountCoupon" className="form-label fw-semibold">
+                            {/* <label htmlFor="discountCoupon" className="form-label fw-semibold">
                               <i className="bi bi-ticket-perforated-fill me-2"></i>
                               Select Plan <span className="text-danger">*</span>
                             </label>
@@ -495,7 +495,7 @@ const Basicplan = () => {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="input-group mt-4">
                               <button
                                 className="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center"
@@ -506,7 +506,7 @@ const Basicplan = () => {
                                   fontWeight: "600",
                                 }}
                                 type="submit"
-                                disabled={isCouponApplied || !couponData.couponCode}
+                                // disabled={isCouponApplied || !couponData.couponCode}
                               >
                                 Proceed
                               </button>

@@ -764,6 +764,13 @@ function Home() {
   const [PopUp, setPopUp] = useState({});
 
   useEffect(() => {
+  if (lgShow) {
+    window.scrollTo(0, 0);
+  }
+}, [lgShow]);
+
+
+  useEffect(() => {
     // First check if popup should be shown at all
     const hasSeenPopup = localStorage.getItem('hasSeenPopup');
 

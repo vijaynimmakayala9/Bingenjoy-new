@@ -224,6 +224,68 @@ const ComboPlans = () => {
         }
       );
   };
+  const GetUniqueId = () => {
+    axios.post(URLS.GetUnicId).then((res) => {
+      if (res.status === 200) {
+        console.log(res.data);
+      }
+    });
+  };
+
+  const handleBasicPlanSubmit = (e) => {
+    e.preventDefault();
+
+    const data = JSON.parse(sessionStorage.getItem("userData"));
+
+
+    const dataArray = {
+      userName: data.userName,
+      userEmail: data.userEmail,
+      userPhone: data.userPhone,
+      noOfPersons: data.noOfPersons,
+      decoration: data.decoration,
+      subTotal: sessionStorage.getItem("subtotal"),
+      theatreId: sessionStorage.getItem("theaterId"),
+      time: sessionStorage.getItem("slot"),
+      date: sessionStorage.getItem("date"),
+      theaterName: sessionStorage.getItem("theaterName"),
+      type: sessionStorage.getItem("planType"),
+    };
+
+    
+
+    console.log("Payload sent to API:", dataArray);
+
+    const token = sessionStorage.getItem("token");
+
+    axios
+      .post(
+        "https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/addbooking",
+        dataArray,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        console.log("Response from API:", res.data);
+        sessionStorage.setItem("bookingid", res.data.bookingId);
+        sessionStorage.setItem("userDetails", JSON.stringify(data));
+        sessionStorage.setItem("countPeople", data.noOfPersons);
+        sessionStorage.setItem("adonsJSON", JSON.stringify([]));
+        sessionStorage.setItem("data", JSON.stringify(data));
+
+        GetUniqueId();
+
+        console.log("dddddddddddddddddddddddddd:", dataArray);
+
+
+        navigate("/Occassions");
+
+      })
+      .catch((error) => {
+        console.error("API error:", error);
+      });
+  };
 
   const advanceAmount1 =
     totalAmountOption.amountOption === "partialpayment"
@@ -298,6 +360,163 @@ const ComboPlans = () => {
                           <h2 className="mb-4 text-center dark-text">Select Package Type</h2>
                           <p className="text-center mb-5"><i>Choose Your Celebration Package</i></p>
                           <div className="row justify-content-center">
+                            {/* Basic Plan Card - Static */}
+                            <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <div className="card rounded-5 gradientdark h-100 plan-card">
+                                <div className="card-body d-flex flex-column text-center">
+                                  {/* Plan Name */}
+                                  <h2 className="fw-bold">Basic Plan</h2>
+                                  <p>Simple theatre slot, no setup</p>
+
+                                  {/* Prices */}
+                                  <div>
+                                    <p className="mb-1">
+                                      <del>₹2149</del>
+                                      <span style={{ color: "green", marginLeft: "5px", fontWeight: "500" }}>
+                                        ₹0 Off
+                                      </span>
+                                    </p>
+                                    <h3 className="fw-bold">₹2149</h3>
+                                    <small className="text-muted">All-Inclusive package</small>
+                                  </div>
+
+                                  {/* Button */}
+                                  <button
+                                    className="btn text-white light-back mt-3"
+                                    onClick={handleBasicPlanSubmit}
+                                    style={{
+                                      border: "none",
+                                      fontWeight: "500",
+                                    }}
+                                  >
+                                    Proceed →
+                                  </button>
+
+                                  {/* Descriptions */}
+                                  <p className="mt-3" style={{ fontSize: "0.9rem" }}>
+                                    Perfect for small birthday parties with essential entertainment and basic decorations.
+                                  </p>
+                                  <p style={{ fontSize: "0.85rem" }}>
+                                    <span className="fw-bold">Pros & Cons:</span> Great value for intimate celebrations.
+                                    Limited customisation options but covers all party essentials.
+                                  </p>
+
+                                  {/* Features */}
+                                  <h6 className="fw-bold mt-3">What's Included</h6>
+                                  <ul className="list-unstyled text-start mx-auto" style={{ maxWidth: "250px" }}>
+                                    {/* Included Features */}
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z" />
+                                        <path fill="#fff" d="M6.173 10.927a.5.5 0 0 1-.707 0l-2.146-2.147a.5.5 0 1 1 .707-.707L6.5 9.793l5.146-5.147a.5.5 0 0 1 .707.708l-5.854 5.854z" />
+                                      </svg>
+                                      <span>Theatre Hall</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0z" />
+                                        <path fill="#fff" d="M6.173 10.927a.5.5 0 0 1-.707 0l-2.146-2.147a.5.5 0 1 1 .707-.707L6.5 9.793l5.146-5.147a.5.5 0 0 1 .707.708l-5.854 5.854z" />
+                                      </svg>
+                                      <span>Decoration</span>
+                                    </li>
+
+                                    {/* Not Included Features */}
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Fog Entry (1 Pot)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Candle Path</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>HBD LED</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Name with LED (6)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>AGE Number LED</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>HBD with Rose petals</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Photo Clipping (10)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Birthday Sash</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Birthday Crown, Spects</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Rose Bouquet (12 Roses)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Customisation cake (1 kg)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Photography (30 Mins)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Cold fire entry (6 pieces)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Videography(Edited 1 Min Reel)</span>
+                                    </li>
+                                    <li className="d-flex align-items-center mb-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" viewBox="0 0 16 16" style={{ marginRight: "8px" }}>
+                                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.646 4.646a.5.5 0 0 1 .708.708L8.707 9l3.647 3.646a.5.5 0 0 1-.708.708L8 9.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 9 3.646 5.354a.5.5 0 1 1 .708-.708L8 8.293l3.646-3.647z" />
+                                      </svg>
+                                      <span>Hall fog (4 Pots)</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Existing Plans */}
                             {plans.map((item, index) => (
                               <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4" key={index}>
                                 <div
@@ -312,9 +531,7 @@ const ComboPlans = () => {
                                     {/* Prices */}
                                     <div>
                                       <p className="mb-1">
-                                        <del>
-                                          ₹{item.price}
-                                        </del>
+                                        <del>₹{item.price}</del>
                                         <span style={{ color: "green", marginLeft: "5px", fontWeight: "500" }}>
                                           ₹{item.price - item.offerPrice} Off
                                         </span>
@@ -369,7 +586,6 @@ const ComboPlans = () => {
                                       ))}
                                     </ul>
                                   </div>
-
                                 </div>
                               </div>
                             ))}

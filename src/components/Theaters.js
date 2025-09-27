@@ -355,6 +355,25 @@ function Theaters() {
     return `${hours12}:${minutes.padStart(2, "0")} ${period}`;
   };
 
+  const calculateDuration = (fromTime, toTime) => {
+    const [fromH, fromM] = fromTime.split(":").map(Number);
+    const [toH, toM] = toTime.split(":").map(Number);
+
+    let start = fromH * 60 + fromM;
+    let end = toH * 60 + toM;
+
+    // Handle overnight slots (e.g., 22:00 → 00:30)
+    if (end <= start) {
+      end += 24 * 60;
+    }
+
+    const diffMinutes = end - start;
+    const hours = Math.floor(diffMinutes / 60);
+    const minutes = diffMinutes % 60;
+
+    return `${hours}:${minutes === 0 ? "00" : minutes} hr`;
+  };
+
   const handleSlot = (e, data, index) => {
     e.preventDefault();
 
@@ -490,7 +509,7 @@ function Theaters() {
                   boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
                   border: "none"
                 }}
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/')}
               >
                 <i className="fas fa-arrow-left me-2"></i>
                 <span className="d-none d-sm-inline">Back</span>
@@ -787,7 +806,7 @@ function Theaters() {
                                                       rel="noopener noreferrer"
                                                       className="btn btn-sm btn-light ms-2 fw-bold"
                                                     >
-                                                      <i class="fa-brands fa-youtube text-danger fa-xl"></i>
+                                                      <i className="fa-brands fa-youtube text-danger fa-xl"></i>
                                                       Watch Now
                                                     </a>
                                                   </span>
@@ -868,14 +887,32 @@ function Theaters() {
                                         </div>
 
                                         <div>
-                                          <p
-                                            className="card-price mb-2 dark-text"
+                                          {selectedSlot[i] ? (
+                                            <div>
+                                              <p
+                                                className="card-price mb-2 dark-text"
 
-                                          >
-                                            <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}> ₹ {data.offerPrice}/-{" "}</span>
-                                            <br />
-                                            {/* <span style={{ fontSize: "0.87rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}><del> ₹ {data.price}/-{" "}</del></span> */}
-                                          </p>
+                                              >
+                                                <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}>
+                                                  ₹{" "}
+                                                  {selectedSlot[i].duration === "1:30 hr"
+                                                    ? data.oneandhalfslotPrice
+                                                    : selectedSlot[i].offerPrice ?? data.offerPrice}
+                                                  /-{" "}
+                                                </span>
+                                                <br />
+                                                {/* <span style={{ fontSize: "0.87rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}><del> ₹ {data.price}/-{" "}</del></span> */}
+                                              </p>
+                                            </div>
+                                          ) : (
+                                            // <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}> ₹ {data.offerPrice}/-{" "}</span>
+                                            <div
+                                              className="my-3"
+                                              style={{ fontSize: "0.8rem", color: "#666" }}
+                                            >
+                                              Select a slot<br />to check price
+                                            </div>
+                                          )}
                                         </div>
                                       </div>
 
@@ -958,67 +995,145 @@ function Theaters() {
                                       </p>
                                     </div>
 
-                                    <div className="slot-selection mb-3">
-                                      <p className="slot-title mb-2 dark-text" style={{ fontSize: "0.875rem" }}>
-                                        <span className="fw-bold">Choose Your Slot:</span>
-                                      </p>
+                                    <div>
+                                      <div className="slot-selection mb-3">
+                                        <p
+                                          className="slot-title mb-2 dark-text"
+                                          style={{ fontSize: "0.9rem", fontWeight: "600" }}
+                                        >
+                                          Select Time Slot
+                                        </p>
 
-                                      <div
-                                        style={{
-                                          display: "flex",
-                                          flexWrap: "wrap", // allow wrapping on smaller screens
-                                          gap: "0.5rem",
-                                          justifyContent: "center",
-                                        }}
-                                      >
-                                        {data.availableSlots &&
-                                          data.availableSlots.map((slot, index) => {
-                                            const fromTime12 = convertTo12HourFormat(slot.fromTime);
-                                            const toTime12 = convertTo12HourFormat(slot.toTime);
-                                            const isSelected = selectedSlot[i] === slot;
+                                        {/* Horizontal Scrollable Row */}
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            gap: "0.6rem",
+                                            overflowX: "auto",
+                                            paddingBottom: "6px",
+                                          }}
+                                        >
+                                          {data.availableSlots &&
+                                            data.availableSlots.map((slot, index) => {
+                                              const fromTime12 = convertTo12HourFormat(slot.fromTime);
+                                              const toTime12 = convertTo12HourFormat(slot.toTime);
 
-                                            return (
-                                              <div
-                                                key={index}
-                                                style={{
-                                                  flex: "1 1 100px", // responsive flex: grow, shrink, basis
-                                                  minWidth: "80px",
-                                                  maxWidth: "120px",
-                                                  textAlign: "center",
-                                                }}
-                                              >
-                                                <button
-                                                  className="btn"
-                                                  onClick={(e) => handleSlot(e, slot, i)}
+                                              const duration = calculateDuration(slot.fromTime, slot.toTime);
+
+                                              const isSelected =
+                                                selectedSlot[i] && selectedSlot[i]._id === slot._id;
+
+                                              let discount = null;
+                                              if (
+                                                duration === "1:30 hr" &&
+                                                data.offerPrice &&
+                                                data.oneandhalfslotPrice
+                                              ) {
+                                                discount = data.offerPrice - data.oneandhalfslotPrice;
+                                              }
+
+                                              return (
+                                                <div
+                                                  key={index}
                                                   style={{
-                                                    width: "100%",
-                                                    backgroundColor: slot.isBooked
-                                                      ? "#757575"
-                                                      : isSelected
-                                                        ? "#A05DF1"
-                                                        : "#fff",
-                                                    border: "1px solid #40008C",
-                                                    color: slot.isBooked
-                                                      ? "white"
-                                                      : isSelected
-                                                        ? "white"
-                                                        : "black",
-                                                    textDecoration: slot.isBooked ? "line-through" : "none",
-                                                    fontSize: "0.8rem",
-                                                    padding: "6px 8px",
-                                                    borderRadius: "10px",
+                                                    flex: "0 0 auto",
+                                                    textAlign: "center",
                                                   }}
-                                                  disabled={slot.isBooked}
-                                                  value={`${fromTime12} / ${toTime12}`}
                                                 >
-                                                  {fromTime12} - {toTime12}
-                                                </button>
-                                              </div>
-                                            );
-                                          })}
+                                                  <button
+                                                    className="btn"
+                                                    onClick={(e) => handleSlot(e, { ...slot, duration }, i)}
+                                                    style={{
+                                                      minWidth: "50px",      // smaller card width
+                                                      height: "60px",        // fixed height to make square-ish
+                                                      padding: "0px 0px",
+                                                      fontSize: "0.7rem",    // smaller text
+                                                      fontWeight: "500",
+                                                      lineHeight: "1.2",
+                                                      borderRadius: "8px",
+                                                      border: isSelected ? "2px solid #40008C" : "1px solid #ccc",
+                                                      backgroundColor: slot.isBooked
+                                                        ? "#f1f1f1"
+                                                        : isSelected
+                                                          ? "#40008C"
+                                                          : "#fff",
+                                                      color: slot.isBooked
+                                                        ? "#888"
+                                                        : isSelected
+                                                          ? "#fff"
+                                                          : "#000",
+                                                      textDecoration: slot.isBooked ? "line-through" : "none",
+                                                      cursor: slot.isBooked ? "not-allowed" : "pointer",
+                                                      display: "flex",
+                                                      flexDirection: "column", // stack vertically
+                                                      justifyContent: "center",
+                                                      alignItems: "center",
+                                                    }}
+                                                    disabled={slot.isBooked}
+                                                  >
+                                                    <span>{fromTime12}</span>-
+
+                                                    <span>{toTime12}</span>
+                                                  </button>
+
+                                                  {/* Discount Below */}
+                                                  {discount !== null && !slot.isBooked && (
+                                                    <div
+                                                      style={{
+                                                        fontSize: "0.65rem", // smaller discount text
+                                                        color: "#28a745",
+                                                        marginTop: "4px",
+                                                        fontWeight: "600",
+                                                      }}
+                                                    >
+                                                      Rs {discount} less
+                                                    </div>
+                                                  )}
+                                                </div>
+
+                                              );
+                                            })}
+                                        </div>
                                       </div>
 
+                                      {/* Price Section */}
+                                      {selectedSlot[i] ? (
+                                        <div className="mt-3">
+                                          <div
+                                            style={{
+                                              fontSize: "1.2rem",
+                                              fontWeight: "700",
+                                              color: "#000",
+                                            }}
+                                          >
+                                            ₹
+                                            {selectedSlot[i].duration === "1:30 hr"
+                                              ? data.oneandhalfslotPrice
+                                              : selectedSlot[i].offerPrice ?? data.offerPrice}
+                                            <span style={{ fontSize: "0.85rem", fontWeight: "500" }}>
+                                              {" "}
+                                              for up to {data.maxPeople} people
+                                            </span>
+                                          </div>
 
+                                          <div
+                                            style={{
+                                              fontSize: "0.8rem",
+                                              color: "#666",
+                                              marginTop: "2px",
+                                            }}
+                                          >
+                                            Max {data.maxPeople} people allowed
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          className="mt-3"
+                                          style={{ fontSize: "0.8rem", color: "#666" }}
+                                        >
+                                          Select a slot to check price
+                                        </div>
+                                      )}
 
                                       {/* Book Now button */}
                                       <div className="col-12 mt-3">
@@ -1030,7 +1145,9 @@ function Theaters() {
                                             width: "100%",
                                             color: "white",
                                             border: "none",
-                                            boxShadow: "none",
+                                            fontWeight: "600",
+                                            borderRadius: "8px",
+                                            padding: "10px",
                                             backgroundColor: isBookNowActive ? "#40008C" : "#A88FC7",
                                           }}
                                         >

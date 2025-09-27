@@ -82,3 +82,9 @@ html, body {
 .header-nav {
   width: 100%;
 }
+
+.modal-open {
+  overflow: hidden !important;
+  padding-right: 0 !important; /* Prevent layout shift */
+}
+
