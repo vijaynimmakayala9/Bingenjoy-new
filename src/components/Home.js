@@ -33,6 +33,7 @@ import basicPackageImg from "./images/cake 4.jpg";
 import comboPackageImg from "./images/cake 4.jpg";
 
 import { Carousel, Card, Container, Row, Col, Button } from "react-bootstrap";
+import TheaterDetails from "../pages/TheaterDetails";
 
 function Home() {
 
@@ -764,10 +765,10 @@ function Home() {
   const [PopUp, setPopUp] = useState({});
 
   useEffect(() => {
-  if (lgShow) {
-    window.scrollTo(0, 0);
-  }
-}, [lgShow]);
+    if (lgShow) {
+      window.scrollTo(0, 0);
+    }
+  }, [lgShow]);
 
 
   useEffect(() => {
@@ -894,10 +895,147 @@ function Home() {
                             </div>
                           </div>
                         </section>
+
+                        {/* Floating Cards Section */}
+                        <div
+                          className="container position-relative mb-5"
+                          style={{ marginTop: "-80px", zIndex: 3 }}
+                        >
+                          <div className="row g-4 justify-content-center">
+                            {/* Movie Night */}
+                            <div className="col-md-4">
+                              <div className="card shadow border-0 h-100 p-3 card123">
+                                <div className="d-flex align-items-center mb-2">
+                                  <i className="fas fa-film text-purple me-2 fs-4"></i>
+                                  <h5 className="mb-0 text-purple">Movie Night</h5>
+                                </div>
+                                <p className="text-muted small mt-2">
+                                  Enjoy a private cinema experience with Dolby Atmos sound and
+                                  4K visuals. Perfect for couples, friends, or family movie marathons.
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Corporate Events */}
+                            <div className="col-md-4">
+                              <div className="card shadow border-0 h-100 p-3 card123">
+                                <div className="d-flex align-items-center mb-2">
+                                  <i className="fas fa-briefcase text-purple me-2 fs-4"></i>
+                                  <h5 className="mb-0 text-purple">Corporate Events</h5>
+                                </div>
+                                <p className="text-muted small mt-2">
+                                  Host business meetings, product launches, or team gatherings
+                                  in a unique private theatre setting that leaves a lasting impression.
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Special Celebrations */}
+                            <div className="col-md-4">
+                              <div className="card shadow border-0 h-100 p-3 card123">
+                                <div className="d-flex align-items-center mb-2">
+                                  <i className="fas fa-star text-purple me-2 fs-4"></i>
+                                  <h5 className="mb-0 text-purple">Special Celebrations</h5>
+                                </div>
+                                <p className="text-muted small mt-2">
+                                  From anniversaries to surprise parties, make your special moments
+                                  unforgettable with a luxurious private theatre experience.
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Hover CSS */}
+                            <style>{`
+                                    .card123 {
+                                      border-radius: 12px;
+                                      transition: all 0.3s ease;
+                                      cursor: pointer;
+                                    }
+
+                                    .card123:hover {
+                                      transform: translateY(-10px) scale(1.03);
+                                      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+                                      background: linear-gradient(135deg, #7b2cbf, #9d4dff);
+                                      color: #fff;
+                                    }
+
+                                    .card123:hover h5,
+                                    .card123:hover p,
+                                    .card123:hover i {
+                                      color: #fff !important;
+                                    }
+
+                                    .card123 i {
+                                      transition: transform 0.3s ease, color 0.3s ease;
+                                    }
+
+                                    .card123:hover i {
+                                      transform: rotate(10deg) scale(1.2);
+                                    }
+                                  `}</style>
+                          </div>
+                        </div>
+
+
+
                       </div>
                     ))}
                   </Slider>
                 </div>
+
+                <section className="pt-5 bg-white" >
+                  <div className="container-fluid text-center pt-2 gradientright">
+                    <h2 className="fw-bold mb-5 dark-text">Our Branches</h2>
+
+                    <div className="row justify-content-center">
+                      {addresses.map((addr, idx) => (
+                        <div className="col-md-6 col-lg-5 mb-4" key={idx}>
+                          <div
+                            className="p-4 shadow-lg h-100"
+                            style={{
+                              backgroundColor: "#fff",
+                              borderRadius: "2rem",
+                              transition: "0.3s",
+                            }}
+                          >
+                            <h4 className="fw-bold text-center mb-3" style={{ color: "#5b179b" }}>
+                              {addr.name}
+                            </h4>
+                            <p
+                              className="text-muted mb-3 text-center"
+                              style={{ fontStyle: "italic", fontSize: "0.95rem" }}
+                            >
+                              {addr.addressLine1}, {addr.addressLine2}
+                            </p>
+
+                            <div className="text-center">
+                              <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                  `${addr.addressLine1}, ${addr.addressLine2}`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-decoration-none fw-semibold"
+                                style={{ color: "#6d28d9" }}
+                              >
+                                <i className="bi bi-geo-alt-fill me-2 light-text fs-xl"></i>See on map
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Extra Styles */}
+                  <style jsx>{`
+        .text-purple {
+          color: #5b179b;
+        }
+      `}</style>
+                </section>
+
+                <TheaterDetails/>
 
                 <section className="py-5 bg-light">
                   <div className="container">
@@ -1150,7 +1288,7 @@ function Home() {
                                     <h5 className="card-title" style={{ color: "#681DC0" }}>
                                       {occasion.name}
                                     </h5>
-                                    
+
                                     <p className="card-text small">{occasion.description}</p>
                                   </div>
                                 </div>
@@ -1724,57 +1862,7 @@ function Home() {
                 </section>
 
 
-                <section className="pt-5 bg-white" >
-                  <div className="container-fluid text-center pt-2" style={{ backgroundColor: "#e7d2f3", borderRadius: "2rem 2rem 0 0" }}>
-                    <h2 className="fw-bold mb-5 dark-text">Our Branches</h2>
 
-                    <div className="row justify-content-center">
-                      {addresses.map((addr, idx) => (
-                        <div className="col-md-6 col-lg-5 mb-4" key={idx}>
-                          <div
-                            className="p-4 shadow-sm h-100"
-                            style={{
-                              backgroundColor: "#f5eafc",
-                              borderRadius: "2rem",
-                              transition: "0.3s",
-                            }}
-                          >
-                            <h4 className="fw-bold text-center mb-3" style={{ color: "#5b179b" }}>
-                              {addr.name}
-                            </h4>
-                            <p
-                              className="text-muted mb-3 text-center"
-                              style={{ fontStyle: "italic", fontSize: "0.95rem" }}
-                            >
-                              {addr.addressLine1}, {addr.addressLine2}
-                            </p>
-
-                            <div className="text-center">
-                              <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                                  `${addr.addressLine1}, ${addr.addressLine2}`
-                                )}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-decoration-none fw-semibold"
-                                style={{ color: "#6d28d9" }}
-                              >
-                                <i className="bi bi-geo-alt-fill me-2 light-text"></i>See on map
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Extra Styles */}
-                  <style jsx>{`
-        .text-purple {
-          color: #5b179b;
-        }
-      `}</style>
-                </section>
 
 
                 {/* ENQUIRY */}
@@ -1921,7 +2009,7 @@ function Home() {
                 </section> */}
 
 
-              {/*  Your modal component */}
+                {/*  Your modal component */}
                 <Modal
                   size="md"
                   show={lgShow}

@@ -19,6 +19,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Helmet } from "react-helmet";
 import { Carousel } from 'react-bootstrap';
+import { FaBirthdayCake, FaCar, FaParking, FaPhone } from "react-icons/fa";
 
 function Theaters() {
   const [theaters, setTheaters] = useState([]);
@@ -483,7 +484,7 @@ function Theaters() {
               tabIndex="-1"
               style={{
                 display: "block",
-                backgroundColor: "white",
+                backgroundColor: "#9D4DFF",
                 position: "fixed",
                 top: 0,
                 left: 0,
@@ -504,7 +505,7 @@ function Theaters() {
                   borderRadius: "8px",
                   padding: "6px 12px",
                   fontSize: "14px",
-                  backgroundColor: "#E9DCFF", // Semi-transparent light background
+                  backgroundColor: "#C69FF4", // Semi-transparent light background
                   color: "#000",
                   boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
                   border: "none"
@@ -512,27 +513,27 @@ function Theaters() {
                 onClick={() => navigate('/')}
               >
                 <i className="fas fa-arrow-left me-2"></i>
-                <span className="d-none d-sm-inline">Back</span>
+                <span className="d-none d-sm-inline fw-bold">Back</span>
               </button>
               <div className="text-center d-flex justify-content-center align-items-center mt-5">
                 <div>
-                  <h2 className="dark-text">Choose your nearest location</h2>
-                  <p className="light-text"><i>We’ve got the vibe, you bring the party.</i></p>
+                  <h2 className="text-white">Choose your nearest location</h2>
+                  <p className="text-white"><i>We’ve got the vibe, you bring the party.</i></p>
                 </div>
               </div>
 
-              <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div
                   className="modal-content p-3 p-md-4 lightdark-back"
                   style={{ border: "2px solid #E9DCFF", borderRadius: "12px" }}
                 >
-                  <h5 className="text-center mb-3 mb-md-4 fs-5 fs-md-4">Our Theatre Locations</h5>
+                  <h5 className="text-center mb-3 mb-md-4 fs-5 fs-md-4 text-white">Our Theatre Locations</h5>
                   <div className="row">
                     {addresses && addresses.length > 0 ? (
                       addresses.map((address, index) => (
-                        <div className="col-12 col-md-6 mb-4 d-flex" key={index}>
+                        <div className="col-12 col-md-4  d-flex" key={index}>
                           <div
-                            className="card text-black shadow-lg gradient135 d-flex flex-column w-100"
+                            className="card text-black shadow-lg bg-white d-flex flex-column w-100"
                             style={{
                               backgroundColor: "#E9DCFF",
                               borderRadius: "1rem",
@@ -541,7 +542,7 @@ function Theaters() {
                             }}
                           >
                             {/* Image Section */}
-                            <div style={{ flexShrink: 0 }}>
+                            <div style={{ flexShrink: 0, position: "relative", padding: "15px" }}>
                               {address.image ? (
                                 <>
                                   <img
@@ -552,6 +553,7 @@ function Theaters() {
                                       width: "100%",
                                       objectFit: "cover",
                                       height: "250px",
+                                      borderRadius: "15px", // 👈 rounded corners
                                     }}
                                   />
                                   <a
@@ -562,17 +564,20 @@ function Theaters() {
                                     rel="noopener noreferrer"
                                     style={{
                                       position: "absolute",
-                                      bottom: "130px",
-                                      right: "10px",
+                                      bottom: "20px",
+                                      right: "20px",
                                       borderRadius: "50%",
                                       zIndex: 10,
+                                      background: "white",
+                                      padding: "5px",
+                                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                                     }}
                                     title="View on Google Maps"
                                   >
                                     <img
                                       src="https://bnbtplstorageaccount.blob.core.windows.net/googleicons/map (1).svg"
                                       alt="Google Maps"
-                                      style={{ width: "75px", height: "75px" }}
+                                      style={{ width: "50px", height: "50px" }}
                                     />
                                   </a>
                                 </>
@@ -583,12 +588,16 @@ function Theaters() {
                                     height: "250px",
                                     backgroundColor: "#444",
                                     fontSize: "3rem",
+                                    borderRadius: "15px",
                                   }}
                                 >
                                   <i className="bi bi-image text-dark"></i>
                                 </div>
                               )}
+
                             </div>
+
+
 
                             {/* Content Section */}
                             <div className="card-body d-flex flex-column justify-content-between p-3" style={{ flex: 1 }}>
@@ -603,6 +612,21 @@ function Theaters() {
                                     {address.landmark}
                                   </p>
                                 )}
+                                <div className="mt-3 d-flex gap-2 flex-wrap text-center">
+                                  <span
+                                    className="badge rounded-pill lighter-back dark-text d-flex align-items-center"
+                                    style={{ fontSize: "0.8rem", padding: "0.5em 1em", gap: "0.4em" }}
+                                  >
+                                    <FaBirthdayCake /> Cakes Available
+                                  </span>
+
+                                  <span
+                                    className="badge rounded-pill lighter-back dark-text d-flex align-items-center"
+                                    style={{ fontSize: "0.9rem", padding: "0.5em 1em", gap: "0.4em" }}
+                                  >
+                                    <FaCar /> Parking Available
+                                  </span>
+                                </div>
                               </div>
                               <button
                                 className="btn light-back text-white w-100 mt-3"
@@ -620,6 +644,17 @@ function Theaters() {
                       </div>
                     )}
                   </div>
+                  <div className="d-flex justify-content-center mt-3">
+                    <a
+                      href="tel:+918977917555" // replace with your phone number
+                      className="btn btn-lg light-back text-white d-inline-flex align-items-center gap-2"
+                      style={{ width: "auto", textDecoration: "none" }}
+                    >
+                      <FaPhone /> Book Via Call
+                    </a>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -752,7 +787,7 @@ function Theaters() {
                                 key={i}
                               >
                                 <div
-                                  className="card rounded gradientright shadow-lg text-dark flex-fill"
+                                  className="card rounded-5 gradientright shadow-lg text-dark flex-fill"
                                   style={{
                                     minHeight: "820px",
                                     overflow: "hidden",
@@ -762,8 +797,8 @@ function Theaters() {
                                   <div style={cardHeaderStyle}>
                                     <div
                                       className="course-img"
-                                      data-label={data.batchType}
-                                      id="ort"
+                                      // data-label={data.batchType}
+                                      // id="ort"
                                       style={{ position: "relative" }}
                                     >
                                       <div className="doc-img">
