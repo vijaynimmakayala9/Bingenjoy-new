@@ -73,56 +73,47 @@ function Header() {
 
       <div className={shows}>
         <header className="header main-header headersix">
-          {/* <div className="top-header">
+          <div className="top-header">
             <div className="container-fluid">
               <div className="row justify-content-between align-items-center">
-                <div className="col-12 col-md-10">
+                <div className="col-12 col-md-6">
                   <div className="header-top-left">
                     <div className="social-icon">
                       <ul>
                         <li>
                           <a
-                            href={`https://www.google.com/maps/place/Flat+No.401,+4th+floor,+Carnival+Castle,+Garden+View+Enclave,+Plot+No.16,+behind+Pista+House,+Ashok+Nagar,+Golden+Habitat,+Whitefields,+Kondapur,+Hyderabad,+Telangana+500084/data=!4m2!3m1!1s0x3bcb9331d3353e77:0x1a56f2c3d5cbcdee?utm_source=mstt_1&entry=gps&coh=192488&g_ep=CAESCjExLjEwNy4xMDEYACDXggMqGzQ3MDY4NjE1LCw5NDIwMDUzMSw0NzA3NTkxNUICSU4%3D`}
+                            href={`https://maps.app.goo.gl/295xbwArUzwSwZGC9`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="d-flex align-items-center"
                           >
-                            <i className="fas fa-map-marker-alt" />
+                            <i className="fas fa-map-marker-alt" style={{ backgroundColor: "#fff", color: "#9D4DFF" }} />
                             <span
                               className="text-white ms-2 location"
                               style={{ fontWeight: "bold" }}
                             >
-                              Carnival Castle Hyderabad
+                              BingeNJoy Hyderabad
                             </span>
                           </a>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  {PopUp.modalEnabled == true? (
-                    <h3
-                      className="offer-text"
-                      style={{ paddingLeft: "25%", marginTop: "8px" }}
-                    >
-                      {PopUp.title}
-                    </h3>
-                  ) : (
-                    ""
-                  )}
+
                 </div>
-                <div className="col-12 col-md-2">
+                <div className="col-12 col-md-6">
                   <div className="header-top-right">
                     <div className="social-icon">
                       <ul>
                         <li>
                           <a
-                            href={`https://wa.me/`}
+
                             href={`https://api.whatsapp.com/send/?phone=+91${Contact.phone}&text=Hi&type=phone_number&app_absent=0`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="d-flex align-items-center"
                           >
-                            <i className="fab fa-whatsapp" />
+                            <i className="fab fa-whatsapp" style={{ backgroundColor: "#fff", color: "#9D4DFF" }} />
                             <span
                               className="text-white ms-2 header-contact"
                               style={{ fontWeight: "bold" }}
@@ -137,12 +128,12 @@ function Header() {
                             href="https://www.facebook.com/carnivalcastlehyderabad?_rdr"
                             target="_blank"
                           >
-                            <i className="fab fa-facebook-f" />
+                            <i className="fab fa-facebook-f" style={{ backgroundColor: "#fff", color: "#9D4DFF" }} />
                           </a>
-                        </li> */}
-          {/* <li
+                        </li>
+                        <li
                           style={{
-                            background: "#595b56",
+                            background: "#fff",
                             borderRadius: "50%",
                             marginLeft: "5px",
                           }}
@@ -155,19 +146,19 @@ function Header() {
                               className="custom-svg"
                             >
                               <path
-                                fill="white"
+                                fill="#9D4DFF"
                                 d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
                               ></path>
                             </svg>
                           </a>
-                        </li> */}
+                        </li>
 
-          {/* <li>
+                        <li>
                           <a
                             href="https://www.youtube.com/@Carnival_Castle"
                             target="_blank"
                           >
-                            <i className="fab fa-youtube" />
+                            <i className="fab fa-youtube" style={{ backgroundColor: "#fff", color: "#9D4DFF" }} />
                           </a>
                         </li>
                         <li>
@@ -175,7 +166,7 @@ function Header() {
                             href="https://www.instagram.com/carnival_castle_hyderabad/"
                             target="_blank"
                           >
-                            <i className="fab fa-instagram" />
+                            <i className="fab fa-instagram" style={{ backgroundColor: "#fff", color: "#9D4DFF" }} />
                           </a>
                         </li>
                       </ul>
@@ -184,7 +175,7 @@ function Header() {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <nav
             className="navbar navbar-expand-lg header-nav"
             // style={{

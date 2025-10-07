@@ -832,18 +832,21 @@ function Home() {
             <div className="main-wrapper">
               <>
                 <Header />
+
                 <div className="scrollbar">
                   <Slider {...settings}>
+
                     {Sliders?.map((data, i) => (
                       <div key={i}>
-                        {PopUp1.modalEnabled && (
-                          <div className="bg-danger text-center py-2">
-                            <marquee className="text-white fw-bold">
-                              LAST MINUTE OFFER: {PopUp1.title}
-                            </marquee>
-                          </div>
-                        )}
-
+                        <div className="mt-5">
+                          {PopUp1.modalEnabled && (
+                            <div style={{ backgroundColor: "#fa462af2" }} className="text-center py-2">
+                              <marquee className="text-white fw-bold">
+                                LAST MINUTE OFFER: {PopUp1.title}
+                              </marquee>
+                            </div>
+                          )}
+                        </div>
                         <section
                           className="banner-section d-flex align-items-center position-relative"
                           style={{
@@ -1035,7 +1038,7 @@ function Home() {
       `}</style>
                 </section>
 
-                <TheaterDetails/>
+                <TheaterDetails />
 
                 <section className="py-5 bg-light">
                   <div className="container">

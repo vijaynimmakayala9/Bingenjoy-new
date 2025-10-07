@@ -704,25 +704,25 @@ function Theaters() {
               <main className="main-wrapper">
                 <section
                   id="parallax"
-                  className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix lightest-back"
+                  className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix light-back"
                 >
                   <div className="container">
                     <div className="row">
                       <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                         <div className="breadcrumb-wrap text-center">
-                          <div className="breadcrumb-title mb-30 dark-text">
+                          <div className="breadcrumb-title mb-30 text-white">
                             <h1 style={{ marginTop: "20px" }}>
                               Choose your dream theatre setup in {location.city}
                             </h1>
                           </div>
-                          <p className="light-text"><i>From royal vibes to romantic corners - pick your perfect match!</i></p>
+                          <p className="text-light"><i>From royal vibes to romantic corners - pick your perfect match!</i></p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </section>
                 <section
-                  className="shop-area pt-5 pb-5 p-relative lightest-back"
+                  className="shop-area pt-5 pb-5 p-relative light-back"
                   style={{ background: "#F8EBFF" }}
                 >
                   <div className="container-md">
@@ -787,7 +787,7 @@ function Theaters() {
                                 key={i}
                               >
                                 <div
-                                  className="card rounded-5 gradientright shadow-lg text-dark flex-fill"
+                                  className="card rounded-5 bg-white shadow-lg text-dark flex-fill"
                                   style={{
                                     minHeight: "820px",
                                     overflow: "hidden",
@@ -1208,9 +1208,9 @@ function Theaters() {
                 </section>
               </main>
 
-              <section className="p-5 px-2 px-md-4 d-flex justify-content-center lightest-back">
+              <section className="p-5 px-2 px-md-4 d-flex justify-content-center light-back">
                 <div
-                  className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 p-4 lighter-back shadow-lg"
+                  className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 p-4 bg-white shadow-lg"
                   style={{
                     borderRadius: '12px'
                   }}
