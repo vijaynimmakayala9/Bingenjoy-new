@@ -838,7 +838,7 @@ function Home() {
 
                     {Sliders?.map((data, i) => (
                       <div key={i}>
-                        <div className="mt-5">
+                        <div className="mt-0">
                           {PopUp1.modalEnabled && (
                             <div style={{ backgroundColor: "#fa462af2" }} className="text-center py-2">
                               <marquee className="text-white fw-bold">

@@ -73,7 +73,7 @@ function Header() {
 
       <div className={shows}>
         <header className="header main-header headersix">
-          <div className="top-header">
+          {/* <div className="top-header">
             <div className="container-fluid">
               <div className="row justify-content-between align-items-center">
                 <div className="col-12 col-md-6">
@@ -175,7 +175,7 @@ function Header() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <nav
             className="navbar navbar-expand-lg header-nav"
             // style={{
