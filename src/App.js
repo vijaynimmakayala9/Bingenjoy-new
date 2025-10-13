@@ -37,10 +37,12 @@ import CouponPage from "./components/Coupon";
 
 // Import CouponContext
 import { CouponProvider } from "./components/couponContext";
+import ScrollToTop from "./pages/ScrollToTop";
 
 function App() {
   return (
     <CouponProvider> {/* Wrap the entire application to provide context */}
+    <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ourservices" element={<OurServices/>} />

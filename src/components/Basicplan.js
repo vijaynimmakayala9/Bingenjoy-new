@@ -165,8 +165,8 @@ const Basicplan = () => {
         sessionStorage.setItem("userData", JSON.stringify(dataArray));
 
 
-        navigateOccassions("/ComboOccassions");
-
+        navigateOccassions("/Occassions");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       })
       .catch((error) => {
         console.error("API error:", error);
