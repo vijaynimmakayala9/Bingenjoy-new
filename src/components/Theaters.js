@@ -951,32 +951,51 @@ function Theaters() {
                                         </div>
                                       </div>
 
-                                      <div className="row mb-2">
-  <div className="col-6">
-    <p className="card-details mb-2 light-text" style={{ fontSize: "0.8rem" }}>
-      <span
-        className="fw-semibold px-3 py-1 rounded-pill text-white"
-        style={{ backgroundColor: "#C69FF4" }}
-      >
-        💰 Extra Person: ₹{data.extraPersonprice}/-
-      </span>
-    </p>
-  </div>
+                                      <div className="row align-items-center mb-2 text-center text-md-start g-2">
+                                        {/* Extra Person */}
+                                        <div className="col-12 col-sm-6">
+                                          <p
+                                            className="card-details mb-2 light-text"
+                                            style={{
+                                              fontSize: "0.85rem",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              justifyContentMd: "flex-start",
+                                            }}
+                                          >
+                                            <span
+                                              className="fw-semibold px-3 py-1 rounded-pill text-white d-inline-block"
+                                              style={{ backgroundColor: "#C69FF4", whiteSpace: "nowrap" }}
+                                            >
+                                              💰 Extra Person: ₹{data.extraPersonprice}/-
+                                            </span>
+                                          </p>
+                                        </div>
 
-  <div className="col-6">
-    <p className="card-details mb-2 light-text" style={{ fontSize: "0.8rem" }}>
-      <span
-        className="fw-semibold px-3 py-1 rounded-pill text-white"
-        style={{ backgroundColor: "#C69FF4" }}
-      >
-        <i className="bi bi-person-fill me-1"></i> Max {data.maxPeople} People
-      </span>
-    </p>
-  </div>
-</div>
+                                        {/* Max People */}
+                                        <div className="col-12 col-sm-6">
+                                          <p
+                                            className="card-details mb-2 light-text"
+                                            style={{
+                                              fontSize: "0.85rem",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              justifyContentMd: "flex-start",
+                                            }}
+                                          >
+                                            <span
+                                              className="fw-semibold px-3 py-1 rounded-pill text-white d-inline-block"
+                                              style={{ backgroundColor: "#C69FF4", whiteSpace: "nowrap" }}
+                                            >
+                                              <i className="bi bi-person-fill me-1"></i> Max {data.maxPeople} People
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+
 
                                       <p
-                                        className="card-details mb-2 light-text"
+                                        className="card-details  light-text"
                                         style={{ fontSize: "0.75rem" }}
                                       >
                                         <span className="fw-bold">
@@ -1019,7 +1038,7 @@ function Theaters() {
                                       </p>
 
 
-                                      <p
+                                      {/* <p
                                         className="card-details mb-2 light-text"
                                         style={{ fontSize: "0.75rem" }}
                                       >
@@ -1031,7 +1050,7 @@ function Theaters() {
                                           .join(" ")}
                                         {data.description.split(" ").length > 25 &&
                                           "..."}
-                                      </p>
+                                      </p> */}
                                     </div>
 
                                     <div>

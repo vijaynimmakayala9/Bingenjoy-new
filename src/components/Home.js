@@ -847,57 +847,32 @@ function Home() {
                             </div>
                           )}
                         </div>
-                        <section
-                          className="banner-section d-flex align-items-center position-relative"
-                          style={{
-                            background: `url(${URLS.Base + data.image}) no-repeat center center/cover`,
-                            minHeight: "100vh",
-                            color: "#fff",
-                          }}
-                        >
-                          {/* Dark Overlay */}
-                          <div
-                            className="position-absolute top-0 start-0 w-100 h-100"
-                            style={{
-                              backgroundColor: "rgba(0, 0, 0, 0.5)",
-                              zIndex: 1,
-                            }}
-                          ></div>
-
-                          {/* Content */}
+                        <section className="banner-section d-flex align-items-center position-relative text-white">
+                          <div className="overlay"></div>
                           <div className="container position-relative" style={{ zIndex: 2 }}>
                             <div className="row justify-content-center text-center text-md-start">
                               <div className="col-lg-10">
-                                <h1 className="display-4 fw-bold text-shadow mb-3">
-                                  <Typer text="Surprise your loved one only at Binge N Joy Private Theaters" typingSpeed={100} />
+                                {/* <h1 className="display-4 fw-bold text-shadow mb-3">
+                                  <Typer
+                                    text="Surprise your loved one only at Binge N Joy Private Theaters"
+                                    typingSpeed={100}
+                                  />
                                 </h1>
-
                                 <p className="lead mb-4">{data.description}</p>
 
                                 <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-sm-start">
-                                  {/* Navigate to /theaters */}
-                                  <a
-                                    href="/theaters"
-                                    className="btn btn-lg px-4 fw-bold"
-                                    style={{ backgroundColor: "#9D4DFF", color: "#fff" }}
-                                  >
+                                  <a href="/theaters" className="btn btn-lg px-4 fw-bold btn-purple">
                                     Book Now
                                   </a>
-
-                                  {/* Call via phone */}
-                                  <a
-                                    href="tel:8977917555"
-                                    className="btn btn-lg px-4 fw-bold"
-                                    style={{ backgroundColor: "#9D4DFF", color: "#fff" }}
-                                  >
+                                  <a href="tel:8977917555" className="btn btn-lg px-4 fw-bold btn-purple">
                                     Book via Call
                                   </a>
-                                </div>
-
+                                </div> */}
                               </div>
                             </div>
                           </div>
                         </section>
+
 
                         {/* Floating Cards Section */}
                         <div
