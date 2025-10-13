@@ -186,7 +186,7 @@ const Occassions = () => {
 
   const navigateCakes = useNavigate();
   const handleClick = () => {
-    navigateCakes("/Basicplan");
+    navigateCakes(-1);
   };
 
   return (

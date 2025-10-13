@@ -145,6 +145,14 @@ const ComboPlans = () => {
         (cake) => cake.categoryName !== "cakes"
       );
       setotherProducts(selectedCaketype1);
+
+      // 👇 Smoothly scroll to the section with id="cakes"
+    setTimeout(() => {
+      const cakesSection = document.getElementById("cakes");
+      if (cakesSection) {
+        cakesSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 200); // small delay ensures data/state are set
     });
     const theaterPrice = parseFloat(nintymin == 90 ? sessionStorage.getItem("theatrePrices") : sessionStorage.getItem("theatrePrices")) || 0;
     const theaterplanprice = (nintymin == 90 ? item.oneandhalfslotPrice : item.offerPrice);
@@ -252,7 +260,7 @@ const ComboPlans = () => {
       type: sessionStorage.getItem("planType"),
     };
 
-    
+
 
     console.log("Payload sent to API:", dataArray);
 
@@ -362,7 +370,7 @@ const ComboPlans = () => {
                           <div className="row justify-content-center">
                             {/* Basic Plan Card - Static */}
                             <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
-                              <div className="card rounded-5 gradientdark h-100 plan-card">
+                              <div className="card rounded-5  h-100 plan-card">
                                 <div className="card-body d-flex flex-column text-center">
                                   {/* Plan Name */}
                                   <h2 className="fw-bold">Basic Plan</h2>
@@ -398,8 +406,9 @@ const ComboPlans = () => {
                                   </p>
                                   <p style={{ fontSize: "0.85rem" }}>
                                     <span className="fw-bold">Pros & Cons:</span> Great value for intimate celebrations.
-                                    Limited customisation options but covers all party essentials.
+                                    Limited customisation options but covers all party essentials. <strong>Addons can be added later if needed.</strong>
                                   </p>
+
 
                                   {/* Features */}
                                   <h6 className="fw-bold mt-3">What's Included</h6>
@@ -520,7 +529,7 @@ const ComboPlans = () => {
                             {plans.map((item, index) => (
                               <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4" key={index}>
                                 <div
-                                  className={`card rounded-5 ${showImages === index ? "gradient45" : "gradientdark"} h-100 plan-card ${showImages === index ? "selected-plan" : ""}`}
+                                  className={`card rounded-5 ${showImages === index ? "gradient45" : ""} h-100 plan-card ${showImages === index ? "selected-plan" : ""}`}
                                   onClick={() => handleChoose(item, index)}
                                 >
                                   <div className="card-body d-flex flex-column text-center">
@@ -593,7 +602,7 @@ const ComboPlans = () => {
 
                           {/* SUMMARY AND PRODUCTS SECTION */}
                           {Object.keys(plansdata).length > 0 && (
-                            <div className="row mt-4">
+                            <div className="row mt-4" id="cakes">
 
 
                               {/* CAKES AND ADD-ONS SECTION - FULL WIDTH ON MOBILE, 8 COLUMNS ON DESKTOP */}

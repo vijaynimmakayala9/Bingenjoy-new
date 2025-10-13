@@ -378,7 +378,7 @@ const Basicplan = () => {
             <div className="container mt-4">
               <form onSubmit={handleSubmit}>
                 <div className="row mb-4">
-                  <div className="col-md-8 bg-white shadow-sm rounded">
+                  <div className="col-lg-8 col-md-7 bg-white shadow-sm rounded">
                     <div className="mb-3 mt-4">
                       <div className="">
                         <h5 className="card-title">Booking Details</h5>
