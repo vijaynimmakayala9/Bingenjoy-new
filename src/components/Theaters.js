@@ -77,7 +77,7 @@ function Theaters() {
   };
 
   const fetchTheatersByAddressId = async (addressId, selectedDate = date) => {
-    setIsLoading(true);
+    setIsLoading(false);
     try {
       if (!addressId) {
         console.warn("No addressId provided. Skipping theater filtering.");
