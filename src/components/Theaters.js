@@ -400,7 +400,7 @@ function Theaters() {
     setnintymin(durationInMinutes || 0);
     sessionStorage.setItem("nintymin", durationInMinutes || 0);
     if (durationInMinutes === 90) {
-      setModalPop(false);
+      setModalPop(true);
     }
   };
 
@@ -610,13 +610,13 @@ function Theaters() {
                                 )}
                                 <div className="mt-3 d-flex gap-2 flex-wrap text-center">
                                   <span
-                                    className="badge rounded-pill lighter-back dark-text d-flex align-items-center"
+                                    className="badge rounded-pill  dark-text d-flex align-items-center"
                                     style={{ fontSize: "0.8rem", padding: "0.5em 1em", gap: "0.4em" }}
                                   >
                                     <FaBirthdayCake /> Cakes Available
                                   </span>
                                   <span
-                                    className="badge rounded-pill lighter-back dark-text d-flex align-items-center"
+                                    className="badge rounded-pill  dark-text d-flex align-items-center"
                                     style={{ fontSize: "0.9rem", padding: "0.5em 1em", gap: "0.4em" }}
                                   >
                                     <FaCar /> Parking Available
@@ -764,6 +764,18 @@ function Theaters() {
                             const isBookNowActive = selectedSlot[i] !== undefined;
                             const colors = ["danger", "success", "warning", "primary"];
                             const bgColor = colors[i % colors.length];
+                            const theaterCapacities = {
+                              "Iris Theatre": 20,
+                              "Joy Theatre": 20,
+                              "Ruby Theatre": 2,
+                              "Vibe Theatres": 15,
+                              "Carnival Den": 15,
+                              "Amora Theatre": 6,
+                            };
+
+                            // Get capacity based on name, fallback to data.maxPeople if not found
+                            const maxPeople = theaterCapacities[data.name] || data.maxPeople;
+
                             return (
                               <div
                                 className="col-12 col-sm-6 col-md-4 mb-4 d-flex"
@@ -802,8 +814,8 @@ function Theaters() {
                                                       fontSize: "0.75rem",
                                                     }}
                                                   >
-                                                    {data.availableSlots && data.availableSlots.filter(s => !s.isDisabled).length > 0
-                                                      ? `${data.availableSlots.filter(s => !s.isDisabled).length} slots available`
+                                                    {data.availableSlotsCount > 0
+                                                      ? `${data.availableSlotsCount} slots available`
                                                       : "0 slots available"}
                                                   </span>
                                                   <span
@@ -853,8 +865,8 @@ function Theaters() {
                                                     fontSize: "0.75rem",
                                                   }}
                                                 >
-                                                  {data.availableSlots && data.availableSlots.filter(s => !s.isDisabled).length > 0
-                                                    ? `${data.availableSlots.filter(s => !s.isDisabled).length} slots available`
+                                                  {data.availableSlotsCount > 0
+                                                    ? `${data.availableSlotsCount} slots available`
                                                     : "0 slots available"}
                                                 </span>
                                                 <video
@@ -899,51 +911,30 @@ function Theaters() {
                                           )}
                                         </div>
                                         <div>
-                                          {selectedSlot[i] ? (
-                                            <div>
-                                              <p className="card-price mb-2 dark-text" style={{ fontFamily: "'Fraunces', serif" }}>
-                                                <span style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                                                  ₹{" "}
-                                                  {selectedSlot[i].duration === "1:30 hr"
-                                                    ? data.oneandhalfslotPrice
-                                                    : selectedSlot[i].offerPrice ?? data.offerPrice}
-                                                  /-
-                                                </span>
-                                                <span style={{ fontSize: "0.9rem", fontWeight: 400, marginLeft: "0.5rem" }}>
-                                                  for upto {data.maxPeople} {data.maxPeople > 1 ? "people" : "person"}
-                                                </span>
-                                              </p>
-
-                                            </div>
-                                          ) : (
-                                            <div
-                                              className="my-3"
-                                              style={{ fontSize: "0.8rem", color: "#666" }}
-                                            >
-                                              Select a slot<br />to check price
-                                            </div>
-                                          )}
-                                        </div>
-                                      </div>
-                                      <div className="row align-items-center mb-2 text-center text-md-start g-2">
-                                        <div className="col-12 col-sm-6">
                                           <p
-                                            className="card-details mb-2 light-text"
-                                            style={{
-                                              fontSize: "0.85rem",
-                                              display: "flex",
-                                              justifyContent: "center",
-                                            }}
+                                            className="card-price mb-2 dark-text"
+                                            style={{ fontFamily: "'Fraunces', serif" }}
                                           >
-                                            <span
-                                              className="fw-semibold px-3 py-1 rounded-pill text-white d-inline-block"
-                                              style={{ backgroundColor: "#C69FF4", whiteSpace: "nowrap" }}
-                                            >
-                                              💰 Extra Person: ₹{data.extraPersonprice}/-
+                                            <span style={{ fontSize: "1.4rem", fontWeight: 600 }}>
+                                              ₹{" "}
+                                              {selectedSlot[i]
+                                                ? selectedSlot[i].duration === "1:30 hr"
+                                                  ? data.oneandhalfslotPrice
+                                                  : selectedSlot[i].offerPrice ?? data.offerPrice
+                                                : data.offerPrice}
+                                              /-
+                                            </span>
+                                            <span style={{ fontSize: "0.9rem", fontWeight: 400, marginLeft: "0.5rem" }}>
+                                              {selectedSlot[i]
+                                                ? `for upto ${data.maxPeople} ${data.maxPeople > 1 ? "people" : "person"}`
+                                                : `for upto ${data.maxPeople} ${data.maxPeople > 1 ? "people" : "person"}`}
                                             </span>
                                           </p>
                                         </div>
-                                        <div className="col-12 col-sm-6">
+
+                                      </div>
+                                      <div className="row align-items-center mb-2 text-center text-md-start g-2">
+                                        <div className="col-6 col-sm-6">
                                           <p
                                             className="card-details mb-2 light-text"
                                             style={{
@@ -953,11 +944,29 @@ function Theaters() {
                                             }}
                                           >
                                             <span
-                                              className="fw-semibold px-3 py-1 rounded-pill text-white d-inline-block"
-                                              style={{ backgroundColor: "#C69FF4", whiteSpace: "nowrap" }}
+                                              className="fw-semibold px-3 py-1 rounded-pill dark-text d-inline-block"
+                                              style={{ whiteSpace: "nowrap" }}
                                             >
-                                              <i className="bi bi-person-fill me-1"></i> Max {data.maxPeople} People
+                                              <i className="bi bi-currency-dollar me-1"></i> Extra Person: ₹{data.extraPersonprice}/-
                                             </span>
+                                          </p>
+                                        </div>
+                                        <div className="col-6 col-sm-6">
+                                          <p
+                                            className="card-details mb-2 light-text"
+                                            style={{
+                                              fontSize: "0.85rem",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                          >
+                                            <span
+                                              className="fw-semibold px-3 py-1 rounded-pill dark-text d-inline-block"
+                                              style={{ whiteSpace: "nowrap" }}
+                                            >
+                                              <i className="bi bi-person-fill me-1"></i> Max {maxPeople} People
+                                            </span>
+
                                           </p>
                                         </div>
                                       </div>
@@ -1178,56 +1187,413 @@ function Theaters() {
                               {locationName}
                             </h4>
                             <div className="row">
-                              {group.theaters.map((theater, idx) => {
-                                const colors = ["danger", "success", "warning", "primary"];
-                                const bgColor = colors[idx % colors.length];
-                                const theaterKey = `other-${addrId}-${theater._id}`;
-                                return (
-                                  <div className="col-12 col-md-6 col-lg-4 mb-4" key={theaterKey}>
-                                    <div className="card rounded-3 bg-white shadow-sm h-100">
-                                      <div style={{ height: "200px", overflow: "hidden" }}>
-                                        {theater.image && theater.image[0] ? (
-                                          <img
-                                            src={BaseUrl + theater.image[0]}
-                                            alt={theater.name}
-                                            className="img-fluid w-100"
-                                            style={{ objectFit: "cover", height: "100%" }}
-                                          />
-                                        ) : (
-                                          <div className="bg-light d-flex align-items-center justify-content-center" style={{ height: "100%" }}>
-                                            <span>No Image</span>
-                                          </div>
-                                        )}
-                                      </div>
-                                      <div className="card-body d-flex flex-column">
-                                        <h6 className="card-title light-text">{theater.name}</h6>
-                                        <p className="dark-text small">
-                                          <i className="fa-solid fa-location-dot me-1"></i>
-                                          {locationName}
-                                        </p>
-                                        <div className="mt-auto">
-                                          <button
-                                            className="btn btn-sm w-100"
-                                            style={{
-                                              backgroundColor: "#40008C",
-                                              color: "white",
-                                              fontWeight: "600"
-                                            }}
-                                            onClick={() => {
-                                              const addr = addresses.find(a => a._id === addrId);
-                                              if (addr) {
-                                                handleLocationSelect(addr);
-                                              }
-                                            }}
-                                          >
-                                            View Slots
-                                          </button>
-                                        </div>
+                              {group.theaters && group.theaters.length > 0 ? (
+                          group.theaters.map((data, i) => {
+                            const isBookNowActive = selectedSlot[i] !== undefined;
+                            const colors = ["danger", "success", "warning", "primary"];
+                            const bgColor = colors[i % colors.length];
+                            const theaterCapacities = {
+                              "Iris Theatre": 20,
+                              "Joy Theatre": 20,
+                              "Ruby Theatre": 2,
+                              "Vibe Theatres": 15,
+                              "Carnival Den": 15,
+                              "Amora Theatre": 6,
+                            };
+
+                            // Get capacity based on name, fallback to data.maxPeople if not found
+                            const maxPeople = theaterCapacities[data.name] || data.maxPeople;
+
+                            return (
+                              <div
+                                className="col-12 col-sm-6 col-md-4 mb-4 d-flex"
+                                key={i}
+                              >
+                                <div
+                                  className="card rounded-5 bg-white shadow-lg text-dark flex-fill"
+                                  style={{
+                                    minHeight: "820px",
+                                    overflow: "hidden",
+                                  }}
+                                >
+                                  <div style={cardHeaderStyle}>
+                                    <div
+                                      className="course-img"
+                                      style={{ position: "relative" }}
+                                    >
+                                      <div className="doc-img">
+                                        <Carousel
+                                          interval={3000}
+                                          controls={false}
+                                          activeIndex={activeIndices[i] || 0}
+                                          onSelect={(selectedIndex) => handleCarouselSelect(selectedIndex, i)}
+                                        >
+                                          {data.image &&
+                                            data.image.map((img, idx) => (
+                                              <Carousel.Item key={idx}>
+                                                <div style={{ position: "relative" }}>
+                                                  <span
+                                                    className={`badge bg-${bgColor} text-white`}
+                                                    style={{
+                                                      position: "absolute",
+                                                      top: "10px",
+                                                      right: "10px",
+                                                      zIndex: 2,
+                                                      fontSize: "0.75rem",
+                                                    }}
+                                                  >
+                                                    {data.availableSlotsCount > 0
+                                                      ? `${data.availableSlotsCount} slots available`
+                                                      : "0 slots available"}
+                                                  </span>
+                                                  <span
+                                                    style={{
+                                                      position: "absolute",
+                                                      bottom: "10px",
+                                                      left: "10px",
+                                                      zIndex: 2,
+                                                      fontSize: "0.75rem",
+                                                    }}
+                                                  >
+                                                    <a
+                                                      href={data.link}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="btn btn-sm btn-light ms-2 fw-bold"
+                                                    >
+                                                      <i className="fa-brands fa-youtube text-danger fa-xl"></i>
+                                                      Watch Now
+                                                    </a>
+                                                  </span>
+                                                  <img
+                                                    src={BaseUrl + img}
+                                                    alt=""
+                                                    className="img-fluid"
+                                                    style={{
+                                                      height: "250px",
+                                                      borderRadius: "10px",
+                                                      width: "100%",
+                                                      cursor: "pointer",
+                                                      objectFit: "cover",
+                                                    }}
+                                                  />
+                                                </div>
+                                              </Carousel.Item>
+                                            ))}
+                                          {data.video && (
+                                            <Carousel.Item>
+                                              <div style={{ position: "relative" }}>
+                                                <span
+                                                  className={`badge bg-${bgColor} text-white`}
+                                                  style={{
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    right: "10px",
+                                                    zIndex: 2,
+                                                    fontSize: "0.75rem",
+                                                  }}
+                                                >
+                                                  {data.availableSlotsCount > 0
+                                                    ? `${data.availableSlotsCount} slots available`
+                                                    : "0 slots available"}
+                                                </span>
+                                                <video
+                                                  src={URLS.Base + data.video}
+                                                  className="img-fluid video-mobile"
+                                                  style={{
+                                                    height: "250px",
+                                                    borderRadius: "10px",
+                                                    width: "100%",
+                                                    cursor: "pointer",
+                                                    display: "block",
+                                                    objectFit: "cover",
+                                                  }}
+                                                  autoPlay
+                                                  loop
+                                                  muted
+                                                  preload="auto"
+                                                />
+                                              </div>
+                                            </Carousel.Item>
+                                          )}
+                                        </Carousel>
                                       </div>
                                     </div>
                                   </div>
-                                );
-                              })}
+                                  <div className="card-body d-flex flex-column justify-content-between">
+                                    <div>
+                                      <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                          <h5
+                                            className="card-title m-0 dark-text"
+                                            style={{ fontSize: "1.25rem", fontWeight: "700" }}
+                                          >
+                                            {data.name}
+                                          </h5>
+                                          {location && (
+                                            <p className="fs-7 ">
+                                              <strong>
+                                                <i className="fa-solid fa-location-dot " style={{ color: "#000" }}></i>{location.name}, {location.city}
+                                              </strong>
+                                            </p>
+                                          )}
+                                        </div>
+                                        <div>
+                                          <p
+                                            className="card-price mb-2 dark-text"
+                                            style={{ fontFamily: "'Fraunces', serif" }}
+                                          >
+                                            <span style={{ fontSize: "1.4rem", fontWeight: 600 }}>
+                                              ₹{" "}
+                                              {selectedSlot[i]
+                                                ? selectedSlot[i].duration === "1:30 hr"
+                                                  ? data.oneandhalfslotPrice
+                                                  : selectedSlot[i].offerPrice ?? data.offerPrice
+                                                : data.offerPrice}
+                                              /-
+                                            </span>
+                                            <span style={{ fontSize: "0.9rem", fontWeight: 400, marginLeft: "0.5rem" }}>
+                                              {selectedSlot[i]
+                                                ? `for upto ${data.maxPeople} ${data.maxPeople > 1 ? "people" : "person"}`
+                                                : `for upto ${data.maxPeople} ${data.maxPeople > 1 ? "people" : "person"}`}
+                                            </span>
+                                          </p>
+                                        </div>
+
+                                      </div>
+                                      <div className="row align-items-center mb-2 text-center text-md-start g-2">
+                                        <div className="col-6 col-sm-6">
+                                          <p
+                                            className="card-details mb-2 light-text"
+                                            style={{
+                                              fontSize: "0.85rem",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                          >
+                                            <span
+                                              className="fw-semibold px-3 py-1 rounded-pill dark-text d-inline-block"
+                                              style={{ whiteSpace: "nowrap" }}
+                                            >
+                                              <i className="bi bi-currency-dollar me-1"></i> Extra Person: ₹{data.extraPersonprice}/-
+                                            </span>
+                                          </p>
+                                        </div>
+                                        <div className="col-6 col-sm-6">
+                                          <p
+                                            className="card-details mb-2 light-text"
+                                            style={{
+                                              fontSize: "0.85rem",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                          >
+                                            <span
+                                              className="fw-semibold px-3 py-1 rounded-pill dark-text d-inline-block"
+                                              style={{ whiteSpace: "nowrap" }}
+                                            >
+                                              <i className="bi bi-person-fill me-1"></i> Max {maxPeople} People
+                                            </span>
+
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <p
+                                        className="card-details  light-text"
+                                        style={{ fontSize: "0.75rem" }}
+                                      >
+                                        <span className="fw-bold">
+                                          <i className="bi bi-tv-fill"></i> Features
+                                        </span>
+                                        <div className="row mt-1">
+                                          {(expandedCards[i] ? data.features : data.features.slice(0, 4)).map(
+                                            (feature, index) => (
+                                              <div key={index} className="col-6 mb-1 d-flex align-items-start">
+                                                <i
+                                                  className="bi bi-star-fill"
+                                                  style={{
+                                                    fontSize: "0.65rem",
+                                                    color: "#40008C",
+                                                    marginRight: "6px",
+                                                    marginTop: "2px",
+                                                  }}
+                                                ></i>
+                                                <span>{feature}</span>
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                        {data.features.length > 4 && (
+                                          <div
+                                            onClick={() => toggleView1(i)}
+                                            style={{
+                                              cursor: "pointer",
+                                              color: "#40008C",
+                                              textDecoration: "underline",
+                                              fontSize: "0.75rem",
+                                              marginTop: "4px",
+                                            }}
+                                          >
+                                            {expandedCards[i] ? "View Less" : "View More"}
+                                          </div>
+                                        )}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <div className="slot-selection mb-3">
+                                        <p
+                                          className="slot-title mb-2 dark-text"
+                                          style={{ fontSize: "0.9rem", fontWeight: "600" }}
+                                        >
+                                          Select Time Slot
+                                        </p>
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            gap: "0.6rem",
+                                            overflowX: "auto",
+                                            paddingBottom: "6px",
+                                          }}
+                                        >
+                                          {data.availableSlots &&
+                                            data.availableSlots.map((slot, index) => {
+                                              const fromTime12 = convertTo12HourFormat(slot.fromTime);
+                                              const toTime12 = convertTo12HourFormat(slot.toTime);
+                                              const duration = calculateDuration(slot.fromTime, slot.toTime);
+                                              const isSelected =
+                                                selectedSlot[i] && selectedSlot[i]._id === slot._id;
+                                              let discount = null;
+                                              if (
+                                                duration === "1:30 hr" &&
+                                                data.offerPrice &&
+                                                data.oneandhalfslotPrice
+                                              ) {
+                                                discount = data.offerPrice - data.oneandhalfslotPrice;
+                                              }
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  style={{
+                                                    flex: "0 0 auto",
+                                                    textAlign: "center",
+                                                  }}
+                                                >
+                                                  <button
+                                                    className="btn"
+                                                    onClick={(e) => handleSlot(e, { ...slot, duration }, i)}
+                                                    style={{
+                                                      minWidth: "50px",
+                                                      height: "60px",
+                                                      padding: "0px 0px",
+                                                      fontSize: "0.7rem",
+                                                      fontWeight: "500",
+                                                      lineHeight: "1.2",
+                                                      borderRadius: "8px",
+                                                      border: isSelected ? "2px solid #40008C" : "1px solid #ccc",
+                                                      backgroundColor: slot.isBooked
+                                                        ? "#f1f1f1"
+                                                        : isSelected
+                                                          ? "#40008C"
+                                                          : "#fff",
+                                                      color: slot.isBooked
+                                                        ? "#888"
+                                                        : isSelected
+                                                          ? "#fff"
+                                                          : "#000",
+                                                      textDecoration: slot.isBooked ? "line-through" : "none",
+                                                      cursor: slot.isBooked ? "not-allowed" : "pointer",
+                                                      display: "flex",
+                                                      flexDirection: "column",
+                                                      justifyContent: "center",
+                                                      alignItems: "center",
+                                                    }}
+                                                    disabled={slot.isBooked}
+                                                  >
+                                                    <span>{fromTime12}</span>-
+                                                    <span>{toTime12}</span>
+                                                  </button>
+                                                  {discount !== null && !slot.isBooked && (
+                                                    <div
+                                                      style={{
+                                                        fontSize: "0.65rem",
+                                                        color: "#28a745",
+                                                        marginTop: "4px",
+                                                        fontWeight: "600",
+                                                      }}
+                                                    >
+                                                      Rs {discount} less
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              );
+                                            })}
+                                        </div>
+                                      </div>
+                                      {selectedSlot[i] ? (
+                                        <div className="mt-3">
+                                          <div
+                                            style={{
+                                              fontSize: "1.2rem",
+                                              fontWeight: "700",
+                                              color: "#000",
+                                            }}
+                                          >
+                                            ₹
+                                            {selectedSlot[i].duration === "1:30 hr"
+                                              ? data.oneandhalfslotPrice
+                                              : selectedSlot[i].offerPrice ?? data.offerPrice}
+                                            <span style={{ fontSize: "0.85rem", fontWeight: "500" }}>
+                                              {" "}
+                                              for up to {data.maxPeople} people
+                                            </span>
+                                          </div>
+                                          <div
+                                            style={{
+                                              fontSize: "0.8rem",
+                                              color: "#666",
+                                              marginTop: "2px",
+                                            }}
+                                          >
+                                            Additional ₹{data.extraPersonprice}/- per person after {data.maxPeople} people
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          className="mt-3"
+                                          style={{ fontSize: "0.8rem", color: "#666" }}
+                                        >
+                                          Select a slot to check price
+                                        </div>
+                                      )}
+                                      <div className="col-12 mt-3">
+                                        <button
+                                          disabled={!isBookNowActive}
+                                          onClick={() => handleBasicPlan(data, i)}
+                                          className="btn"
+                                          style={{
+                                            width: "100%",
+                                            color: "white",
+                                            border: "none",
+                                            fontWeight: "600",
+                                            borderRadius: "8px",
+                                            padding: "10px",
+                                            backgroundColor: isBookNowActive ? "#40008C" : "#A88FC7",
+                                          }}
+                                        >
+                                          Book Now
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <div className="col-12 text-center">
+                            <p>No theaters available for the selected location and date.</p>
+                          </div>
+                        )}
                             </div>
                           </div>
                         );

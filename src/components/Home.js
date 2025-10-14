@@ -634,7 +634,7 @@ function Home() {
   const whyUsSlides = [
     {
       image: URLS?.Base + Highlights?.image, // Replace with dynamic images
-      title: "🎉 Why Choose BingeNJoy Private Theatre?",
+      title: "Why Choose BingeNJoy Private Theatre?",
       subtitle:
         "At BingeNJoy, we believe every celebration deserves a cinematic experience — intimate, exclusive and unforgettable. Here’s why our private theatre stands out:",
       points: [
@@ -647,7 +647,7 @@ function Home() {
     },
     {
       image: "https://api.carnivalcastle.com/uploads/galleryImg/1728132797148-DSC07601.jpg", // Replace with another image
-      title: "🎬 Celebrate Cinematically!",
+      title: "Celebrate Cinematically!",
       subtitle:
         "Experience celebrations like never before in our private theatres — where entertainment meets exclusivity.",
       points: [
@@ -660,7 +660,7 @@ function Home() {
     },
     {
       image: "https://api.carnivalcastle.com/uploads/galleryImg/1728132803817-DSC07593.jpg", // Replace with another image
-      title: "🌈 Make Every Moment Magical",
+      title: "Make Every Moment Magical",
       subtitle:
         "From surprise proposals to baby showers — bring your vision to life in an immersive, themed theatre setting.",
       points: [
@@ -1001,7 +1001,51 @@ function Home() {
                   </Slider>
                 </div>
 
-                <section className="pt-5 bg-white" >
+                <section className="py-5 bg-white">
+                  <div className="container-fluid text-center py-5 gradientright">
+                    <h2 className="fw-bold mb-4 dark-text">Our Branches</h2>
+
+                    <div className="d-flex flex-wrap justify-content-center gap-3">
+                      {addresses.map((addr, idx) => (
+                        <a
+                          key={idx}
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                            `${addr.addressLine1}, ${addr.addressLine2}`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="branch-badge text-decoration-none fw-semibold d-inline-flex align-items-center"
+                        >
+                          <i className="bi bi-geo-alt-fill me-2"></i>
+                          {addr.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <style jsx>{`
+    .branch-badge {
+      background-color: #f3e8ff;
+      color: #5b179b;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50rem;
+      box-shadow: 0 3px 6px rgba(91, 23, 155, 0.2);
+      transition: all 0.3s ease;
+    }
+    .branch-badge:hover {
+      background-color: #5b179b;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(91, 23, 155, 0.35);
+      transform: translateY(-2px);
+    }
+    .branch-badge i {
+      font-size: 1rem;
+    }
+  `}</style>
+                </section>
+
+
+                {/* <section className="pt-5 bg-white" >
                   <div className="container-fluid text-center pt-2 gradientright">
                     <h2 className="fw-bold mb-5 dark-text">Our Branches</h2>
 
@@ -1045,13 +1089,13 @@ function Home() {
                     </div>
                   </div>
 
-                  {/* Extra Styles */}
+                
                   <style jsx>{`
         .text-purple {
           color: #5b179b;
         }
       `}</style>
-                </section>
+                </section> */}
 
                 <TheaterDetails />
 
@@ -1231,7 +1275,7 @@ function Home() {
                 <section className="occasions-section py-5 text-dark" style={{ backgroundColor: "#fff" }}>
                   <div className="container">
                     <h2 className="text-center mb-5 light-text">
-                      What Can You Celebrate at Carnival Castle?
+                      What Can You Celebrate at Binge N Joy?
                     </h2>
 
                     {(() => {
@@ -1378,118 +1422,71 @@ function Home() {
                   </div>
                 </section>
 
-
-
-
-                <section className="services-section py-5 text-dark bg-white">
+                <section className="services-section py-4 bg-white text-dark">
                   <div className="container">
-                    <h2 className="text-center mb-5 dark-text fw-bold">Experiance Our Services</h2>
+                    <h2 className="text-center mb-4 fw-bold dark-text">Experience Our Services</h2>
 
-                    {/* Large Card Wrapper */}
-                    <div className="card text-dark p-4 rounded-4  border-0" style={{ backgroundColor: "#fff" }}>
-                      <div className="row g-4">
-                        {/* Service Card 1 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={beverages}
-                                alt="Food & Beverages"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title light-text">Food & Beverages</h5>
-                              <p className="card-text">Choose the perfect food combo for your celebration.</p>
-                              <a href="/Food" className="mt-auto light-text">
+                    <div className="row g-3 justify-content-center">
+                      {/* Common card style */}
+                      {[
+                        { img: beverages, title: "Food & Beverages", text: "Choose the perfect food combo for your celebration.", link: "/Food" },
+                        { img: screening, title: "Screening", text: "Bring your OTT accounts and relive the theatre magic!" },
+                        { img: cake4, title: "Cakes", text: "Choose the perfect cake for your celebration from our selection.", link: "/cakes" },
+                        { img: roses, title: "Bouquets", text: "Add a beautiful rose bouquet to enhance your celebration." }
+                      ].map((service, idx) => (
+                        <div key={idx} className="col-6 col-md-3">
+                          <div className="service-card text-center rounded-4 shadow-sm p-3 h-100">
+                            <img
+                              src={service.img}
+                              alt={service.title}
+                              className="rounded-circle mb-2"
+                              style={{
+                                height: "80px",
+                                width: "80px",
+                                objectFit: "cover",
+                                border: "2px solid #E9BE5F",
+                              }}
+                            />
+                            <h6 className="fw-semibold mb-1 light-text">{service.title}</h6>
+                            <p className="text-muted small mb-2" style={{ minHeight: "40px" }}>
+                              {service.text}
+                            </p>
+                            {service.link && (
+                              <a href={service.link} className="text-decoration-none small fw-semibold text-purple">
                                 View more <i className="fas fa-arrow-right"></i>
                               </a>
-                            </div>
+                            )}
                           </div>
                         </div>
-
-                        {/* Service Card 2 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={screening}
-                                alt="Screening"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title light-text">Screening</h5>
-                              <p className="card-text">Bring your OTT accounts and relive the theatre magic!</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Service Card 3 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={cake4}
-                                alt="Cakes"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title light-text">Cakes</h5>
-                              <p className="card-text">Choose the perfect cake for your celebration from our selection.</p>
-                              <a href="/cakes" className=" mt-auto light-text">
-                                View more <i className="fas fa-arrow-right"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Service Card 4 */}
-                        <div className="col-12 col-sm-6 col-lg-3">
-                          <div
-                            className="card h-100 text-center text-dark border-0 rounded-4 shadow-lg p-3 gradient45"
-                          >
-                            <div className="card-body d-flex flex-column align-items-center">
-                              <img
-                                src={roses}
-                                alt="Bouquets"
-                                className="rounded-circle mb-3"
-                                style={{
-                                  height: "100px",
-                                  width: "100px",
-                                  objectFit: "cover",
-                                  border: "2px solid #E9BE5F"
-                                }}
-                              />
-                              <h5 className="card-title light-text">Bouquets</h5>
-                              <p className="card-text">Add a beautiful rose bouquet to enhance your celebration.</p>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
+                      ))}
                     </div>
                   </div>
+
+                  {/* Inline styles */}
+                  <style jsx>{`
+    .service-card {
+     background: linear-gradient(45deg, #FFFAFB, #C69FF4)!important;
+      transition: all 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(91, 23, 155, 0.2);
+    }
+    .text-purple {
+      color: #5b179b;
+    }
+    @media (max-width: 576px) {
+      .service-card img {
+        height: 65px;
+        width: 65px;
+      }
+      .service-card p {
+        font-size: 0.75rem;
+      }
+    }
+  `}</style>
                 </section>
+
 
 
                 {/* WHY US Section */}
@@ -1587,7 +1584,7 @@ function Home() {
                       What Our Customers Say
                     </h2>
                     <p className="text-center mb-5 fs-5 light-text">
-                      Real stories. Real celebrations. Real magic at Carnival Castle.
+                      Real stories. Real celebrations. Real magic at Binge N Joy.
                     </p>
 
                     {(() => {
@@ -1699,7 +1696,7 @@ function Home() {
                     <div className="section-wraper row d-flex align-items-center">
                       <div className="col-md-12 section-header mb-0 mt-3">
                         <h2 className="text-center fw-bold mb-3 dark-text">Gallery</h2>
-                        <p className="text-center mb-5 fs-5 light-text">See how our guests made memories at Carnival Castle.</p>
+                        <p className="text-center mb-5 fs-5 light-text">See how our guests made memories at Binge N Joy.</p>
                       </div>
 
                       <div className="row justify-content-center">
@@ -1805,85 +1802,85 @@ function Home() {
 
 
                 {testimonials.length > 0 && (
-  <section
-    className="py-5 position-relative text-dark"
-    style={{ backgroundColor: "#E6D8F5" }}
-  >
-    <Container fluid="lg">
-      <Row className="align-items-center">
-        {/* LEFT SECTION */}
-        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
-          <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
-          <p className="light-text fs-6">
-            Real stories. Real celebrations. Real magic at Carnival Castle.
-          </p>
-        </Col>
+                  <section
+                    className="py-5 position-relative text-dark"
+                    style={{ backgroundColor: "#E6D8F5" }}
+                  >
+                    <Container fluid="lg">
+                      <Row className="align-items-center">
+                        {/* LEFT SECTION */}
+                        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
+                          <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
+                          <p className="light-text fs-6">
+                            Real stories. Real celebrations. Real magic at Binge N Joy.
+                          </p>
+                        </Col>
 
-        {/* RIGHT SECTION */}
-        <Col xs={12} lg={9}>
-          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
-            {/* Side Thumbnails */}
-            {testimonials
-              .filter((item) => selected && item.videoId !== selected.videoId)
-              .map((user, idx) => (
-                <div
-                  key={idx}
-                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
-                  style={{
-                    width: "70px",
-                    height: "200px",
-                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    cursor: "pointer",
-                    position: "relative",
-                  }}
-                  onClick={() => setSelected(user)}
-                >
-                  <h6 className="vertical-text text-white fw-bold m-0">
-                    {user.name}
-                  </h6>
-                  <div className="overlay"></div>
-                </div>
-              ))}
+                        {/* RIGHT SECTION */}
+                        <Col xs={12} lg={9}>
+                          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
+                            {/* Side Thumbnails */}
+                            {testimonials
+                              .filter((item) => selected && item.videoId !== selected.videoId)
+                              .map((user, idx) => (
+                                <div
+                                  key={idx}
+                                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
+                                  style={{
+                                    width: "70px",
+                                    height: "200px",
+                                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                    cursor: "pointer",
+                                    position: "relative",
+                                  }}
+                                  onClick={() => setSelected(user)}
+                                >
+                                  <h6 className="vertical-text text-white fw-bold m-0">
+                                    {user.name}
+                                  </h6>
+                                  <div className="overlay"></div>
+                                </div>
+                              ))}
 
-            {/* Main Video */}
-            {selected && (
-              <div
-                className="main-video-card position-relative rounded shadow overflow-hidden"
-                style={{
-                  width: "100%",
-                  maxWidth: "400px",
-                  height: "300px",
-                  backgroundColor: "#000",
-                }}
-              >
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
-                  title={selected.name}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+                            {/* Main Video */}
+                            {selected && (
+                              <div
+                                className="main-video-card position-relative rounded shadow overflow-hidden"
+                                style={{
+                                  width: "100%",
+                                  maxWidth: "400px",
+                                  height: "300px",
+                                  backgroundColor: "#000",
+                                }}
+                              >
+                                <iframe
+                                  width="100%"
+                                  height="100%"
+                                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
+                                  title={selected.name}
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                ></iframe>
 
-                {/* Label */}
-                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
-                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
-                    <strong className="dark-text">{selected.name}</strong>
-                    <br />
-                    <small className="text-dark">{selected.role}</small>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+                                {/* Label */}
+                                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
+                                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
+                                    <strong className="dark-text">{selected.name}</strong>
+                                    <br />
+                                    <small className="text-dark">{selected.role}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </Col>
+                      </Row>
+                    </Container>
 
-    {/* Styles */}
-    <style jsx>{`
+                    {/* Styles */}
+                    <style jsx>{`
       .side-card {
         position: relative;
         overflow: hidden;
@@ -1939,8 +1936,8 @@ function Home() {
         }
       }
     `}</style>
-  </section>
-)}
+                  </section>
+                )}
 
 
 
