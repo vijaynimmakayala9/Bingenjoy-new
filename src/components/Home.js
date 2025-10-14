@@ -602,7 +602,7 @@ function Home() {
     );
 
   const isMobile = window.innerWidth < 768;
-  const slides = chunkArray(Reviews, isMobile ? 1 : 3);
+  // const slides = chunkArray(Reviews, isMobile ? 1 : 3);
 
 
 
@@ -673,41 +673,81 @@ function Home() {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Aadhya Rao",
-      role: "Digital Marketer",
-      thumbnail: "https://img.youtube.com/vi/ysz5S6PUM-U/mqdefault.jpg",
-      videoId: "ysz5S6PUM-U",
-    },
-    {
-      name: "Suresh Kumar",
-      role: "Tech Lead",
-      thumbnail: "https://img.youtube.com/vi/eVTXPUF4Oz4/mqdefault.jpg",
-      videoId: "eVTXPUF4Oz4",
-    },
-    {
-      name: "Devi Sri",
-      role: "Designer",
-      thumbnail: "https://img.youtube.com/vi/ScMzIvxBSi4/mqdefault.jpg",
-      videoId: "ScMzIvxBSi4",
-    },
-    {
-      name: "Aditya Varma",
-      role: "Product Manager",
-      thumbnail: "https://img.youtube.com/vi/TcMBFSGVi1c/mqdefault.jpg",
-      videoId: "TcMBFSGVi1c",
-    },
-    {
-      name: "Kalyani",
-      role: "Software Engineer",
-      thumbnail: "https://img.youtube.com/vi/M7lc1UVf-VE/mqdefault.jpg",
-      videoId: "M7lc1UVf-VE",
-    },
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+  const [selected, setSelected] = useState(null);
 
-  const [selected, setSelected] = useState(testimonials[0]);
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await axios.post(
+          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni"
+        );
 
+        if (res.data?.success && Array.isArray(res.data.testimoni)) {
+          // ✅ Only include testimonials that are active and have a valid videoId
+          const videoTestimonials = res.data.testimoni.filter(
+            (t) =>
+              t.status === "active" &&
+              t.videoId &&
+              t.videoId.trim() !== ""
+          );
+
+          setTestimonials(videoTestimonials);
+
+          // ✅ Set first video testimonial as default selected
+          if (videoTestimonials.length > 0) {
+            setSelected(videoTestimonials[0]);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await axios.post(
+          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni"
+        );
+
+        if (res.data?.success && Array.isArray(res.data.testimoni)) {
+          // ✅ Filter only active + with videoId
+          const filtered = res.data.testimoni.filter(
+            (t) => t.status === "active" && t.videoId
+          );
+
+          // ✅ Map API fields to front-end fields
+          const formatted = filtered.map((t) => ({
+            name: t.name,
+            location: t.role || "Customer",
+            rating: Number(t.rating) || 5,
+            description: t.description || "",
+            image: `https://api.carnivalcastle.com/${t.image}`,
+            avatar: `https://api.carnivalcastle.com/${t.image}`, // using same image as avatar
+            occasion: t.type === "Yes" ? "Special Celebration" : "",
+          }));
+
+          // ✅ Group into slides of 3 per slide
+          const grouped = [];
+          for (let i = 0; i < formatted.length; i += 3) {
+            grouped.push(formatted.slice(i, i + 3));
+          }
+
+          setSlides(grouped);
+        }
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
 
   const BaseUrl = "https://api.carnivalcastle.com/v1/carnivalApi/";
@@ -1015,6 +1055,7 @@ function Home() {
 
                 <TheaterDetails />
 
+                {/*
                 <section className="py-5 bg-light">
                   <div className="container">
                     <div className="text-center mb-5">
@@ -1024,13 +1065,13 @@ function Home() {
                       </p>
                     </div>
 
-                    {/* ✅ Grid for md & larger devices */}
+                   
                     <div className="row g-4 justify-content-center d-none d-md-flex">
                       {packages.map((pkg) => (
                         <div className="col-xl-3 col-lg-4 col-md-6 col-sm-10" key={pkg.id}>
                           <div className="card border-0 shadow rounded-4 h-100 text-center gradient45 position-relative">
                             <div className="card-body d-flex flex-column p-4">
-                              {/* Title + Subtitle */}
+                              
                               <div className="mb-3">
                                 <h4 className="fw-bold mb-1">{pkg.title}</h4>
                                 <p
@@ -1041,7 +1082,7 @@ function Home() {
                                 </p>
                               </div>
 
-                              {/* Features */}
+                           
                               <ul className="list-unstyled text-start flex-grow-1 mb-1 px-2">
                                 {Object.keys(pkg.detailedFeatures).map((feature, index) => (
                                   <li key={index} className="d-flex align-items-center mb-2">
@@ -1056,14 +1097,14 @@ function Home() {
                                 ))}
                               </ul>
 
-                              {/* Price */}
+                       
                               {pkg?.price ? (
                                 <p className="fw-semibold mb-4 mt-auto">
                                   Starts from ₹{pkg.price}
                                 </p>
                               ) : null}
 
-                              {/* Button */}
+                         
                               <button
                                 className="btn text-white w-100"
                                 style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
@@ -1077,7 +1118,7 @@ function Home() {
                       ))}
                     </div>
 
-                    {/* ✅ Carousel for mobile only */}
+                 
                     <div
                       id="packagesCarousel"
                       className="carousel slide d-block d-md-none"
@@ -1086,7 +1127,7 @@ function Home() {
                       data-bs-wrap="true"
                       data-bs-pause="false"
                     >
-                      {/* Indicators */}
+                    
                       <div className="carousel-indicators">
                         {packages.map((_, index) => (
                           <button
@@ -1101,7 +1142,7 @@ function Home() {
                         ))}
                       </div>
 
-                      {/* Carousel Items */}
+                  
                       <div className="carousel-inner">
                         {packages.map((pkg, index) => (
                           <div
@@ -1112,7 +1153,7 @@ function Home() {
                               <div className="col-10">
                                 <div className="card border-0 shadow rounded-4 text-center gradient45">
                                   <div className="card-body d-flex flex-column p-4">
-                                    {/* Title + Subtitle */}
+                                   
                                     <div className="mb-3">
                                       <h4 className="fw-bold mb-1">{pkg.title}</h4>
                                       <p
@@ -1123,7 +1164,7 @@ function Home() {
                                       </p>
                                     </div>
 
-                                    {/* Features */}
+                                 
                                     <ul className="list-unstyled text-start flex-grow-1 mb-1 px-2">
                                       {Object.keys(pkg.detailedFeatures).map((feature, idx) => (
                                         <li key={idx} className="d-flex align-items-center mb-2">
@@ -1138,14 +1179,14 @@ function Home() {
                                       ))}
                                     </ul>
 
-                                    {/* Price */}
+                                   
                                     {pkg?.price ? (
                                       <p className="fw-semibold mb-4 mt-auto">
                                         Starts from ₹{pkg.price}
                                       </p>
                                     ) : null}
 
-                                    {/* Button */}
+                                   
                                     <button
                                       className="btn text-white w-100"
                                       style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
@@ -1161,7 +1202,7 @@ function Home() {
                         ))}
                       </div>
 
-                      {/* Controls */}
+                     
                       <button
                         className="carousel-control-prev"
                         type="button"
@@ -1183,6 +1224,7 @@ function Home() {
                     </div>
                   </div>
                 </section>
+                */}
 
 
 
@@ -1245,34 +1287,80 @@ function Home() {
                         };
                       });
 
-                      return (
-                        <div className="card text-white p-4 rounded-4 border-0" style={{ backgroundColor: "#E9DCFF" }}>
-                          <div className="row g-4">
-                            {modifiedOccasions.map((occasion, index) => (
-                              <div className="col-12 col-md-6 col-lg-4" key={index}>
-                                <div className="card h-100 text-center bg-light rounded-4 gradient45 p-3">
-                                  <div className="card-body d-flex flex-column align-items-center">
-                                    <img
-                                      src={URLS.Base + occasion.image}
-                                      alt={occasion.name}
-                                      className="rounded-circle mb-3"
-                                      style={{
-                                        height: "100px",
-                                        width: "100px",
-                                        objectFit: "cover",
-                                        border: "2px solid #E9BE5F",
-                                      }}
-                                    />
-                                    <h5 className="card-title" style={{ color: "#681DC0" }}>
-                                      {occasion.name}
-                                    </h5>
+                      // Detect device width
+                      const screenWidth = window.innerWidth;
+                      let groupSize = 3;
+                      if (screenWidth < 768) groupSize = 1;
+                      else if (screenWidth < 992) groupSize = 2;
 
-                                    <p className="card-text small">{occasion.description}</p>
-                                  </div>
+                      // Group data for carousel slides
+                      const chunkArray = (arr, size) =>
+                        arr.reduce(
+                          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
+                          []
+                        );
+
+                      const slides = chunkArray(modifiedOccasions, groupSize);
+
+                      return (
+                        <div
+                          id="occasionCarousel"
+                          className="carousel slide"
+                          data-bs-ride="carousel"
+                          data-bs-interval="5000"
+                          data-bs-pause="hover"
+                        >
+                          <div className="carousel-inner">
+                            {slides.map((group, slideIndex) => (
+                              <div className={`carousel-item ${slideIndex === 0 ? "active" : ""}`} key={slideIndex}>
+                                <div className="row g-4 justify-content-center">
+                                  {group.map((occasion, index) => (
+                                    <div className="col-12 col-md-6 col-lg-4 d-flex justify-content-center" key={index}>
+                                      <div className="card h-100 text-center bg-light rounded-4 gradient45 p-3 w-100">
+                                        <div className="card-body d-flex flex-column align-items-center">
+                                          <img
+                                            src={URLS.Base + occasion.image}
+                                            alt={occasion.name}
+                                            className="rounded-circle mb-3"
+                                            style={{
+                                              height: "100px",
+                                              width: "100px",
+                                              objectFit: "cover",
+                                              border: "2px solid #E9BE5F",
+                                            }}
+                                          />
+                                          <h5 className="card-title" style={{ color: "#681DC0" }}>
+                                            {occasion.name}
+                                          </h5>
+                                          <p className="card-text small">{occasion.description}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
                             ))}
                           </div>
+
+                          {/* Carousel Controls */}
+                          <button
+                            className="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#occasionCarousel"
+                            data-bs-slide="prev"
+                          >
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Previous</span>
+                          </button>
+                          <button
+                            className="carousel-control-next"
+                            type="button"
+                            data-bs-target="#occasionCarousel"
+                            data-bs-slide="next"
+                          >
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Next</span>
+                          </button>
 
                           {/* Proceed Button */}
                           <div className="text-center mt-5">
@@ -1284,12 +1372,12 @@ function Home() {
                               Proceed <i className="bi bi-arrow-right ms-2"></i>
                             </button>
                           </div>
-
                         </div>
                       );
                     })()}
                   </div>
                 </section>
+
 
 
 
@@ -1495,77 +1583,113 @@ function Home() {
 
                 <section className="py-5 bg-white position-relative">
                   <Container>
-                    <h2 className="text-center fw-bold mb-3 dark-text">What Our Customers Say</h2>
+                    <h2 className="text-center fw-bold mb-3 dark-text">
+                      What Our Customers Say
+                    </h2>
                     <p className="text-center mb-5 fs-5 light-text">
                       Real stories. Real celebrations. Real magic at Carnival Castle.
                     </p>
 
-                    <Carousel controls interval={5000} pause="hover" fade={false} wrap>
-                      {slides.map((group, idx) => (
-                        <Carousel.Item key={idx}>
-                          <Row className="g-4 justify-content-center">
-                            {group.map((review, index) => (
-                              <Col lg={4} md={6} sm={12} key={index}>
-                                {/* Added mb-4 class for bottom margin */}
-                                <div className="review-card position-relative rounded-4 overflow-hidden shadow mb-4" style={{ height: '400px' }}>
-                                  <img
-                                    src={review.image}
-                                    alt="Review background"
-                                    className="w-100 h-100 object-fit-cover"
-                                    style={{ filter: 'brightness(70%)' }}
-                                  />
+                    {(() => {
 
-                                  {/* Bottom overlay card */}
-                                  <div
-                                    className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
-                                    style={{
-                                      height: 'auto',
-                                      minHeight: '45%',
-                                      width: "90%",
-                                      backgroundColor: 'rgba(233, 220, 255, 0.95)',
-                                      backdropFilter: 'blur(4px)',
-                                    }}
-                                  >
-                                    <div className="d-flex align-items-center mb-3">
+
+                      // Dynamically group slides based on screen width
+                      const screenWidth = window.innerWidth;
+                      let groupSize = 3;
+                      if (screenWidth < 768) groupSize = 1;
+                      else if (screenWidth < 992) groupSize = 2;
+
+                      const chunkArray = (arr, size) =>
+                        arr.reduce(
+                          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
+                          []
+                        );
+
+                      const slides = chunkArray(testimonials, groupSize);
+
+                      return (
+                        <Carousel controls interval={5000} pause="hover" fade={false} wrap>
+                          {slides.map((group, idx) => (
+                            <Carousel.Item key={idx}>
+                              <Row className="g-4 justify-content-center">
+                                {group.map((review, index) => (
+                                  <Col lg={4} md={6} sm={12} key={index}>
+                                    <div
+                                      className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
+                                      style={{ height: "400px" }}
+                                    >
                                       <img
-                                        src={review.avatar}
-                                        alt="avatar"
-                                        className="rounded-circle me-3 border-2 border-light"
-                                        width="60"
-                                        height="60"
+                                        src={review.image}
+                                        alt="Review background"
+                                        className="w-100 h-100 object-fit-cover"
+                                        style={{ filter: "brightness(70%)" }}
                                       />
-                                      <div>
-                                        <h6 className="mb-0 fw-bold text-dark">{review.name}</h6>
-                                        <small className="text-dark">{review.location}</small>
+
+                                      {/* Bottom overlay card */}
+                                      <div
+                                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
+                                        style={{
+                                          height: "auto",
+                                          minHeight: "45%",
+                                          width: "90%",
+                                          backgroundColor: "rgba(233, 220, 255, 0.95)",
+                                          backdropFilter: "blur(4px)",
+                                        }}
+                                      >
+                                        <div className="d-flex align-items-center mb-3">
+                                          <img
+                                            src={review.avatar}
+                                            alt="avatar"
+                                            className="rounded-circle me-3 border-2 border-light"
+                                            width="60"
+                                            height="60"
+                                          />
+                                          <div>
+                                            <h6 className="mb-0 fw-bold text-dark">
+                                              {review.name}
+                                            </h6>
+                                            <small className="text-dark">
+                                              {review.location}
+                                            </small>
+                                          </div>
+                                        </div>
+
+                                        <div className="text-warning mb-2 fs-5">
+                                          {"★".repeat(review.rating)}
+                                          {"☆".repeat(5 - review.rating)}
+                                        </div>
+
+                                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
+                                          {review.description}
+                                        </p>
+
+                                        {review.occasion && (
+                                          <p
+                                            className="mb-0 text-dark"
+                                            style={{ fontSize: "0.85rem" }}
+                                          >
+                                            <strong>Occasion:</strong> {review.occasion}
+                                          </p>
+                                        )}
                                       </div>
                                     </div>
-                                    <div className="text-warning mb-2 fs-5">
-                                      {'★'.repeat(review.rating)}
-                                      {'☆'.repeat(5 - review.rating)}
-                                    </div>
-                                    <p className="mb-2 text-dark" style={{ fontSize: '0.9rem' }}>
-                                      {review.description}
-                                    </p>
-                                    {review.occasion && (
-                                      <p className="mb-0 text-dark" style={{ fontSize: '0.85rem' }}>
-                                        <strong>Occasion:</strong> {review.occasion}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </Col>
-                            ))}
-                          </Row>
-                        </Carousel.Item>
-                      ))}
-                    </Carousel>
+                                  </Col>
+                                ))}
+                              </Row>
+                            </Carousel.Item>
+                          ))}
+                        </Carousel>
+                      );
+                    })()}
+
+                    <style jsx>{`
+      .carousel-indicators {
+        display: none !important;
+      }
+    `}</style>
                   </Container>
-                  <style jsx>{`
-    .carousel-indicators {
-      display: none !important;
-    }
-  `}</style>
                 </section>
+
 
 
 
@@ -1680,104 +1804,145 @@ function Home() {
                 </section>
 
 
-                <section className="py-5 position-relative text-dark" style={{ backgroundColor: "#E6D8F5" }}>
-                  <Container fluid="lg">
-                    <Row className="align-items-center">
-                      {/* LEFT SECTION */}
-                      <Col lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
-                        <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
-                        <p className="light-text fs-6">
-                          Real stories. Real celebrations. Real magic at Carnival Castle.
-                        </p>
-                      </Col>
+                {testimonials.length > 0 && (
+  <section
+    className="py-5 position-relative text-dark"
+    style={{ backgroundColor: "#E6D8F5" }}
+  >
+    <Container fluid="lg">
+      <Row className="align-items-center">
+        {/* LEFT SECTION */}
+        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
+          <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
+          <p className="light-text fs-6">
+            Real stories. Real celebrations. Real magic at Carnival Castle.
+          </p>
+        </Col>
 
-                      {/* RIGHT SECTION */}
-                      <Col lg={9}>
-                        <div className="d-flex align-items-center justify-content-center overflow-auto gap-3">
-                          {/* Side Testimonials */}
-                          {testimonials
-                            .filter((item) => item.videoId !== selected.videoId)
-                            .map((user, idx) => (
-                              <div
-                                key={idx}
-                                className="side-card d-flex align-items-center justify-content-center rounded shadow"
-                                style={{
-                                  width: "80px",
-                                  height: "280px",
-                                  backgroundImage: `url(${user.thumbnail})`,
-                                  backgroundSize: "cover",
-                                  backgroundPosition: "center",
-                                  cursor: "pointer",
-                                  position: "relative",
-                                }}
-                                onClick={() => setSelected(user)}
-                              >
-                                <h6 className="vertical-text text-white fw-bold m-0">{user.name}</h6>
-                                <div className="overlay"></div>
-                              </div>
-                            ))}
+        {/* RIGHT SECTION */}
+        <Col xs={12} lg={9}>
+          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
+            {/* Side Thumbnails */}
+            {testimonials
+              .filter((item) => selected && item.videoId !== selected.videoId)
+              .map((user, idx) => (
+                <div
+                  key={idx}
+                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
+                  style={{
+                    width: "70px",
+                    height: "200px",
+                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                  onClick={() => setSelected(user)}
+                >
+                  <h6 className="vertical-text text-white fw-bold m-0">
+                    {user.name}
+                  </h6>
+                  <div className="overlay"></div>
+                </div>
+              ))}
 
-                          {/* Main Testimonial */}
-                          <div
-                            className="main-video-card position-relative rounded shadow overflow-hidden"
-                            style={{
-                              width: "300px",
-                              height: "400px",
-                              backgroundColor: "#000",
-                            }}
-                          >
-                            <iframe
-                              width="100%"
-                              height="80%"
-                              src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
-                              title={selected.name}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            ></iframe>
+            {/* Main Video */}
+            {selected && (
+              <div
+                className="main-video-card position-relative rounded shadow overflow-hidden"
+                style={{
+                  width: "100%",
+                  maxWidth: "400px",
+                  height: "300px",
+                  backgroundColor: "#000",
+                }}
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
+                  title={selected.name}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
 
-                            {/* Label */}
-                            <div className="position-absolute bottom-0 start-0 end-0 p-3">
-                              <div className="bg-white d-inline-block px-3 py-2 rounded-4 w-100 shadow-sm">
-                                <strong className="dark-text">{selected.name}</strong><br />
-                                <small className="text-dark">{selected.role}</small>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Container>
+                {/* Label */}
+                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
+                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
+                    <strong className="dark-text">{selected.name}</strong>
+                    <br />
+                    <small className="text-dark">{selected.role}</small>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </Col>
+      </Row>
+    </Container>
 
-                  {/* Styles */}
-                  <style jsx>{`
+    {/* Styles */}
+    <style jsx>{`
+      .side-card {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+
+      .side-card:hover {
+        transform: scale(1.05);
+      }
+
+      .vertical-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        font-size: 0.85rem;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+
+      .main-video-card iframe {
+        border: none;
+      }
+
+      @media (max-width: 992px) {
         .side-card {
-          position: relative;
-          overflow: hidden;
+          width: 60px;
+          height: 150px;
         }
 
-        .vertical-text {
-          writing-mode: vertical-rl;
-          text-orientation: mixed;
-          transform: rotate(180deg);
-          font-size: 1rem;
-          z-index: 2;
+        .main-video-card {
+          height: 250px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .side-card {
+          width: 50px;
+          height: 120px;
         }
 
-        .overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.4);
-          z-index: 1;
+        .main-video-card {
+          height: 200px;
         }
+      }
+    `}</style>
+  </section>
+)}
 
-        .main-video-card iframe {
-          border: none;
-        }
-      `}</style>
-                </section>
+
 
 
 

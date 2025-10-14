@@ -1814,7 +1814,7 @@ button.bg-danger:hover {
 
 .header.min-header {
   width: 100%;
-  position: fixed;
+  /* position: fixed; */
   z-index: 9999;
   -webkit-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -4808,7 +4808,7 @@ body.indexsix .container-fluid {
 }
 
 .header.headersix.main-header {
-  position: absolute;
+  /* position: absolute; */
   z-index: 1050;
   top: 0;
   left: 0;

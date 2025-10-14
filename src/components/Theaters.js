@@ -23,43 +23,37 @@ import { FaBirthdayCake, FaCar, FaParking, FaPhone } from "react-icons/fa";
 
 function Theaters() {
   const [theaters, setTheaters] = useState([]);
+  const [allTheatersByLocation, setAllTheatersByLocation] = useState({}); // For "Other Locations"
   const [isLoading, setIsLoading] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState({});
   const [modalPop, setModalPop] = useState(false);
-
   const getTodayDateString = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
   const [expandedCards, setExpandedCards] = useState({});
   const toggleView1 = (cardIndex) => {
     setExpandedCards((prev) => ({
       ...prev,
-      [cardIndex]: !prev[cardIndex], // toggle only this card
+      [cardIndex]: !prev[cardIndex],
     }));
   };
-
-
   const [date, setDate] = useState(getTodayDateString());
   const [activeshow, setActiveshow] = useState([]);
   const [activeSlot, setActiveSlot] = useState(null);
   const [nintymin, setnintymin] = useState(0);
   const [addresses, setAddresses] = useState([]);
-
   const [locationModalOpen, setLocationModalOpen] = useState(true);
   const [comingSoonModalOpen, setComingSoonModalOpen] = useState(false);
   const [location, setLocation] = useState(null);
   const [activeIndices, setActiveIndices] = useState({});
-
   const BaseUrl = "https://api.carnivalcastle.com/";
   const navigate = useNavigate();
 
-  // Format date to YYYY-MM-DD
   const formatDate = (dateString) => {
     const dateObj = new Date(dateString);
     const dd = dateObj.getDate().toString().padStart(2, "0");
@@ -67,80 +61,59 @@ function Theaters() {
     const yyyy = dateObj.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   };
-
   const formattedDateString = formatDate(date);
 
-  // Also update the handleLocationSelect function to pass the current date
   const handleLocationSelect = async (address) => {
     console.log("Book Now clicked:", address);
     setLocation(address);
     if (address._id) {
       setLocationModalOpen(false);
-      // Pass the current date state
       await fetchTheatersByAddressId(address._id, date);
+      await fetchAllTheatersGroupedByLocation(date); // Fetch all for "Other Locations"
     } else {
       setLocationModalOpen(false);
       setComingSoonModalOpen(true);
     }
   };
 
-  // Update the fetchTheatersByAddressId function to accept selectedDate parameter
   const fetchTheatersByAddressId = async (addressId, selectedDate = date) => {
-    setIsLoading(false);
+    setIsLoading(true);
     try {
       if (!addressId) {
         console.warn("No addressId provided. Skipping theater filtering.");
         setTheaters([]);
         return;
       }
-
-      // Use the selectedDate parameter to format the date for API call
       const formattedDate = formatDate(selectedDate);
-
       const res = await axios.post(
         "https://api.carnivalcastle.com/v1/carnivalApi/web/getalltheatres/forweb",
         { slotDate: formattedDate }
       );
-      console.log(res.data)
-
       if (res.data && res.data.success) {
-        // Filter theaters by matching addressId
         const filteredTheaters = res.data.theatres.filter(theater => {
           const theaterAddressId = typeof theater.address === 'string'
             ? theater.address
             : theater.address?._id;
-
           return theaterAddressId?.toString() === addressId?.toString();
         });
-
         const now = new Date();
-
         const processedTheaters = filteredTheaters.map(theater => {
           const processedSlots = (theater.availableSlots || []).map(slot => {
             const [slotHours, slotMinutes] = slot.fromTime.split(':').map(Number);
             const [endHours, endMinutes] = slot.toTime.split(':').map(Number);
-
-            // Convert slot times to full DateTime objects using selectedDate
             const slotStart = new Date(selectedDate);
             slotStart.setHours(slotHours, slotMinutes, 0, 0);
-
             const slotEnd = new Date(selectedDate);
             slotEnd.setHours(endHours, endMinutes, 0, 0);
-
             const currentSelectedDate = new Date(selectedDate);
-
             const isToday =
               currentSelectedDate.getFullYear() === now.getFullYear() &&
               currentSelectedDate.getMonth() === now.getMonth() &&
               currentSelectedDate.getDate() === now.getDate();
-
             const isBooked = slot.isBooked || false;
-
-            // Calculate past/disable only if it's today
             const isPast = isToday && now > slotEnd;
             const isAlmostOver = isToday && !isPast && (slotEnd - now <= 10 * 60 * 1000);
             const isDisabled = isBooked || isPast || isAlmostOver;
-
             return {
               ...slot,
               isBooked,
@@ -149,17 +122,12 @@ function Theaters() {
               isDisabled
             };
           });
-
           return {
             ...theater,
             availableSlots: processedSlots,
-            // availableSlotsCount: processedSlots.filter(s => !s.isDisabled).length            
           };
         });
-
         setTheaters(processedTheaters);
-
-        // Set carousel indices
         const initialIndices = {};
         processedTheaters.forEach((_, index) => {
           initialIndices[index] = 0;
@@ -177,6 +145,66 @@ function Theaters() {
     }
   };
 
+  // NEW: Fetch ALL theaters grouped by location for "Other Locations" section
+  const fetchAllTheatersGroupedByLocation = async (selectedDate = date) => {
+    try {
+      const formattedDate = formatDate(selectedDate);
+      const res = await axios.post(
+        "https://api.carnivalcastle.com/v1/carnivalApi/web/getalltheatres/forweb",
+        { slotDate: formattedDate }
+      );
+      if (res.data && res.data.success) {
+        const now = new Date();
+        const processedTheaters = res.data.theatres.map(theater => {
+          const processedSlots = (theater.availableSlots || []).map(slot => {
+            const [slotHours, slotMinutes] = slot.fromTime.split(':').map(Number);
+            const [endHours, endMinutes] = slot.toTime.split(':').map(Number);
+            const slotStart = new Date(selectedDate);
+            slotStart.setHours(slotHours, slotMinutes, 0, 0);
+            const slotEnd = new Date(selectedDate);
+            slotEnd.setHours(endHours, endMinutes, 0, 0);
+            const currentSelectedDate = new Date(selectedDate);
+            const isToday =
+              currentSelectedDate.getFullYear() === now.getFullYear() &&
+              currentSelectedDate.getMonth() === now.getMonth() &&
+              currentSelectedDate.getDate() === now.getDate();
+            const isBooked = slot.isBooked || false;
+            const isPast = isToday && now > slotEnd;
+            const isAlmostOver = isToday && !isPast && (slotEnd - now <= 10 * 60 * 1000);
+            const isDisabled = isBooked || isPast || isAlmostOver;
+            return {
+              ...slot,
+              isBooked,
+              isPast,
+              isAlmostOver,
+              isDisabled
+            };
+          });
+          return {
+            ...theater,
+            availableSlots: processedSlots,
+          };
+        });
+
+        // Group by address
+        const grouped = {};
+        processedTheaters.forEach(theater => {
+          const addrId = typeof theater.address === 'string' ? theater.address : theater.address?._id;
+          if (!grouped[addrId]) {
+            grouped[addrId] = {
+              addressObj: theater.address,
+              theaters: []
+            };
+          }
+          grouped[addrId].theaters.push(theater);
+        });
+
+        setAllTheatersByLocation(grouped);
+      }
+    } catch (error) {
+      console.error("Error fetching all theaters for other locations:", error);
+    }
+  };
 
   const handleCarouselSelect = (selectedIndex, theaterIndex) => {
     setActiveIndices(prev => ({
@@ -184,7 +212,6 @@ function Theaters() {
       [theaterIndex]: selectedIndex
     }));
   };
-
 
   const closeComingSoonModal = () => {
     setComingSoonModalOpen(false);
@@ -205,11 +232,8 @@ function Theaters() {
   };
 
   useEffect(() => {
-    // Always use today's date when component mounts
     setDate(getTodayDateString());
     fetchAddresses();
-
-    // Clean up session storage
     const itemsToRemove = [
       "bookingid", "specialPersonName", "TotalPrice", "TotalPrice2", "addons",
       "addonsData", "adonsJSON", "userDetails", "theaterName", "theaterId",
@@ -250,34 +274,27 @@ function Theaters() {
     description: "",
     eventName: "",
   });
-
   const [lgShow, setLgShow] = useState(false);
   const modelshow = () => {
     setLgShow(!false);
   };
-
   const formsubmit = (e) => {
     e.preventDefault();
     EnquiryNow();
   };
-
   const handleChange = (e) => {
     let myUser = { ...form };
     myUser[e.target.name] = e.target.value;
     setform(myUser);
   };
-
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // Update the handleDateChange function to pass the selectedDate
   const handleDateChange = async (e) => {
     const selectedDate = e.target.value;
     if (!selectedDate) {
       console.error("No date selected");
       return;
     }
-
-    // Don't allow dates before today
     const selectedDateObj = new Date(selectedDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -285,17 +302,14 @@ function Theaters() {
       toast.error("Please select today's or a future date");
       return;
     }
-
     setDate(selectedDate);
     const formattedDate = formatDate(selectedDate);
     sessionStorage.setItem("date", formattedDate);
-
     if (location && location._id) {
-      // Pass the selectedDate as the second parameter
       await fetchTheatersByAddressId(location._id, selectedDate);
+      await fetchAllTheatersGroupedByLocation(selectedDate);
     }
   };
-
 
   const EnquiryNow = () => {
     const dataArray = {
@@ -305,7 +319,6 @@ function Theaters() {
       description: form.description,
       eventName: form.eventName,
     };
-
     axios.post(URLS.AddEnquiry, dataArray).then(
       (res) => {
         if (res.status === 200) {
@@ -329,12 +342,10 @@ function Theaters() {
   };
 
   const [Contact, setContact] = useState([]);
-
   useEffect(() => {
     GetFooterData();
     sessionStorage.setItem("date", formattedDateString);
   }, []);
-
   const GetFooterData = () => {
     axios.post(URLS.GetFooter, {}, {}).then((res) => {
       if (res.status === 200) {
@@ -359,43 +370,32 @@ function Theaters() {
   const calculateDuration = (fromTime, toTime) => {
     const [fromH, fromM] = fromTime.split(":").map(Number);
     const [toH, toM] = toTime.split(":").map(Number);
-
     let start = fromH * 60 + fromM;
     let end = toH * 60 + toM;
-
-    // Handle overnight slots (e.g., 22:00 → 00:30)
     if (end <= start) {
       end += 24 * 60;
     }
-
     const diffMinutes = end - start;
     const hours = Math.floor(diffMinutes / 60);
     const minutes = diffMinutes % 60;
-
     return `${hours}:${minutes === 0 ? "00" : minutes} hr`;
   };
 
   const handleSlot = (e, data, index) => {
     e.preventDefault();
-
     if (!data.isBooked) {
       setSelectedSlot((prevState) => ({
         ...prevState,
         [index]: data,
       }));
     }
-
     setActiveshow(data);
     setActiveSlot(data);
-
     const fromTime12 = convertTo12HourFormat(data.fromTime);
     const toTime12 = convertTo12HourFormat(data.toTime);
-
     sessionStorage.setItem("slot", `${fromTime12} - ${toTime12}`);
-
     const selectedValue = (e.target.value || `${fromTime12} / ${toTime12}`).trim();
     console.log("Selected Value:", selectedValue);
-
     const durationInMinutes = calculateSlotDuration(data.fromTime, data.toTime);
     setnintymin(durationInMinutes || 0);
     sessionStorage.setItem("nintymin", durationInMinutes || 0);
@@ -442,6 +442,12 @@ function Theaters() {
     navigate("/Basicplan");
   };
 
+  // Helper to get address name by ID
+  const getAddressNameById = (id) => {
+    const addr = addresses.find(a => a._id === id);
+    return addr ? `${addr.name}, ${addr.city}` : "Unknown Location";
+  };
+
   return (
     <>
       <Helmet>
@@ -452,7 +458,6 @@ function Theaters() {
           content="Celebrate at Bing Enjoy Private Theatres in Hyderabad. Perfect for birthdays, anniversaries, & special events with custom decor, food & privacy. Book now!!"
         />
       </Helmet>
-
       {isLoading ? (
         <div
           className="text-center"
@@ -477,7 +482,6 @@ function Theaters() {
       ) : (
         <div className="home-page indexsix">
           <Header />
-
           {locationModalOpen && (
             <div
               className="modal fade show"
@@ -495,7 +499,6 @@ function Theaters() {
               aria-modal="true"
               role="dialog"
             >
-              {/* Back Button - Added at top left */}
               <button
                 className="btn position-absolute d-flex align-items-center justify-content-center"
                 style={{
@@ -505,7 +508,7 @@ function Theaters() {
                   borderRadius: "8px",
                   padding: "6px 12px",
                   fontSize: "14px",
-                  backgroundColor: "#C69FF4", // Semi-transparent light background
+                  backgroundColor: "#C69FF4",
                   color: "#000",
                   boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
                   border: "none"
@@ -521,7 +524,6 @@ function Theaters() {
                   <p className="text-white"><i>We’ve got the vibe, you bring the party.</i></p>
                 </div>
               </div>
-
               <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div
                   className="modal-content p-3 p-md-4 lightdark-back"
@@ -541,7 +543,6 @@ function Theaters() {
                               border: "2px solid #E9DCFF",
                             }}
                           >
-                            {/* Image Section */}
                             <div style={{ flexShrink: 0, position: "relative", padding: "15px" }}>
                               {address.image ? (
                                 <>
@@ -553,7 +554,7 @@ function Theaters() {
                                       width: "100%",
                                       objectFit: "cover",
                                       height: "250px",
-                                      borderRadius: "15px", // 👈 rounded corners
+                                      borderRadius: "15px",
                                     }}
                                   />
                                   <a
@@ -594,12 +595,7 @@ function Theaters() {
                                   <i className="bi bi-image text-dark"></i>
                                 </div>
                               )}
-
                             </div>
-
-
-
-                            {/* Content Section */}
                             <div className="card-body d-flex flex-column justify-content-between p-3" style={{ flex: 1 }}>
                               <div>
                                 <h5 className="card-title fw-semibold mb-1 text-dark">
@@ -619,7 +615,6 @@ function Theaters() {
                                   >
                                     <FaBirthdayCake /> Cakes Available
                                   </span>
-
                                   <span
                                     className="badge rounded-pill lighter-back dark-text d-flex align-items-center"
                                     style={{ fontSize: "0.9rem", padding: "0.5em 1em", gap: "0.4em" }}
@@ -646,20 +641,17 @@ function Theaters() {
                   </div>
                   <div className="d-flex justify-content-center mt-3">
                     <a
-                      href="tel:+918977917555" // replace with your phone number
+                      href="tel:+918977917555"
                       className="btn btn-lg light-back text-white d-inline-flex align-items-center gap-2"
                       style={{ width: "auto", textDecoration: "none" }}
                     >
                       <FaPhone /> Book Via Call
                     </a>
                   </div>
-
-
                 </div>
               </div>
             </div>
           )}
-
           {comingSoonModalOpen && (
             <div
               className="modal fade show"
@@ -698,7 +690,6 @@ function Theaters() {
               </div>
             </div>
           )}
-
           {location && (
             <>
               <main className="main-wrapper">
@@ -712,7 +703,7 @@ function Theaters() {
                         <div className="breadcrumb-wrap text-center">
                           <div className="breadcrumb-title mb-30 text-white">
                             <h1 style={{ marginTop: "20px" }}>
-                              Choose your dream theatre setup in {location.city}
+                              Choose your dream theatre setup in {location.name}
                             </h1>
                           </div>
                           <p className="text-light"><i>From royal vibes to romantic corners - pick your perfect match!</i></p>
@@ -722,7 +713,7 @@ function Theaters() {
                   </div>
                 </section>
                 <section
-                  className="shop-area pt-5 pb-5 p-relative light-back"
+                  className="shop-area pt-0 pb-5 p-relative light-back"
                   style={{ background: "#F8EBFF" }}
                 >
                   <div className="container-md">
@@ -741,7 +732,6 @@ function Theaters() {
                           <label className="fw-bold text-dark mb-2" style={{ fontSize: "18px" }}>
                             Select Your Date
                           </label>
-
                           <div className="d-flex gap-2">
                             <div className="input-group">
                               <span className="input-group-text bg-white border-end-0">
@@ -759,20 +749,14 @@ function Theaters() {
                                 onChange={handleDateChange}
                               />
                             </div>
-
-
                           </div>
-
                           <p className="mt-2 mb-0" style={{ fontStyle: "italic", fontSize: "14px", color: "#555" }}>
                             <i className="fa-solid fa-burger light-text"></i> Food and Beverages can be ordered at theater
                           </p>
                         </div>
                       </div>
-
                     </div>
                     <br />
-
-
                     <div className="container">
                       <div className="row">
                         {theaters && theaters.length > 0 ? (
@@ -780,7 +764,6 @@ function Theaters() {
                             const isBookNowActive = selectedSlot[i] !== undefined;
                             const colors = ["danger", "success", "warning", "primary"];
                             const bgColor = colors[i % colors.length];
-
                             return (
                               <div
                                 className="col-12 col-sm-6 col-md-4 mb-4 d-flex"
@@ -791,14 +774,11 @@ function Theaters() {
                                   style={{
                                     minHeight: "820px",
                                     overflow: "hidden",
-                                    //border: "2px solid #C69FF4",
                                   }}
                                 >
                                   <div style={cardHeaderStyle}>
                                     <div
                                       className="course-img"
-                                      // data-label={data.batchType}
-                                      // id="ort"
                                       style={{ position: "relative" }}
                                     >
                                       <div className="doc-img">
@@ -822,8 +802,8 @@ function Theaters() {
                                                       fontSize: "0.75rem",
                                                     }}
                                                   >
-                                                    {data.availableSlotsCount > 0
-                                                      ? `${data.availableSlotsCount} slots available`
+                                                    {data.availableSlots && data.availableSlots.filter(s => !s.isDisabled).length > 0
+                                                      ? `${data.availableSlots.filter(s => !s.isDisabled).length} slots available`
                                                       : "0 slots available"}
                                                   </span>
                                                   <span
@@ -860,7 +840,6 @@ function Theaters() {
                                                 </div>
                                               </Carousel.Item>
                                             ))}
-
                                           {data.video && (
                                             <Carousel.Item>
                                               <div style={{ position: "relative" }}>
@@ -874,8 +853,8 @@ function Theaters() {
                                                     fontSize: "0.75rem",
                                                   }}
                                                 >
-                                                  {data.availableSlotsCount > 0
-                                                    ? `${data.availableSlotsCount} slots available`
+                                                  {data.availableSlots && data.availableSlots.filter(s => !s.isDisabled).length > 0
+                                                    ? `${data.availableSlots.filter(s => !s.isDisabled).length} slots available`
                                                     : "0 slots available"}
                                                 </span>
                                                 <video
@@ -901,7 +880,6 @@ function Theaters() {
                                       </div>
                                     </div>
                                   </div>
-
                                   <div className="card-body d-flex flex-column justify-content-between">
                                     <div>
                                       <div className="d-flex justify-content-between align-items-center mb-2">
@@ -920,27 +898,24 @@ function Theaters() {
                                             </p>
                                           )}
                                         </div>
-
                                         <div>
                                           {selectedSlot[i] ? (
                                             <div>
-                                              <p
-                                                className="card-price mb-2 dark-text"
-
-                                              >
-                                                <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}>
+                                              <p className="card-price mb-2 dark-text" style={{ fontFamily: "'Fraunces', serif" }}>
+                                                <span style={{ fontSize: "1.4rem", fontWeight: 600 }}>
                                                   ₹{" "}
                                                   {selectedSlot[i].duration === "1:30 hr"
                                                     ? data.oneandhalfslotPrice
                                                     : selectedSlot[i].offerPrice ?? data.offerPrice}
-                                                  /-{" "}
+                                                  /-
                                                 </span>
-                                                <br />
-                                                {/* <span style={{ fontSize: "0.87rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}><del> ₹ {data.price}/-{" "}</del></span> */}
+                                                <span style={{ fontSize: "0.9rem", fontWeight: 400, marginLeft: "0.5rem" }}>
+                                                  for upto {data.maxPeople} {data.maxPeople > 1 ? "people" : "person"}
+                                                </span>
                                               </p>
+
                                             </div>
                                           ) : (
-                                            // <span style={{ fontSize: "1.4rem", fontWeight: "600", fontFamily: "'Fraunces', serif" }}> ₹ {data.offerPrice}/-{" "}</span>
                                             <div
                                               className="my-3"
                                               style={{ fontSize: "0.8rem", color: "#666" }}
@@ -950,9 +925,7 @@ function Theaters() {
                                           )}
                                         </div>
                                       </div>
-
                                       <div className="row align-items-center mb-2 text-center text-md-start g-2">
-                                        {/* Extra Person */}
                                         <div className="col-12 col-sm-6">
                                           <p
                                             className="card-details mb-2 light-text"
@@ -960,7 +933,6 @@ function Theaters() {
                                               fontSize: "0.85rem",
                                               display: "flex",
                                               justifyContent: "center",
-                                              justifyContentMd: "flex-start",
                                             }}
                                           >
                                             <span
@@ -971,8 +943,6 @@ function Theaters() {
                                             </span>
                                           </p>
                                         </div>
-
-                                        {/* Max People */}
                                         <div className="col-12 col-sm-6">
                                           <p
                                             className="card-details mb-2 light-text"
@@ -980,7 +950,6 @@ function Theaters() {
                                               fontSize: "0.85rem",
                                               display: "flex",
                                               justifyContent: "center",
-                                              justifyContentMd: "flex-start",
                                             }}
                                           >
                                             <span
@@ -992,8 +961,6 @@ function Theaters() {
                                           </p>
                                         </div>
                                       </div>
-
-
                                       <p
                                         className="card-details  light-text"
                                         style={{ fontSize: "0.75rem" }}
@@ -1001,7 +968,6 @@ function Theaters() {
                                         <span className="fw-bold">
                                           <i className="bi bi-tv-fill"></i> Features
                                         </span>
-
                                         <div className="row mt-1">
                                           {(expandedCards[i] ? data.features : data.features.slice(0, 4)).map(
                                             (feature, index) => (
@@ -1020,7 +986,6 @@ function Theaters() {
                                             )
                                           )}
                                         </div>
-
                                         {data.features.length > 4 && (
                                           <div
                                             onClick={() => toggleView1(i)}
@@ -1036,23 +1001,7 @@ function Theaters() {
                                           </div>
                                         )}
                                       </p>
-
-
-                                      {/* <p
-                                        className="card-details mb-2 light-text"
-                                        style={{ fontSize: "0.75rem" }}
-                                      >
-                                        <i className="bi bi-info-circle-fill"></i>{" "}
-                                        <span className="fw-bold">Description:</span>{" "}
-                                        {data.description
-                                          .split(" ")
-                                          .slice(0, 15)
-                                          .join(" ")}
-                                        {data.description.split(" ").length > 25 &&
-                                          "..."}
-                                      </p> */}
                                     </div>
-
                                     <div>
                                       <div className="slot-selection mb-3">
                                         <p
@@ -1061,8 +1010,6 @@ function Theaters() {
                                         >
                                           Select Time Slot
                                         </p>
-
-                                        {/* Horizontal Scrollable Row */}
                                         <div
                                           style={{
                                             display: "flex",
@@ -1075,12 +1022,9 @@ function Theaters() {
                                             data.availableSlots.map((slot, index) => {
                                               const fromTime12 = convertTo12HourFormat(slot.fromTime);
                                               const toTime12 = convertTo12HourFormat(slot.toTime);
-
                                               const duration = calculateDuration(slot.fromTime, slot.toTime);
-
                                               const isSelected =
                                                 selectedSlot[i] && selectedSlot[i]._id === slot._id;
-
                                               let discount = null;
                                               if (
                                                 duration === "1:30 hr" &&
@@ -1089,7 +1033,6 @@ function Theaters() {
                                               ) {
                                                 discount = data.offerPrice - data.oneandhalfslotPrice;
                                               }
-
                                               return (
                                                 <div
                                                   key={index}
@@ -1102,10 +1045,10 @@ function Theaters() {
                                                     className="btn"
                                                     onClick={(e) => handleSlot(e, { ...slot, duration }, i)}
                                                     style={{
-                                                      minWidth: "50px",      // smaller card width
-                                                      height: "60px",        // fixed height to make square-ish
+                                                      minWidth: "50px",
+                                                      height: "60px",
                                                       padding: "0px 0px",
-                                                      fontSize: "0.7rem",    // smaller text
+                                                      fontSize: "0.7rem",
                                                       fontWeight: "500",
                                                       lineHeight: "1.2",
                                                       borderRadius: "8px",
@@ -1123,22 +1066,19 @@ function Theaters() {
                                                       textDecoration: slot.isBooked ? "line-through" : "none",
                                                       cursor: slot.isBooked ? "not-allowed" : "pointer",
                                                       display: "flex",
-                                                      flexDirection: "column", // stack vertically
+                                                      flexDirection: "column",
                                                       justifyContent: "center",
                                                       alignItems: "center",
                                                     }}
                                                     disabled={slot.isBooked}
                                                   >
                                                     <span>{fromTime12}</span>-
-
                                                     <span>{toTime12}</span>
                                                   </button>
-
-                                                  {/* Discount Below */}
                                                   {discount !== null && !slot.isBooked && (
                                                     <div
                                                       style={{
-                                                        fontSize: "0.65rem", // smaller discount text
+                                                        fontSize: "0.65rem",
                                                         color: "#28a745",
                                                         marginTop: "4px",
                                                         fontWeight: "600",
@@ -1148,13 +1088,10 @@ function Theaters() {
                                                     </div>
                                                   )}
                                                 </div>
-
                                               );
                                             })}
                                         </div>
                                       </div>
-
-                                      {/* Price Section */}
                                       {selectedSlot[i] ? (
                                         <div className="mt-3">
                                           <div
@@ -1173,7 +1110,6 @@ function Theaters() {
                                               for up to {data.maxPeople} people
                                             </span>
                                           </div>
-
                                           <div
                                             style={{
                                               fontSize: "0.8rem",
@@ -1181,7 +1117,7 @@ function Theaters() {
                                               marginTop: "2px",
                                             }}
                                           >
-                                            Max {data.maxPeople} people allowed
+                                            Additional ₹{data.extraPersonprice}/- per person after {data.maxPeople} people
                                           </div>
                                         </div>
                                       ) : (
@@ -1192,8 +1128,6 @@ function Theaters() {
                                           Select a slot to check price
                                         </div>
                                       )}
-
-                                      {/* Book Now button */}
                                       <div className="col-12 mt-3">
                                         <button
                                           disabled={!isBookNowActive}
@@ -1213,8 +1147,6 @@ function Theaters() {
                                         </button>
                                       </div>
                                     </div>
-
-
                                   </div>
                                 </div>
                               </div>
@@ -1229,8 +1161,83 @@ function Theaters() {
                     </div>
                   </div>
                 </section>
-              </main>
 
+                {/* ===== NEW SECTION: Theaters in Other Locations ===== */}
+                {location && Object.keys(allTheatersByLocation).length > 0 && (
+                  <section className="shop-area pt-5 pb-5 p-relative light-back" style={{ background: "#FFF9F0" }}>
+                    <div className="container">
+                      <h3 className="text-center mb-4" style={{ color: "#fff" }}>Theaters in Other Locations</h3>
+                      {Object.entries(allTheatersByLocation).map(([addrId, group]) => {
+                        // Skip current location
+                        if (addrId === location._id) return null;
+
+                        const locationName = getAddressNameById(addrId);
+                        return (
+                          <div key={addrId} className="mb-5">
+                            <h4 className="mb-3" style={{ borderBottom: "2px solid #E9DCFF", paddingBottom: "8px", color: "#fff" }}>
+                              {locationName}
+                            </h4>
+                            <div className="row">
+                              {group.theaters.map((theater, idx) => {
+                                const colors = ["danger", "success", "warning", "primary"];
+                                const bgColor = colors[idx % colors.length];
+                                const theaterKey = `other-${addrId}-${theater._id}`;
+                                return (
+                                  <div className="col-12 col-md-6 col-lg-4 mb-4" key={theaterKey}>
+                                    <div className="card rounded-3 bg-white shadow-sm h-100">
+                                      <div style={{ height: "200px", overflow: "hidden" }}>
+                                        {theater.image && theater.image[0] ? (
+                                          <img
+                                            src={BaseUrl + theater.image[0]}
+                                            alt={theater.name}
+                                            className="img-fluid w-100"
+                                            style={{ objectFit: "cover", height: "100%" }}
+                                          />
+                                        ) : (
+                                          <div className="bg-light d-flex align-items-center justify-content-center" style={{ height: "100%" }}>
+                                            <span>No Image</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="card-body d-flex flex-column">
+                                        <h6 className="card-title light-text">{theater.name}</h6>
+                                        <p className="dark-text small">
+                                          <i className="fa-solid fa-location-dot me-1"></i>
+                                          {locationName}
+                                        </p>
+                                        <div className="mt-auto">
+                                          <button
+                                            className="btn btn-sm w-100"
+                                            style={{
+                                              backgroundColor: "#40008C",
+                                              color: "white",
+                                              fontWeight: "600"
+                                            }}
+                                            onClick={() => {
+                                              const addr = addresses.find(a => a._id === addrId);
+                                              if (addr) {
+                                                handleLocationSelect(addr);
+                                              }
+                                            }}
+                                          >
+                                            View Slots
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
+                {/* ===== END NEW SECTION ===== */}
+
+              </main>
               <section className="p-5 px-2 px-md-4 d-flex justify-content-center light-back">
                 <div
                   className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 p-4 bg-white shadow-lg"
@@ -1238,7 +1245,6 @@ function Theaters() {
                     borderRadius: '12px'
                   }}
                 >
-                  {/* Text Section */}
                   <div>
                     <h5 className="fw-bold mb-1 text-dark">
                       Hurry! Slots get booked fast.
@@ -1247,8 +1253,6 @@ function Theaters() {
                       Extra charges apply if guests exceed max limit.
                     </p>
                   </div>
-
-                  {/* Button Section */}
                   <div>
                     <a
                       href="#"
@@ -1265,7 +1269,6 @@ function Theaters() {
                   </div>
                 </div>
               </section>
-
               <Modal
                 size="md"
                 show={lgShow}
@@ -1317,7 +1320,6 @@ function Theaters() {
                                     className="form-control "
                                   />
                                 </div>
-
                                 <div className="mb-3 input-group">
                                   <span className="input-group-text">
                                     <FontAwesomeIcon icon={faPhone} />
@@ -1345,7 +1347,6 @@ function Theaters() {
                                     className="form-control "
                                   />
                                 </div>
-
                                 <div className="mb-3 input-group">
                                   <span className="input-group-text">
                                     <FontAwesomeIcon icon={faEnvelope} />
@@ -1362,7 +1363,6 @@ function Theaters() {
                                     className="form-control"
                                   />
                                 </div>
-
                                 <div className="mb-3 input-group">
                                   <span className="input-group-text">
                                     <FontAwesomeIcon icon={faCalendarAlt} />
@@ -1379,7 +1379,6 @@ function Theaters() {
                                     className="form-control"
                                   />
                                 </div>
-
                                 <div className="mb-3 input-group">
                                   <span className="input-group-text">
                                     <FontAwesomeIcon icon={faCalendarAlt} />
@@ -1409,9 +1408,8 @@ function Theaters() {
                       </div>
                     </div>
                   </div>
-                </Modal.Body>border
+                </Modal.Body>
               </Modal>
-
               <Modal
                 size="md"
                 show={modalPop}
@@ -1453,7 +1451,6 @@ function Theaters() {
               </Modal>
             </>
           )}
-
           <ToastContainer />
           <Footer />
         </div>
@@ -1461,5 +1458,4 @@ function Theaters() {
     </>
   );
 }
-
 export default Theaters;
