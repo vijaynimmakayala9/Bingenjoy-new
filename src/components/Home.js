@@ -1042,6 +1042,144 @@ function Home() {
   `}</style>
                 </section>
 
+                {testimonials.length > 0 && (
+                  <section
+                    className="py-5 position-relative text-dark"
+                    style={{ backgroundColor: "#fff" }}
+                  >
+                    <Container fluid="lg">
+                      <Row className="align-items-center">
+                        {/* LEFT SECTION */}
+                        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
+                          <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
+                          <p className="light-text fs-6">
+                            Real stories. Real celebrations. Real magic at Binge N Joy.
+                          </p>
+                        </Col>
+
+                        {/* RIGHT SECTION */}
+                        <Col xs={12} lg={9}>
+                          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
+                            {/* Side Thumbnails */}
+                            {testimonials
+                              .filter((item) => selected && item.videoId !== selected.videoId)
+                              .map((user, idx) => (
+                                <div
+                                  key={idx}
+                                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
+                                  style={{
+                                    width: "70px",
+                                    height: "200px",
+                                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                    cursor: "pointer",
+                                    position: "relative",
+                                  }}
+                                  onClick={() => setSelected(user)}
+                                >
+                                  <h6 className="vertical-text text-white fw-bold m-0">
+                                    {user.name}
+                                  </h6>
+                                  <div className="overlay"></div>
+                                </div>
+                              ))}
+
+                            {/* Main Video */}
+                            {selected && (
+                              <div
+                                className="main-video-card position-relative rounded shadow overflow-hidden"
+                                style={{
+                                  width: "100%",
+                                  maxWidth: "400px",
+                                  height: "300px",
+                                  backgroundColor: "#000",
+                                }}
+                              >
+                                <iframe
+                                  width="100%"
+                                  height="100%"
+                                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
+                                  title={selected.name}
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                ></iframe>
+
+                                {/* Label */}
+                                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
+                                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
+                                    <strong className="dark-text">{selected.name}</strong>
+                                    <br />
+                                    <small className="text-dark">{selected.role}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </Col>
+                      </Row>
+                    </Container>
+
+                    {/* Styles */}
+                    <style jsx>{`
+      .side-card {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+
+      .side-card:hover {
+        transform: scale(1.05);
+      }
+
+      .vertical-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        font-size: 0.85rem;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+
+      .main-video-card iframe {
+        border: none;
+      }
+
+      @media (max-width: 992px) {
+        .side-card {
+          width: 60px;
+          height: 150px;
+        }
+
+        .main-video-card {
+          height: 250px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .side-card {
+          width: 50px;
+          height: 120px;
+        }
+
+        .main-video-card {
+          height: 200px;
+        }
+      }
+    `}</style>
+                  </section>
+                )}
+
 
                 {/* <section className="pt-5 bg-white" >
                   <div className="container-fluid text-center pt-2 gradientright">
@@ -1799,143 +1937,7 @@ function Home() {
                 </section>
 
 
-                {testimonials.length > 0 && (
-                  <section
-                    className="py-5 position-relative text-dark"
-                    style={{ backgroundColor: "#E6D8F5" }}
-                  >
-                    <Container fluid="lg">
-                      <Row className="align-items-center">
-                        {/* LEFT SECTION */}
-                        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
-                          <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
-                          <p className="light-text fs-6">
-                            Real stories. Real celebrations. Real magic at Binge N Joy.
-                          </p>
-                        </Col>
 
-                        {/* RIGHT SECTION */}
-                        <Col xs={12} lg={9}>
-                          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
-                            {/* Side Thumbnails */}
-                            {testimonials
-                              .filter((item) => selected && item.videoId !== selected.videoId)
-                              .map((user, idx) => (
-                                <div
-                                  key={idx}
-                                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
-                                  style={{
-                                    width: "70px",
-                                    height: "200px",
-                                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    cursor: "pointer",
-                                    position: "relative",
-                                  }}
-                                  onClick={() => setSelected(user)}
-                                >
-                                  <h6 className="vertical-text text-white fw-bold m-0">
-                                    {user.name}
-                                  </h6>
-                                  <div className="overlay"></div>
-                                </div>
-                              ))}
-
-                            {/* Main Video */}
-                            {selected && (
-                              <div
-                                className="main-video-card position-relative rounded shadow overflow-hidden"
-                                style={{
-                                  width: "100%",
-                                  maxWidth: "400px",
-                                  height: "300px",
-                                  backgroundColor: "#000",
-                                }}
-                              >
-                                <iframe
-                                  width="100%"
-                                  height="100%"
-                                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
-                                  title={selected.name}
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                  allowFullScreen
-                                ></iframe>
-
-                                {/* Label */}
-                                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
-                                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
-                                    <strong className="dark-text">{selected.name}</strong>
-                                    <br />
-                                    <small className="text-dark">{selected.role}</small>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </Col>
-                      </Row>
-                    </Container>
-
-                    {/* Styles */}
-                    <style jsx>{`
-      .side-card {
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease;
-      }
-
-      .side-card:hover {
-        transform: scale(1.05);
-      }
-
-      .vertical-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        transform: rotate(180deg);
-        font-size: 0.85rem;
-        z-index: 2;
-        text-align: center;
-      }
-
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1;
-      }
-
-      .main-video-card iframe {
-        border: none;
-      }
-
-      @media (max-width: 992px) {
-        .side-card {
-          width: 60px;
-          height: 150px;
-        }
-
-        .main-video-card {
-          height: 250px;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .side-card {
-          width: 50px;
-          height: 120px;
-        }
-
-        .main-video-card {
-          height: 200px;
-        }
-      }
-    `}</style>
-                  </section>
-                )}
 
 
 

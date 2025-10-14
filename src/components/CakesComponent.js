@@ -500,13 +500,7 @@ const CakesComponent = () => {
                           key={index}
                         >
                           <div
-                            className={selectedCakes.some(
-                              (cake2) =>
-                                String(cake2._id) === String(cake._id)
-                            )
-                              ? "card-body bg-light-grey text-white card shadow-lg mx-auto "
-                              : "card-body bg-white text-black card shadow-lg mx-auto"
-                            }
+                            className="card shadow-lg mx-auto"
                             style={{
                               // height: "74%",
                               height: "auto",
@@ -515,105 +509,109 @@ const CakesComponent = () => {
                               position: "relative",
                               marginBottom: "12px",
                               cursor: "pointer",
+                              border: "2px solid #C69FF4",
                             }}
-                            onClick={() => handleImageClick(cake, index)}
+
                           >
-                            <img
-                              src={URLS.Base + cake.image}
-                              className="card-img-top rounded-circle"
-                              alt={cake.name}
-                              style={{
-                                height: "150px",
-                                width: "150px",
-                                objectFit: "cover",
-                              }}
-                            />
+                            <div onClick={() => handleImageClick(cake, index)}>
+                              <img
+                                src={URLS.Base + cake.image}
+                                className="card-img-top"
+                                alt={cake.name}
+                                style={{
+                                  height: "150px",
+                                  objectFit: "cover",
+                                }}
+                              />
 
-                            <div
-                              className={selectedCakes.some(
-                                (cake2) =>
-                                  String(cake2._id) === String(cake._id)
-                              )
-                                ? "card-body bg-light-grey text-white"
-                                : "card-body bg-white text-black"
-                              }
-                            // className="card-body bg-dark text-white "
-                            // style={{
-                            //   background:
-                            //     selectedCakes.includes(cake) ||
-                            //     newCakes.find(
-                            //       (cartCake) =>
-                            //         String(cartCake._id) === cake._id
-                            //     )
-                            //       ? "var(--gold-gradient) !important" // MILK
-                            //       : "#212529", // dark
-                            //   borderRadius: "3px",
-                            // }}
-
-                            // className=
-                            >
-                              <h6 className="card-title d-flex align-items-center">
-                                {cake.name}
-                                {isEggless && (
-                                  <span
-                                    className="badge bg-success ms-2"
-                                    style={{
-                                      position: "absolute",
-                                      top: "10px",
-                                      right: "10px",
-                                    }}
-                                  >
-                                    Eggless
-                                  </span>
-                                )}
-                                <img
-                                  src={
-                                    isEggless
-                                      ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABbUlEQVR4nGNgGDZAdH6Fh9iCisfiCyv+k40XVPwTW1hxRnRBiTKGBWILyx9RZPhCFIuWYlgAk6QoFBaVWUEtOEoTC8QXVZiDzBBbUH6CJhZILqgwBluwsOIMSRaILSz3F1tYsV9sQcUXMF5Yvk98YYUPujrRReX60CC6QLQFYgsrOvBEaDOKGYsqdaBBdJkoC8QWVQYQSjESCyu84EE0v1IDEkTl14mzYEH5AcLJsnwPTL3IvFJVqPgt4ixYWP6ViHT/Aa5+boUSNIjuEemDii9E+OA9PIgWlstBLKh4SL0gWlCxG6ZeeE6pFFT8KbFB5E8wkheUecLVL6sUh/rgJVEWQIOpHY/rG5HVSi2sEIbGwRuiLQAB8UXlvmILKvaKLyj/LL6w4hMo5SAnTxgQnFnOjx7x1C3sVtXzQHxW/pkmFsisKuSExsE3mljAMDONFWrOL9pWOAsr7mKvMqlgidiC8gdiCytcKAqJQQUAHGz+5dhaYC0AAAAASUVORK5CYII="
-                                      : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABW0lEQVR4nN2VP0sDQRDF01gIgoWFYGGhCBaCxRWGS/LeXXKFihK/kljoF/FT+LcRLFIIFoKgaDTZPRUVEy0sjOSYO84YzWruQBzYZvYxP+bNsJvJ/JvwyXkNXGmy9dujyDcNVHzXnfwE0GS1n+L6I2izGyC47MuFQsEWwEEqAOU4c0Ed4DAVQN11LQFUfgTQjlPWwJ4GmsEhdxW51KnzXXc2sAg4MgZocuPLYQJrca0iZ6SDYyOAJld6bUwdWAz1NXJaACdmAGC/50oC26H+BpiSLTo17eDZAPAY6fP5Ccmfm3bQNAA8RBblcuOSv0zSoq1Qf2vbY2JRzQzgOGWDIS9E+mJxVPK+EUC6WP/mzVmNa69LpRHZojtjQDsUsKzJHQU0FPnU3pz4eoZx73nDnYNP9rEjhwTQSAVQzWYHpc5LKoCWZQ3IbF7T/nDOun+ZSUCAC016/Tjxt+IdjFUzfH0mcf4AAAAASUVORK5CYII="
-                                  }
-                                  style={{ width: "20px", height: "auto" }}
-                                  className="ms-2"
-                                  alt="icon"
-                                />
-                              </h6>
-                            </div>
-                          </div>
-                          <div style={{ padding: "0px 15px 15px 15px" }}>
-                            <select
-                              className="form-select form-select-sm"
-                              // disabled={!selectedCakes.length || !selectedCakes.includes(cake)}
-                              disabled={
-                                !selectedCakes.some(
+                              <div
+                                className={selectedCakes.some(
                                   (cake2) =>
                                     String(cake2._id) === String(cake._id)
                                 )
-                              }
-                              value={selectedWeights[cake._id] || "500"}
-                              // value={
-                              //   selectedCakes.includes(cake)
-                              //     ? selectedWeights[index] ||
-                              //       newCakes.find(
-                              //         (cartCake) =>
-                              //           String(cartCake._id) ===
-                              //           String(cake._id)
-                              //       )?.quantity
-                              //     : "500"
-                              // }
-                              onChange={(event) =>
-                                handleChange(event, index, cake)
-                              }
-                            >
+                                  ? "card-body text-black lightdark-back"
+                                  : "card-body text-black"
+                                }
+                              // className="card-body bg-dark text-white "
+                              // style={{
+                              //   background:
+                              //     selectedCakes.includes(cake) ||
+                              //     newCakes.find(
+                              //       (cartCake) =>
+                              //         String(cartCake._id) === cake._id
+                              //     )
+                              //       ? "var(--gold-gradient) !important" // MILK
+                              //       : "#212529", // dark
+                              //   borderRadius: "3px",
+                              // }}
 
-                              {/* {cake?.cakelengths.map((data, index)=>(
+                              // className=
+                              >
+                                <h6 className="card-title d-flex align-items-center">
+                                  {cake.name}
+                                  {isEggless && (
+                                    <span
+                                      className="badge bg-success ms-2"
+                                      style={{
+                                        position: "absolute",
+                                        top: "10px",
+                                        right: "10px",
+                                      }}
+                                    >
+                                      Eggless
+                                    </span>
+                                  )}
+                                  <img
+                                    src={
+                                      isEggless
+                                        ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABbUlEQVR4nGNgGDZAdH6Fh9iCisfiCyv+k40XVPwTW1hxRnRBiTKGBWILyx9RZPhCFIuWYlgAk6QoFBaVWUEtOEoTC8QXVZiDzBBbUH6CJhZILqgwBluwsOIMSRaILSz3F1tYsV9sQcUXMF5Yvk98YYUPujrRReX60CC6QLQFYgsrOvBEaDOKGYsqdaBBdJkoC8QWVQYQSjESCyu84EE0v1IDEkTl14mzYEH5AcLJsnwPTL3IvFJVqPgt4ixYWP6ViHT/Aa5+boUSNIjuEemDii9E+OA9PIgWlstBLKh4SL0gWlCxG6ZeeE6pFFT8KbFB5E8wkheUecLVL6sUh/rgJVEWQIOpHY/rG5HVSi2sEIbGwRuiLQAB8UXlvmILKvaKLyj/LL6w4hMo5SAnTxgQnFnOjx7x1C3sVtXzQHxW/pkmFsisKuSExsE3mljAMDONFWrOL9pWOAsr7mKvMqlgidiC8gdiCytcKAqJQQUAHGz+5dhaYC0AAAAASUVORK5CYII="
+                                        : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABW0lEQVR4nN2VP0sDQRDF01gIgoWFYGGhCBaCxRWGS/LeXXKFihK/kljoF/FT+LcRLFIIFoKgaDTZPRUVEy0sjOSYO84YzWruQBzYZvYxP+bNsJvJ/JvwyXkNXGmy9dujyDcNVHzXnfwE0GS1n+L6I2izGyC47MuFQsEWwEEqAOU4c0Ed4DAVQN11LQFUfgTQjlPWwJ4GmsEhdxW51KnzXXc2sAg4MgZocuPLYQJrca0iZ6SDYyOAJld6bUwdWAz1NXJaACdmAGC/50oC26H+BpiSLTo17eDZAPAY6fP5Ccmfm3bQNAA8RBblcuOSv0zSoq1Qf2vbY2JRzQzgOGWDIS9E+mJxVPK+EUC6WP/mzVmNa69LpRHZojtjQDsUsKzJHQU0FPnU3pz4eoZx73nDnYNP9rEjhwTQSAVQzWYHpc5LKoCWZQ3IbF7T/nDOun+ZSUCAC016/Tjxt+IdjFUzfH0mcf4AAAAASUVORK5CYII="
+                                    }
+                                    style={{ width: "20px", height: "auto" }}
+                                    className="ms-2"
+                                    alt="icon"
+                                  />
+                                </h6>
+                              </div>
+                            </div>
+
+                            <div style={{ padding: "0px 15px 15px 15px" }}>
+                              <select
+                                className="form-select form-select-sm mt-2"
+                                // disabled={!selectedCakes.length || !selectedCakes.includes(cake)}
+                                disabled={
+                                  !selectedCakes.some(
+                                    (cake2) =>
+                                      String(cake2._id) === String(cake._id)
+                                  )
+                                }
+                                value={selectedWeights[cake._id] || "500"}
+                                // value={
+                                //   selectedCakes.includes(cake)
+                                //     ? selectedWeights[index] ||
+                                //       newCakes.find(
+                                //         (cartCake) =>
+                                //           String(cartCake._id) ===
+                                //           String(cake._id)
+                                //       )?.quantity
+                                //     : "500"
+                                // }
+                                onChange={(event) =>
+                                  handleChange(event, index, cake)
+                                }
+                              >
+
+                                {/* {cake?.cakelengths.map((data, index)=>(
 
                               <option key={index} value={data.value}>{data.value}</option>
                               ))} */}
-                              <option value="500">500 gm</option>
-                              <option value="1">1 kg</option>
-                              <option value="2">2 kg</option>
-                              <option value="3">3 kg</option>
-                            </select>
+                                <option value="500">500 gm</option>
+                                <option value="1">1 kg</option>
+                                <option value="2">2 kg</option>
+                                <option value="3">3 kg</option>
+                              </select>
+                            </div>
+
                           </div>
                         </div>
                       ))}
