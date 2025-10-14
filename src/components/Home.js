@@ -1009,9 +1009,7 @@ function Home() {
                       {addresses.map((addr, idx) => (
                         <a
                           key={idx}
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                            `${addr.addressLine1}, ${addr.addressLine2}`
-                          )}`}
+                          href={addr.addressLine2}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="branch-badge text-decoration-none fw-semibold d-inline-flex align-items-center"
