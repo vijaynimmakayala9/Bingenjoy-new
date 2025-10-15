@@ -244,16 +244,16 @@ const ComboOccassions = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="alert alert-warning mt-3">
+                      <div className="alert alert-info mt-3">
                         <i
                           className="fa fa-exclamation-triangle me-2"
-                          style={{ color: "red" }}
+                          style={{ color: "purple" }}
                         ></i>
-                        <span style={{ color: "red" }}>
+                        <span style={{ color: "purple" }}>
                           <b>ATTENTION:</b> Decoration cannot be customized.
                         </span>{" "}
                         <br />
-                        <span style={{ color: "red" }}>
+                        <span style={{ color: "purple" }}>
                           <b>Note:</b> You can add multiple names by comma
                           seperated, if you have multiple special person
                         </span>

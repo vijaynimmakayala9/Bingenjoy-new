@@ -329,12 +329,12 @@ const AddOns = () => {
                           No addons available
                         </div>
                       )}
-                      <div className="alert alert-warning mt-3">
+                      <div className="alert alert-info mt-3">
                         <i
                           className="fa fa-exclamation-triangle me-2"
-                          style={{ color: "red" }}
+                          style={{ color: "purple" }}
                         ></i>
-                        <span style={{ color: "red" }}>
+                        <span style={{ color: "purple" }}>
                           <b>Note:</b> The timing of the photography sessions is
                           subject to the availability of our photographers.
                         </span>

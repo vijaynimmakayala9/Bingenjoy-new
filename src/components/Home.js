@@ -889,29 +889,32 @@ function Home() {
                         </div>
                         <section className="banner-section d-flex align-items-center position-relative text-white">
                           <div className="overlay"></div>
-                          <div className="container position-relative" style={{ zIndex: 2 }}>
-                            <div className="row justify-content-center text-center text-md-start">
-                              <div className="col-lg-10">
+                          <div className="container position-relative h-100" style={{ zIndex: 2 }}>
+                            <div className="row justify-content-center text-center text-md-start h-100">
+                              <div className="col-lg-10 d-flex flex-column justify-content-center h-100">
+                                {/* Optional heading & text */}
                                 {/* <h1 className="display-4 fw-bold text-shadow mb-3">
-                                  <Typer
-                                    text="Surprise your loved one only at Binge N Joy Private Theaters"
-                                    typingSpeed={100}
-                                  />
-                                </h1>
-                                <p className="lead mb-4">{data.description}</p>
+          <Typer
+            text="Surprise your loved one only at Binge N Joy Private Theaters"
+            typingSpeed={100}
+          />
+        </h1>
+        <p className="lead mb-4">{data.description}</p> */}
 
-                                <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-sm-start">
+                                {/* Buttons Wrapper */}
+                                <div className="banner-buttons d-flex flex-column flex-sm-row gap-3 z-[9999]">
                                   <a href="/theaters" className="btn btn-lg px-4 fw-bold btn-purple">
                                     Book Now
                                   </a>
                                   <a href="tel:8977917555" className="btn btn-lg px-4 fw-bold btn-purple">
                                     Book via Call
                                   </a>
-                                </div> */}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </section>
+
 
 
                         {/* Floating Cards Section */}

@@ -480,12 +480,12 @@ const CakesComponent = () => {
 
                   {/* Cakes Display */}
                   <div className="col-lg-8 col-md-6 mx-auto bg-white ">
-                    <div className="alert alert-warning m-3">
+                    <div className="alert alert-info m-3">
                       <i
                         className="fa fa-exclamation-triangle me-2"
-                        style={{ color: "red" }}
+                        style={{ color: "purple" }}
                       ></i>
-                      <span style={{ color: "red" }}>
+                      <span style={{ color: "purple" }}>
                         <b>ATTENTION:</b> The images presented are solely for
                         display purposes. The actual cake may vary in
                         appearance."
@@ -616,12 +616,12 @@ const CakesComponent = () => {
                         </div>
                       ))}
                     </div>
-                    <div className="alert alert-warning mt-3">
+                    <div className="alert alert-info mt-3">
                       <i
                         className="fa fa-exclamation-triangle me-2"
-                        style={{ color: "red" }}
+                        style={{ color: "purple" }}
                       ></i>
-                      <span style={{ color: "red" }}>
+                      <span style={{ color: "purple" }}>
                         <b>Note :</b>
                         <div >
                           <span>Customized cakes must be ordered 3days Prior..</span><br />
@@ -629,12 +629,12 @@ const CakesComponent = () => {
                         </div>
                       </span>
                     </div>
-                    <div className="alert alert-warning mt-3">
+                    <div className="alert alert-info mt-3">
                       <i
                         className="fa fa-exclamation-triangle me-2"
-                        style={{ color: "red" }}
+                        style={{ color: "purple" }}
                       ></i>
-                      <span style={{ color: "red" }}>
+                      <span style={{ color: "purple" }}>
                         <b>ATTENTION :</b> The images presented are solely for
                         display purposes. The actual cake may vary in
                         appearance.
