@@ -47,7 +47,7 @@ function Footer() {
                         </li>
                         <li>
                           <a
-                            href="https://www.instagram.com/bingenjoy.hyd?utm_source=qr&igsh=MTI5bG13aHh4bjdzNg=="
+                            href="https://www.instagram.com/binge_n_joy_private_theatres/"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -56,7 +56,7 @@ function Footer() {
                         </li>
                         <li>
                           <a
-                            href="https://wa.me/8977917555"
+                            href="https://api.whatsapp.com/send/?phone=+918977917555&text=Hi&type=phone_number&app_absent=0"
                             target="_blank"
                             rel="noopener noreferrer"
                           >

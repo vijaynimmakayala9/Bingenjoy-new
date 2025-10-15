@@ -246,6 +246,9 @@ function Header() {
                   <NavLink to="/cakes" style={{ color: currentPage() === "cakes" ? "#800080" : "", }}>Cakes</NavLink>
                 </li>
                 <li>
+                  <NavLink to="/food" style={{ color: currentPage() === "food" ? "#800080" : "", }}>AddOns</NavLink>
+                </li>
+                <li>
                   <NavLink to="/enquiry" style={{ color: currentPage() === "enquiry" ? "#800080" : "", }}>GET QUOTE</NavLink>
                 </li>
 

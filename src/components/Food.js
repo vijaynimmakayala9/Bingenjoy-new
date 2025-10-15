@@ -115,11 +115,10 @@ function Food() {
                       <Col md={12}>
                         <div
                           style={{
-                            backgroundColor: "#595B56",
-                            border: "1px dashed gold",
+                            backgroundColor: "#fff",
                           }}
                         >
-                          <h4 className="text-gold-gradient text-center">
+                          <h4 className="light-text text-center">
                             Veg Items
                           </h4>
                           <Row className="p-2">
@@ -168,7 +167,7 @@ function Food() {
                                       />
                                     </div>
                                     <div
-                                      className="food-desc bg-dark"
+                                      className="food-desc gradient45"
                                       style={{
                                         flexGrow: 1,
                                         padding: "10px",
@@ -176,7 +175,7 @@ function Food() {
                                       }}
                                     >
                                       <p
-                                        className="fd-title text-gold-gradient"
+                                        className="fd-title light-text"
                                         style={{ whiteSpace: "normal" }}
                                       >
                                         {item.name}
@@ -195,11 +194,10 @@ function Food() {
                       <Col md={12}>
                         <div
                           style={{
-                            backgroundColor: "#595B56",
-                            border: "1px dashed gold",
+                            backgroundColor: "#fff",
                           }}
                         >
-                          <h4 className="text-gold-gradient text-center">
+                          <h4 className="light-text text-center">
                             Non-veg Items
                           </h4>
                           <Row className="p-2">
@@ -248,7 +246,7 @@ function Food() {
                                       />
                                     </div>
                                     <div
-                                      className="food-desc bg-dark"
+                                      className="food-desc gradient45"
                                       style={{
                                         flexGrow: 1,
                                         padding: "10px",
@@ -256,7 +254,7 @@ function Food() {
                                       }}
                                     >
                                       <p
-                                        className="fd-title text-gold-gradient"
+                                        className="fd-title light-text"
                                         style={{ whiteSpace: "normal" }}
                                       >
                                         {item.name}
@@ -276,11 +274,10 @@ function Food() {
                     <Col md={12}>
                       <div
                         style={{
-                          backgroundColor: "#595B56",
-                          border: "1px dashed gold",
+                          backgroundColor: "#fff",
                         }}
                       >
-                        <h4 className="text-gold-gradient text-center bg-dark">
+                        <h4 className="light-text text-center">
                           All Food Items
                         </h4>
                         <Row className="p-2 d-flex flex-wrap justify-content-start">
@@ -329,7 +326,7 @@ function Food() {
                                     />
                                   </div>
                                   <div
-                                    className="food-desc bg-dark"
+                                    className="food-desc gradient45"
                                     style={{
                                       flexGrow: 1,
                                       padding: "10px",
@@ -337,7 +334,7 @@ function Food() {
                                     }}
                                   >
                                     <p
-                                      className="fd-title text-gold-gradient"
+                                      className="fd-title light-text"
                                       style={{ whiteSpace: "normal" }}
                                     >
                                       {item.name}

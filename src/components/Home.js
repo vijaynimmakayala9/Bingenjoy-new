@@ -1062,7 +1062,8 @@ function Home() {
 
                         {/* RIGHT SECTION */}
                         <Col xs={12} lg={9}>
-                          <div className="d-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
+                          {/* Desktop View (side thumbnails) */}
+                          <div className="d-none d-lg-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
                             {/* Side Thumbnails */}
                             {testimonials
                               .filter((item) => selected && item.videoId !== selected.videoId)
@@ -1095,22 +1096,21 @@ function Home() {
                                 style={{
                                   width: "100%",
                                   maxWidth: "400px",
-                                  height: "300px",
                                   backgroundColor: "#000",
                                 }}
                               >
                                 <iframe
                                   width="100%"
-                                  height="100%"
+                                  height="300"
                                   src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
                                   title={selected.name}
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                   allowFullScreen
                                 ></iframe>
 
-                                {/* Label */}
-                                <div className="position-absolute bottom-0 start-0 end-0 p-2 p-md-3">
-                                  <div className="bg-white d-inline-block px-2 px-md-3 py-1 py-md-2 rounded-4 w-100 shadow-sm">
+                                {/* Label BELOW iframe */}
+                                <div className="label-card mt-2">
+                                  <div className="bg-white px-3 py-2 rounded-4 w-100 shadow-sm text-center">
                                     <strong className="dark-text">{selected.name}</strong>
                                     <br />
                                     <small className="text-dark">{selected.role}</small>
@@ -1118,6 +1118,75 @@ function Home() {
                                 </div>
                               </div>
                             )}
+                          </div>
+
+                          {/* Mobile Carousel */}
+                          <div
+                            id="testimonialCarousel"
+                            className="carousel slide d-lg-none"
+                            data-bs-ride="false"
+                          >
+                            <div className="carousel-inner">
+                              {testimonials.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                >
+                                  <div className="d-flex flex-column align-items-center">
+                                    <div
+                                      className="main-video-card rounded shadow overflow-hidden"
+                                      style={{
+                                        width: "100%",
+                                        maxWidth: "400px",
+                                        backgroundColor: "#000",
+                                      }}
+                                    >
+                                      <iframe
+                                        width="100%"
+                                        height="220"
+                                        src={`https://www.youtube.com/embed/${item.videoId}?autoplay=0&mute=1`}
+                                        title={item.name}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                      ></iframe>
+                                    </div>
+
+                                    {/* Label BELOW iframe */}
+                                    <div className="label-card mt-2 text-center">
+                                      <div className="bg-white px-3 py-2 rounded-4 shadow-sm w-100">
+                                        <strong className="dark-text">{item.name}</strong>
+                                        <br />
+                                        <small className="text-dark">{item.role}</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Manual Controls */}
+                            <button
+                              className="carousel-control-prev"
+                              type="button"
+                              data-bs-target="#testimonialCarousel"
+                              data-bs-slide="prev"
+                            >
+                              <span
+                                className="carousel-control-prev-icon bg-dark rounded-circle p-2"
+                                aria-hidden="true"
+                              ></span>
+                            </button>
+                            <button
+                              className="carousel-control-next"
+                              type="button"
+                              data-bs-target="#testimonialCarousel"
+                              data-bs-slide="next"
+                            >
+                              <span
+                                className="carousel-control-next-icon bg-dark rounded-circle p-2"
+                                aria-hidden="true"
+                              ></span>
+                            </button>
                           </div>
                         </Col>
                       </Row>
@@ -1163,10 +1232,6 @@ function Home() {
           width: 60px;
           height: 150px;
         }
-
-        .main-video-card {
-          height: 250px;
-        }
       }
 
       @media (max-width: 576px) {
@@ -1176,12 +1241,13 @@ function Home() {
         }
 
         .main-video-card {
-          height: 200px;
+          height: 220px;
         }
       }
     `}</style>
                   </section>
                 )}
+
 
 
                 {/* <section className="pt-5 bg-white" >
@@ -1718,113 +1784,139 @@ function Home() {
 
 
                 <section className="py-5 bg-white position-relative">
-                  <Container>
-                    <h2 className="text-center fw-bold mb-3 dark-text">
-                      What Our Customers Say
-                    </h2>
-                    <p className="text-center mb-5 fs-5 light-text">
-                      Real stories. Real celebrations. Real magic at Binge N Joy.
-                    </p>
+  <Container>
+    <h2 className="text-center fw-bold mb-3 dark-text">
+      What Our Customers Say
+    </h2>
+    <p className="text-center mb-5 fs-5 light-text">
+      Real stories. Real celebrations. Real magic at Binge N Joy.
+    </p>
 
-                    {(() => {
+    {(() => {
+      // Responsive group size
+      const screenWidth = window.innerWidth;
+      let groupSize = 3;
+      if (screenWidth < 768) groupSize = 1;
+      else if (screenWidth < 992) groupSize = 2;
 
+      // Helper to chunk testimonials
+      const chunkArray = (arr, size) =>
+        arr.reduce(
+          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
+          []
+        );
 
-                      // Dynamically group slides based on screen width
-                      const screenWidth = window.innerWidth;
-                      let groupSize = 3;
-                      if (screenWidth < 768) groupSize = 1;
-                      else if (screenWidth < 992) groupSize = 2;
+      const slides = chunkArray(testimonials, groupSize);
 
-                      const chunkArray = (arr, size) =>
-                        arr.reduce(
-                          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
-                          []
-                        );
+      return (
+        <Carousel
+          controls={false}
+          indicators={false}
+          interval={4000} // auto slide every 4s
+          pause={false} // continuous autoplay
+          fade={false}
+          wrap
+        >
+          {slides.map((group, idx) => (
+            <Carousel.Item key={idx}>
+              <Row className="g-4 justify-content-center">
+                {group.map((review, index) => (
+                  <Col lg={4} md={6} sm={12} key={index}>
+                    <div
+                      className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
+                      style={{ height: "400px" }}
+                    >
+                      <img
+                        src={review.image}
+                        alt="Review background"
+                        className="w-100 h-100 object-fit-cover"
+                        style={{ filter: "brightness(70%)" }}
+                      />
 
-                      const slides = chunkArray(testimonials, groupSize);
+                      {/* Bottom overlay card */}
+                      <div
+                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
+                        style={{
+                          height: "auto",
+                          minHeight: "45%",
+                          width: "90%",
+                          backgroundColor: "rgba(233, 220, 255, 0.95)",
+                          backdropFilter: "blur(4px)",
+                        }}
+                      >
+                        <div className="d-flex align-items-center mb-3">
+                          <img
+                            src={review.avatar}
+                            alt="avatar"
+                            className="rounded-circle me-3 border-2 border-light"
+                            width="60"
+                            height="60"
+                          />
+                          <div>
+                            <h6 className="mb-0 fw-bold text-dark">
+                              {review.name}
+                            </h6>
+                            <small className="text-dark">
+                              {review.location}
+                            </small>
+                          </div>
+                        </div>
 
-                      return (
-                        <Carousel controls interval={5000} pause="hover" fade={false} wrap>
-                          {slides.map((group, idx) => (
-                            <Carousel.Item key={idx}>
-                              <Row className="g-4 justify-content-center">
-                                {group.map((review, index) => (
-                                  <Col lg={4} md={6} sm={12} key={index}>
-                                    <div
-                                      className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
-                                      style={{ height: "400px" }}
-                                    >
-                                      <img
-                                        src={review.image}
-                                        alt="Review background"
-                                        className="w-100 h-100 object-fit-cover"
-                                        style={{ filter: "brightness(70%)" }}
-                                      />
+                        <div className="text-warning mb-2 fs-5">
+                          {"★".repeat(review.rating)}
+                          {"☆".repeat(5 - review.rating)}
+                        </div>
 
-                                      {/* Bottom overlay card */}
-                                      <div
-                                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
-                                        style={{
-                                          height: "auto",
-                                          minHeight: "45%",
-                                          width: "90%",
-                                          backgroundColor: "rgba(233, 220, 255, 0.95)",
-                                          backdropFilter: "blur(4px)",
-                                        }}
-                                      >
-                                        <div className="d-flex align-items-center mb-3">
-                                          <img
-                                            src={review.avatar}
-                                            alt="avatar"
-                                            className="rounded-circle me-3 border-2 border-light"
-                                            width="60"
-                                            height="60"
-                                          />
-                                          <div>
-                                            <h6 className="mb-0 fw-bold text-dark">
-                                              {review.name}
-                                            </h6>
-                                            <small className="text-dark">
-                                              {review.location}
-                                            </small>
-                                          </div>
-                                        </div>
+                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
+                          {review.description}
+                        </p>
 
-                                        <div className="text-warning mb-2 fs-5">
-                                          {"★".repeat(review.rating)}
-                                          {"☆".repeat(5 - review.rating)}
-                                        </div>
+                        {review.occasion && (
+                          <p
+                            className="mb-0 text-dark"
+                            style={{ fontSize: "0.85rem" }}
+                          >
+                            <strong>Occasion:</strong> {review.occasion}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      );
+    })()}
 
-                                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
-                                          {review.description}
-                                        </p>
-
-                                        {review.occasion && (
-                                          <p
-                                            className="mb-0 text-dark"
-                                            style={{ fontSize: "0.85rem" }}
-                                          >
-                                            <strong>Occasion:</strong> {review.occasion}
-                                          </p>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </Col>
-                                ))}
-                              </Row>
-                            </Carousel.Item>
-                          ))}
-                        </Carousel>
-                      );
-                    })()}
-
-                    <style jsx>{`
+    <style jsx>{`
       .carousel-indicators {
         display: none !important;
       }
+
+      .review-card {
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .review-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 576px) {
+        .review-card {
+          height: 380px;
+        }
+
+        .position-absolute.bottom-0 {
+          padding: 1.2rem !important;
+        }
+      }
     `}</style>
-                  </Container>
-                </section>
+  </Container>
+</section>
+
 
 
 
@@ -1922,7 +2014,7 @@ function Home() {
                       {/* Button Column */}
                       <div className="col-12 col-md-4 text-md-end">
                         <a
-                          href="https://www.instagram.com/bingenjoy.hyd?utm_source=qr&igsh=MTI5bG13aHh4bjdzNg=="
+                          href="https://www.instagram.com/binge_n_joy_private_theatres/"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill text-decoration-none fw-semibold"
