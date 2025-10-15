@@ -772,7 +772,7 @@ const CakesComponent = () => {
                                       <div>{sessionStorage.getItem("addons") || 0}</div>
                                     </div>
 
-                                    <hr />
+                                    {/* <hr />
                                     <div
                                       style={{
                                         display: "flex",
@@ -785,7 +785,7 @@ const CakesComponent = () => {
                                         ₹
                                         {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(totalPrice || 0)}
                                       </div>
-                                    </div>
+                                    </div> */}
                                     <hr />
                                     <div
                                       style={{

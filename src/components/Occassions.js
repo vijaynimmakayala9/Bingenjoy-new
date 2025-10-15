@@ -453,7 +453,7 @@ const Occassions = () => {
                                           <div>₹{occasion.price}</div>
                                         </div>
                                       ))} */}
-                                      <hr />
+                                      {/* <hr />
                                       <div
                                         style={{
                                           display: "flex",
@@ -465,7 +465,7 @@ const Occassions = () => {
                                           ₹
                                           {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("couponAmount") || 0) + parseFloat(sessionStorage.getItem("addons")|| 0) + parseFloat(sessionStorage.getItem("cakeprice") || 0) + parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("occprice") || 0)}
                                         </div>
-                                      </div>
+                                      </div> */}
                                       <hr />
                                       <div
                                         style={{

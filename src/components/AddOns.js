@@ -455,7 +455,7 @@ const AddOns = () => {
                                         <div>Cake</div>
                                         <div>₹ {cakePrice.toFixed(2)}</div>
                                       </div>
-                                      <hr />
+                                      {/* <hr />
                                       <div
                                         style={{
                                           display: "flex",
@@ -464,7 +464,7 @@ const AddOns = () => {
                                       >
                                         <div>Sub Total</div>
                                         <div>₹ {subTotal.toFixed(2)}</div>
-                                      </div>
+                                      </div> */}
                                       <hr />
                                       <div
                                         style={{

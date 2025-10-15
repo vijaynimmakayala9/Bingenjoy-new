@@ -637,7 +637,7 @@ const Basicplan = () => {
                                         {sessionStorage.getItem("addons") || 0}
                                       </div>
                                     </div>
-                                    <hr />
+                                    {/* <hr />
                                     <div
                                       style={{
                                         display: "flex",
@@ -652,7 +652,7 @@ const Basicplan = () => {
                                           `₹ ${SubTotaluserprice}`
                                         )}
                                       </div>
-                                    </div>
+                                    </div> */}
                                     <hr />
                                     <div
                                       style={{

@@ -360,7 +360,7 @@ const BookingForm = () => {
                         <p><strong>Advance Amount:</strong> ₹{sessionStorage.getItem("advancePayment")}</p>
                       </div>
                       <div>
-                        <p><strong>Total Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
+                        <p><strong>Due Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
                       </div>
                     </div>
                   </div>
