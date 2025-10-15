@@ -894,12 +894,12 @@ function Home() {
                               <div className="col-lg-10 d-flex flex-column justify-content-center h-100">
                                 {/* Optional heading & text */}
                                 {/* <h1 className="display-4 fw-bold text-shadow mb-3">
-          <Typer
-            text="Surprise your loved one only at Binge N Joy Private Theaters"
-            typingSpeed={100}
-          />
-        </h1>
-        <p className="lead mb-4">{data.description}</p> */}
+                                      <Typer
+                                        text="Surprise your loved one only at Binge N Joy Private Theaters"
+                                        typingSpeed={100}
+                                      />
+                                    </h1>
+                                    <p className="lead mb-4">{data.description}</p> */}
 
                                 {/* Buttons Wrapper */}
                                 <div className="banner-buttons d-flex flex-column flex-sm-row gap-3 z-[9999]">

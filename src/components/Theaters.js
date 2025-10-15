@@ -558,9 +558,7 @@ function Theaters() {
                                     }}
                                   />
                                   <a
-                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                                      `${address.addressLine1}, ${address.addressLine2}`
-                                    )}`}
+                                    href={address.addressLine2}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     style={{
