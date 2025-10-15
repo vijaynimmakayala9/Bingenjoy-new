@@ -1116,7 +1116,7 @@ function Home() {
                                   <div className="bg-white px-3 py-2 rounded-4 w-100 shadow-sm text-center">
                                     <strong className="dark-text">{selected.name}</strong>
                                     <br />
-                                    <small className="text-dark">{selected.role}</small>
+                                    {/* <small className="text-dark">{selected.role}</small> */}
                                   </div>
                                 </div>
                               </div>
