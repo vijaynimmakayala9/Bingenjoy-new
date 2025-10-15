@@ -1074,7 +1074,10 @@ function Home() {
                                   style={{
                                     width: "70px",
                                     height: "200px",
-                                    backgroundImage: `url(https://api.carnivalcastle.com/${user.image})`,
+                                    backgroundImage: `url(${user.image?.startsWith("upload/")
+                                        ? `https://api.carnivalcastle.com/${user.image}`
+                                        : user.image
+                                      })`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                     cursor: "pointer",
@@ -1784,113 +1787,122 @@ function Home() {
 
 
                 <section className="py-5 bg-white position-relative">
-  <Container>
-    <h2 className="text-center fw-bold mb-3 dark-text">
-      What Our Customers Say
-    </h2>
-    <p className="text-center mb-5 fs-5 light-text">
-      Real stories. Real celebrations. Real magic at Binge N Joy.
-    </p>
+                  <Container>
+                    <h2 className="text-center fw-bold mb-3 dark-text">
+                      What Our Customers Say
+                    </h2>
+                    <p className="text-center mb-5 fs-5 light-text">
+                      Real stories. Real celebrations. Real magic at Binge N Joy.
+                    </p>
 
-    {(() => {
-      // Responsive group size
-      const screenWidth = window.innerWidth;
-      let groupSize = 3;
-      if (screenWidth < 768) groupSize = 1;
-      else if (screenWidth < 992) groupSize = 2;
+                    {(() => {
+                      // Responsive group size
+                      const screenWidth = window.innerWidth;
+                      let groupSize = 3;
+                      if (screenWidth < 768) groupSize = 1;
+                      else if (screenWidth < 992) groupSize = 2;
 
-      // Helper to chunk testimonials
-      const chunkArray = (arr, size) =>
-        arr.reduce(
-          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
-          []
-        );
+                      // Helper to chunk testimonials
+                      const chunkArray = (arr, size) =>
+                        arr.reduce(
+                          (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
+                          []
+                        );
 
-      const slides = chunkArray(testimonials, groupSize);
+                      const slides = chunkArray(testimonials, groupSize);
 
-      return (
-        <Carousel
-          controls={false}
-          indicators={false}
-          interval={4000} // auto slide every 4s
-          pause={false} // continuous autoplay
-          fade={false}
-          wrap
-        >
-          {slides.map((group, idx) => (
-            <Carousel.Item key={idx}>
-              <Row className="g-4 justify-content-center">
-                {group.map((review, index) => (
-                  <Col lg={4} md={6} sm={12} key={index}>
-                    <div
-                      className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
-                      style={{ height: "400px" }}
-                    >
-                      <img
-                        src={review.image}
-                        alt="Review background"
-                        className="w-100 h-100 object-fit-cover"
-                        style={{ filter: "brightness(70%)" }}
-                      />
+                      return (
+                        <Carousel
+                          controls={false}
+                          indicators={false}
+                          interval={4000} // auto slide every 4s
+                          pause={false} // continuous autoplay
+                          fade={false}
+                          wrap
+                        >
+                          {slides.map((group, idx) => (
+                            <Carousel.Item key={idx}>
+                              <Row className="g-4 justify-content-center">
+                                {group.map((review, index) => (
+                                  <Col lg={4} md={6} sm={12} key={index}>
+                                    <div
+                                      className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
+                                      style={{ height: "400px" }}
+                                    >
+                                      <img
+                                        src={
+                                          review.image?.startsWith("upload/")
+                                            ? `https://api.carnivalcastle.com/${review.image}`
+                                            : review.image
+                                        }
+                                        alt="Review background"
+                                        className="w-100 h-100 object-fit-cover"
+                                        style={{ filter: "brightness(70%)" }}
+                                      />
 
-                      {/* Bottom overlay card */}
-                      <div
-                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
-                        style={{
-                          height: "auto",
-                          minHeight: "45%",
-                          width: "90%",
-                          backgroundColor: "rgba(233, 220, 255, 0.95)",
-                          backdropFilter: "blur(4px)",
-                        }}
-                      >
-                        <div className="d-flex align-items-center mb-3">
-                          <img
-                            src={review.avatar}
-                            alt="avatar"
-                            className="rounded-circle me-3 border-2 border-light"
-                            width="60"
-                            height="60"
-                          />
-                          <div>
-                            <h6 className="mb-0 fw-bold text-dark">
-                              {review.name}
-                            </h6>
-                            <small className="text-dark">
-                              {review.location}
-                            </small>
-                          </div>
-                        </div>
 
-                        <div className="text-warning mb-2 fs-5">
-                          {"★".repeat(review.rating)}
-                          {"☆".repeat(5 - review.rating)}
-                        </div>
+                                      {/* Bottom overlay card */}
+                                      <div
+                                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
+                                        style={{
+                                          height: "auto",
+                                          minHeight: "45%",
+                                          width: "90%",
+                                          backgroundColor: "rgba(233, 220, 255, 0.95)",
+                                          backdropFilter: "blur(4px)",
+                                        }}
+                                      >
+                                        <div className="d-flex align-items-center mb-3">
+                                          <img
+                                            src={
+                                              review.image?.startsWith("upload/")
+                                                ? `https://api.carnivalcastle.com/${review.image}`
+                                                : review.image
+                                            }
+                                            alt="avatar"
+                                            className="rounded-circle me-3 border-2 border-light"
+                                            width="60"
+                                            height="60"
+                                          />
+                                          <div>
+                                            <h6 className="mb-0 fw-bold text-dark">
+                                              {review.name}
+                                            </h6>
+                                            <small className="text-dark">
+                                              {review.location}
+                                            </small>
+                                          </div>
+                                        </div>
 
-                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
-                          {review.description}
-                        </p>
+                                        <div className="text-warning mb-2 fs-5">
+                                          {"★".repeat(review.rating)}
+                                          {"☆".repeat(5 - review.rating)}
+                                        </div>
 
-                        {review.occasion && (
-                          <p
-                            className="mb-0 text-dark"
-                            style={{ fontSize: "0.85rem" }}
-                          >
-                            <strong>Occasion:</strong> {review.occasion}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </Col>
-                ))}
-              </Row>
-            </Carousel.Item>
-          ))}
-        </Carousel>
-      );
-    })()}
+                                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
+                                          {review.description}
+                                        </p>
 
-    <style jsx>{`
+                                        {review.occasion && (
+                                          <p
+                                            className="mb-0 text-dark"
+                                            style={{ fontSize: "0.85rem" }}
+                                          >
+                                            <strong>Occasion:</strong> {review.occasion}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </Col>
+                                ))}
+                              </Row>
+                            </Carousel.Item>
+                          ))}
+                        </Carousel>
+                      );
+                    })()}
+
+                    <style jsx>{`
       .carousel-indicators {
         display: none !important;
       }
@@ -1914,8 +1926,8 @@ function Home() {
         }
       }
     `}</style>
-  </Container>
-</section>
+                  </Container>
+                </section>
 
 
 
