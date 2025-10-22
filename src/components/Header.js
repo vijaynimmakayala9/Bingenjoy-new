@@ -253,11 +253,11 @@ function Header() {
                 </li>
 
 
-                <li>
+                {/* <li>
                   <NavLink className="dropdown-item" to="/Faqs" style={{ color: currentPage() === "Faqs" ? "#800080" : "" }}>
                     FAQ's
                   </NavLink>
-                </li>
+                </li> */}
                 <li>
                   <NavLink className="dropdown-item" to="/Reviews" style={{ color: currentPage() === "Reviews" ? "#800080" : "" }}>
                     Testimonial
@@ -268,7 +268,11 @@ function Header() {
                     Gallery
                   </NavLink>
                 </li>
-
+                <li>
+                  <NavLink to="/blogs" style={{ color: currentPage() === "blogs" ? "#800080" : "" }}>
+                    Blogs
+                  </NavLink>
+                </li>
               </ul>
             </div>
             <ul className="nav header-navbar-rht book-now-btn">

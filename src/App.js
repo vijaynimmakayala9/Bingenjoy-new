@@ -38,6 +38,8 @@ import CouponPage from "./components/Coupon";
 // Import CouponContext
 import { CouponProvider } from "./components/couponContext";
 import ScrollToTop from "./pages/ScrollToTop";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 
 function App() {
   return (
@@ -82,6 +84,9 @@ function App() {
         {/* Payment Fail */}
         <Route path="/payment-fail" element={<PaymentFail />} />
         <Route path="/coupons" element={<CouponPage />} />
+
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/:slug" element={<BlogDetail />} />
       </Routes>
     </CouponProvider>
   );
