@@ -268,11 +268,11 @@ function Header() {
                     Gallery
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink to="/blogs" style={{ color: currentPage() === "blogs" ? "#800080" : "" }}>
                     Blogs
                   </NavLink>
-                </li>
+                </li> */}
               </ul>
             </div>
             <ul className="nav header-navbar-rht book-now-btn">

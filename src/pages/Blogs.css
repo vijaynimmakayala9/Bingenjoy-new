@@ -2,7 +2,7 @@
 
 .blogs-wrapper {
   background: linear-gradient(135deg, #f9f7fe 0%, #f0ebff 100%);
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   padding-top: 80px;
 }
 
