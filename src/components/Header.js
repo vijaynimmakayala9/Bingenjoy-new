@@ -246,18 +246,15 @@ function Header() {
                   <NavLink to="/cakes" style={{ color: currentPage() === "cakes" ? "#800080" : "", }}>Cakes</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/food" style={{ color: currentPage() === "food" ? "#800080" : "", }}>AddOns</NavLink>
-                </li>
-                <li>
                   <NavLink to="/enquiry" style={{ color: currentPage() === "enquiry" ? "#800080" : "", }}>GET QUOTE</NavLink>
                 </li>
 
 
-                {/* <li>
+                <li>
                   <NavLink className="dropdown-item" to="/Faqs" style={{ color: currentPage() === "Faqs" ? "#800080" : "" }}>
                     FAQ's
                   </NavLink>
-                </li> */}
+                </li>
                 <li>
                   <NavLink className="dropdown-item" to="/Reviews" style={{ color: currentPage() === "Reviews" ? "#800080" : "" }}>
                     Testimonial
@@ -268,11 +265,9 @@ function Header() {
                     Gallery
                   </NavLink>
                 </li>
-                {/* <li>
-                  <NavLink to="/blogs" style={{ color: currentPage() === "blogs" ? "#800080" : "" }}>
-                    Blogs
-                  </NavLink>
-                </li> */}
+                <li>
+                  <NavLink to="/blogs" style={{ color: currentPage() === "blogs" ? "#800080" : "", }}>Blogs</NavLink>
+                </li>
               </ul>
             </div>
             <ul className="nav header-navbar-rht book-now-btn">
@@ -280,7 +275,8 @@ function Header() {
                 {/* <a href="/theaters" className="btn main-booknow"> */}
                 <a
                   href="/theaters"
-                  className="btn btn-md light-back text-white"
+                  className="btn dark-back text-white"
+                  style={{ backgroundColor: "#242724", color: "#f5e7b6" }}
                 >
                   {/* <i className="fas fa-ticket-alt" /> */}
                   Book Now
