@@ -62,7 +62,6 @@ const BookingForm = () => {
     });
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isAgreed) {
@@ -90,7 +89,7 @@ const BookingForm = () => {
         theatrePrice: parseFloat(sessionStorage.getItem("theaterPrice")),
         couponId: sessionStorage.getItem("coupon_Id"),
         couponAmount: parseFloat(sessionStorage.getItem("coupondis") || 0),
-        extraAddedPersonsForTheatre: sessionStorage.getItem("countPeople"),
+        extraAddedPersonsForTheatre: 0,
         extraPersonPrice: parseFloat(sessionStorage.getItem("extraPersonperprice") || 0),
         cashType: "online",
         remainingAmount: parseFloat(sessionStorage.getItem("TotalPrice")) - parseFloat(sessionStorage.getItem("advancePayment")),
@@ -98,7 +97,7 @@ const BookingForm = () => {
       };
 
       const res = await axios.post(
-        `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
+        `http://localhost:5091/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
         payload,
         {
           headers: {
@@ -114,11 +113,11 @@ const BookingForm = () => {
           key: orderData.keyId,
           amount: orderData.amount,
           currency: orderData.currency,
-          name: "Carnival Castle",
+          name: "Binge n Joy",
           description: "Booking Payment",
           order_id: orderData.orderId,
           handler: async (response) => {
-            await completeBooking(response.razorpay_payment_id);
+            await completeBooking(response.razorpay_payment_id, response.razorpay_order_id);
           },
           prefill: {
             name: sessionStorage.getItem("name"),
@@ -134,9 +133,7 @@ const BookingForm = () => {
             },
           },
         };
-         console.log("tttttttttttttttttttttttt", payload)
-        console.log("sssssssssssssssssssssssssssss", payload)
-        console.log("fffffffffffffffffffffffffffffffffff", options)
+
         const rzp1 = new window.Razorpay(options);
         rzp1.open();
       } else {
@@ -154,8 +151,7 @@ const BookingForm = () => {
     }
   };
 
-
-  const completeBooking = async (paymentId) => {
+  const completeBooking = async (paymentId, orderId) => {
     try {
       const extrapersiontheater = parseFloat(sessionStorage.getItem("countPeople"));
       const maxPeopletheater = parseFloat(sessionStorage.getItem("maxPeople"));
@@ -173,6 +169,7 @@ const BookingForm = () => {
         parseFloat(sessionStorage.getItem("occprice") || 0) +
         (parseFloat(sessionStorage.getItem("addons")) || 0);
 
+      // ✅ Correct payload for payment completion
       const data = {
         totalPrice: totoalbasicprice,
         subTotal: totoalbasicpricesubtotal,
@@ -181,13 +178,13 @@ const BookingForm = () => {
         bookingId: sessionStorage.getItem("bookingid"),
         couponId: sessionStorage.getItem("coupon_Id"),
         couponAmount: sessionStorage.getItem("coupondis"),
-        extraAddedPersonsForTheatre: sessionStorage.getItem("countPeople"),
+        extraAddedPersonsForTheatre: 0,
         cashType: "online",
         remainingAmount: totoalbasicprice - parseFloat(sessionStorage.getItem("advancePayment")),
         create_type: "web",
-        razorpayOrderId: paymentId,
-        transactionStatus: "completed",
-        status: "booking-confirmed"
+        razorpayOrderId: paymentId, // This is the payment ID
+        razorpayPaymentId: paymentId, // Added for clarity
+        razorpaySignature: orderId, // Using order ID as signature
       };
 
       if (extrapersiontheater > maxPeopletheater) {
@@ -195,39 +192,39 @@ const BookingForm = () => {
       }
 
       const res = await axios.post(
-        `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
+        `http://localhost:5091/v1/carnivalApi/web/booking/new/completeRazorpayPayment`,
         data,
         {
           headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
         }
       );
 
-      if (res.status === 200) {
-        // Submit cakes if any
-        await submitCakes();
+      if (res.status === 200 && res.data.success) {
+        if (res.data.data.transactionStatus === "completed") {
+          // Payment successful - submit cakes
+          await submitCakes();
 
-        // Store in localStorage
-        localStorage.setItem("invoicePath", res.data.invoicePath);
-        localStorage.setItem("orderId", res.data.orderId);
-        localStorage.setItem("bookingid", res.data.bookingId); // Store bookingId here
+          const { bookingId, orderId, invoicePath } = res.data.data;
 
-        // Alert to show that bookingId is saved and display it
-        alert(`Booking successful! Your Booking ID is: ${res.data.bookingId}\nThe booking ID has been saved in localStorage.`);
+          localStorage.setItem("invoicePath", invoicePath || "");
+          localStorage.setItem("orderId", orderId || "");
+          localStorage.setItem("bookingid", bookingId || "");
 
-        // Navigate to Thank You page
-        navigate("/payment-success");
+          toast.success(`Booking successful! Your Booking ID is: ${bookingId}`);
+          navigate("/payment-success");
+        } else if (res.data.data.transactionStatus === "payment-initiated") {
+          toast.info("Payment initiated. Your booking will be confirmed once payment is processed.");
+          navigate("/payment-pending");
+        } else {
+          throw new Error("Payment failed");
+        }
+      } else {
+        throw new Error(res.data.message || "Payment processing failed");
       }
     } catch (error) {
       console.error("Booking completion error:", error);
       toast.error(error.response?.data?.message || "Booking completion failed");
-
-      if (error.response?.status === 400) {
-        navigate("/PaymentFail");
-      } else if (error.response?.status === 406) {
-        setTimeout(() => {
-          navigate("/theaters");
-        }, 2000);
-      }
+      navigate("/PaymentFail");
     } finally {
       setIsLoading1(false);
     }
@@ -254,7 +251,7 @@ const BookingForm = () => {
     };
 
     try {
-      await axios.post(`https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatecakes`, bodyData);
+      await axios.post(`http://localhost:5091/v1/carnivalApi/web/booking/new/updatecakes`, bodyData);
     } catch (error) {
       console.error("Error submitting cakes:", error);
     }
@@ -283,7 +280,7 @@ const BookingForm = () => {
               <div className="container mx-auto p-4">
                 <button
                   type="button"
-                  className="btn light-back shadow-lg text-light mb-3 "
+                  className="btn mb-3 light-back shadow-lg text-light"
                   onClick={() => navigate("/AddOnscomponent")}
                 >
                   <i className="far fa-arrow-alt-circle-left"></i> Back
@@ -291,7 +288,7 @@ const BookingForm = () => {
 
                 <div className="row">
                   <div className="col-12">
-                    <div className="shadow-lg bg-white text-black p-4 d-flex flex-column rounded-2 terms-container">
+                    <div className="shadow-lg bg-white text-black p-4 d-flex flex-column  terms-container">
                       <div
                         className="mt-2 flex-grow-1 terms-content"
                         dangerouslySetInnerHTML={{
@@ -319,7 +316,13 @@ const BookingForm = () => {
                           </button>
                         ) : (
                           <button
-                            className="btn darkest-back text-white"
+                            className="btn"
+                            style={{
+                              background: isAgreed ? "#330C5F" : "#330C5F",
+                              border: "none",
+                              color: "white",
+                              fontWeight: "600",
+                            }}
                             onClick={handleSubmit}
                             disabled={!isAgreed || !razorpayLoaded}
                           >
@@ -334,13 +337,12 @@ const BookingForm = () => {
             </section>
             <Footer />
           </main>
+
           {/* Payment Confirmation Modal */}
           {showPopup && (
-            <div className="modal fade show" style={{ display: 'block', zIndex: 1050 }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade show" style={{ display: 'block', zIndex: 1050, display: "flex", alignItems: "center", justifyContent: "center" }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
-
-                  {/* Modal Header */}
                   <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Confirm Your Booking</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCancel}>
@@ -348,33 +350,29 @@ const BookingForm = () => {
                     </button>
                   </div>
 
-                  {/* Modal Body */}
                   <div className="modal-body">
                     <p className="confirmation-text">
                       You're about to proceed with the payment. The advance amount will be charged immediately. Are you sure you want to continue?
                     </p>
 
-                    {/* Price Details */}
                     <div className="price-details">
                       <div>
                         <p><strong>Advance Amount:</strong> ₹{sessionStorage.getItem("advancePayment")}</p>
                       </div>
                       <div>
-                        <p><strong>Due Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
+                        <p><strong>Total Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Modal Footer */}
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
-                    <button type="button" className="btn light-back text-white" onClick={handleConfirmPayment}>Confirm Payment</button>
+                    <button type="button" className="btn darkest-back text-white" onClick={handleConfirmPayment}>Confirm Payment</button>
                   </div>
                 </div>
               </div>
             </div>
           )}
-
 
           <ToastContainer />
           <style jsx>{`
@@ -401,128 +399,6 @@ const BookingForm = () => {
             .agree-checkbox {
               padding: 15px 0;
             }
-            
-            /* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* Modal Container */
-.modal-container {
-  background-color: #fff;
-  border-radius: 8px;
-  width: 400px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.3s ease-out;
-}
-
-/* Modal Content */
-.modal-content {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Modal Header */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 15px;
-}
-
-.modal-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.close {
-  font-size: 24px;
-  cursor: pointer;
-  border: none;
-  background: none;
-  color: #333;
-}
-
-/* Modal Body */
-.modal-body {
-  margin-bottom: 20px;
-}
-
-.confirmation-text {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.price-details {
-  font-size: 16px;
-  color: #333;
-}
-
-.price-details div {
-  margin-bottom: 10px;
-}
-
-/* Modal Footer */
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-}
-
-.btn-cancel {
-  background-color: #f5f5f5;
-  color: #555;
-  border: 1px solid #ccc;
-  transition: background-color 0.3s ease;
-}
-
-.btn-cancel:hover {
-  background-color: #e0e0e0;
-}
-
-.btn-confirm {
-  background-color: #007bff;
-  color: white;
-  border: 1px solid #007bff;
-  transition: background-color 0.3s ease;
-}
-
-.btn-confirm:hover {
-  background-color: #0056b3;
-}
-
-/* Animation for Modal Appearance */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
           `}</style>
         </div>
       )}
