@@ -18,7 +18,7 @@ const TheaterDetails = () => {
                     className="d-flex justify-content-center align-items-center mt-4 mt-md-0 order-1 order-md-2"
                 >
                     <img
-                        src="https://api.carnivalcastle.com/uploads/addressImages/image-1752269259729.jpeg"
+                        src="https://api.carnivalcastle.com/uploads/addressImages/image-1761459835980.jpg"
                         alt="Private Theater"
                         className="img-fluid rounded shadow"
                     />
@@ -67,7 +67,7 @@ const TheaterDetails = () => {
                     className="d-flex justify-content-center align-items-center mb-4 mb-md-0 order-1"
                 >
                     <img
-                        src="https://api.carnivalcastle.com/uploads/addressImages/image-1752269371324.jpg"
+                        src="https://api.carnivalcastle.com/uploads/addressImages/image-1761460385852.jpeg"
                         alt="Celebration"
                         className="img-fluid rounded shadow"
                     />

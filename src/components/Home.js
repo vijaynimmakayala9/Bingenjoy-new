@@ -1004,46 +1004,7 @@ function Home() {
                   </Slider>
                 </div>
 
-                <section className="py-5 bg-white">
-                  <div className="container-fluid text-center py-5 gradientright">
-                    <h2 className="fw-bold mb-4 dark-text">Our Branches</h2>
-
-                    <div className="d-flex flex-wrap justify-content-center gap-3">
-                      {addresses.map((addr, idx) => (
-                        <a
-                          key={idx}
-                          href={addr.addressLine2}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="branch-badge text-decoration-none fw-semibold d-inline-flex align-items-center"
-                        >
-                          <i className="bi bi-geo-alt-fill me-2"></i>
-                          {addr.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-
-                  <style jsx>{`
-    .branch-badge {
-      background-color: #f3e8ff;
-      color: #5b179b;
-      padding: 0.6rem 1.2rem;
-      border-radius: 50rem;
-      box-shadow: 0 3px 6px rgba(91, 23, 155, 0.2);
-      transition: all 0.3s ease;
-    }
-    .branch-badge:hover {
-      background-color: #5b179b;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(91, 23, 155, 0.35);
-      transform: translateY(-2px);
-    }
-    .branch-badge i {
-      font-size: 1rem;
-    }
-  `}</style>
-                </section>
+                
 
                 {testimonials.length > 0 && (
                   <section
@@ -2106,6 +2067,49 @@ function Home() {
                       </div>
                     </div>
                   </div>
+                </section>
+
+
+
+                <section className="bg-white">
+                  <div className="container-fluid text-center py-5 gradientright">
+                    <h2 className="fw-bold mb-4 dark-text">Our Branches</h2>
+
+                    <div className="d-flex flex-wrap justify-content-center gap-3">
+                      {addresses.map((addr, idx) => (
+                        <a
+                          key={idx}
+                          href={addr.addressLine2}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="branch-badge text-decoration-none fw-semibold d-inline-flex align-items-center"
+                        >
+                          <i className="bi bi-geo-alt-fill me-2"></i>
+                          {addr.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <style jsx>{`
+    .branch-badge {
+      background-color: #f3e8ff;
+      color: #5b179b;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50rem;
+      box-shadow: 0 3px 6px rgba(91, 23, 155, 0.2);
+      transition: all 0.3s ease;
+    }
+    .branch-badge:hover {
+      background-color: #5b179b;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(91, 23, 155, 0.35);
+      transform: translateY(-2px);
+    }
+    .branch-badge i {
+      font-size: 1rem;
+    }
+  `}</style>
                 </section>
 
 

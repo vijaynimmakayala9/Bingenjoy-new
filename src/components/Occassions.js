@@ -242,7 +242,7 @@ const Occassions = () => {
                     {/* Occasions */}
                     {/* <div className="col-md-8 shadow-lg"> */}
                     <div className="col-md-8 bg-white rounded-2">
-                      <h3 className="mt-3">Select Occasion</h3>
+                      <h3 className="mt-3">Select Decoration</h3>
                       <div className="row">
                         {Occation.map((ele, ind) => (
                           <div
@@ -307,7 +307,8 @@ const Occassions = () => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder="Special Person Name"
+                              maxLength={6}
+                              placeholder="Special Person nick name"
                               value={textFieldValue}
                               onChange={handleChange}
                             />

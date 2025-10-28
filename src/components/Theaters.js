@@ -567,7 +567,7 @@ function Theaters() {
                                       right: "20px",
                                       borderRadius: "50%",
                                       zIndex: 10,
-                                      background: "white",
+                                      background: "",
                                       padding: "5px",
                                       boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                                     }}
