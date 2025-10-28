@@ -510,7 +510,7 @@ const AddOns = () => {
                                         justifyContent: "space-between",
                                       }}
                                     >
-                                      <div>Remaining Amount</div>
+                                      <div>Balance Amount</div>
                                       <div>₹ {remainingAmount.toFixed(2)}</div>
                                     </div>
                                   </div>

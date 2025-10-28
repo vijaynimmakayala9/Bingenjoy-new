@@ -373,7 +373,7 @@ const CakesComponent = () => {
     sessionStorage.setItem("cartCakes", JSON.stringify(selectedCakes))
     sessionStorage.setItem("cartcakeslength", JSON.stringify(selectedWeights[selectedCakes.map((data) => (data))._id]))
     sessionStorage.setItem("cakeprice", totalPrice)
-     console.log("dddddddddddddddddddddddddd:", selectedCakes, totalPrice);
+    console.log("dddddddddddddddddddddddddd:", selectedCakes, totalPrice);
     navigate("/AddOnscomponent");
 
     // const bodyData = {
@@ -802,7 +802,7 @@ const CakesComponent = () => {
                                       </div>
                                     </div>
                                     <hr />
-                                    <div
+                                    {/* <div
                                       style={{
                                         display: "flex",
                                         justifyContent: "space-between",
@@ -814,7 +814,44 @@ const CakesComponent = () => {
                                         {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("occprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(totalPrice || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
 
                                       </div>
+                                    </div> */}
+
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                      {/* Advance Amount */}
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div>Advance Amount</div>
+                                        <div>
+                                          ₹{parseFloat(sessionStorage.getItem("advancePayment") || 0).toFixed(2)}
+                                        </div>
+                                      </div>
+                                      <hr />
+                                      {/* Balance Amount */}
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div>Balance Amount</div>
+                                        <div>
+                                          ₹
+                                          {(
+                                            parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
+                                            parseFloat(sessionStorage.getItem("occprice") || 0) +
+                                            parseFloat(sessionStorage.getItem("addons") || 0) +
+                                            parseFloat(totalPrice || 0) -
+                                            parseFloat(sessionStorage.getItem("couponAmount") || 0) -
+                                            parseFloat(sessionStorage.getItem("advancePayment") || 0)
+                                          ).toFixed(2)}
+                                        </div>
+                                      </div>
                                     </div>
+
                                   </div>
                                 </div>
                               </div>

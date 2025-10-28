@@ -97,7 +97,7 @@ const BookingForm = () => {
       };
 
       const res = await axios.post(
-        `http://localhost:5091/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
+        `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
         payload,
         {
           headers: {
@@ -192,7 +192,7 @@ const BookingForm = () => {
       }
 
       const res = await axios.post(
-        `http://localhost:5091/v1/carnivalApi/web/booking/new/completeRazorpayPayment`,
+        `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/completeRazorpayPayment`,
         data,
         {
           headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
@@ -360,7 +360,7 @@ const BookingForm = () => {
                         <p><strong>Advance Amount:</strong> ₹{sessionStorage.getItem("advancePayment")}</p>
                       </div>
                       <div>
-                        <p><strong>Total Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
+                        <p><strong>Balance Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
                       </div>
                     </div>
                   </div>

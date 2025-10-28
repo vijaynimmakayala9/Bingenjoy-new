@@ -125,21 +125,21 @@ const Occassions = () => {
   };
 
   const handleSubmit = () => {
-    
+
     sessionStorage.setItem("occasionName", selectedOccasion.name);
 
-    sessionStorage.setItem( "selectedOccasion", JSON.stringify(selectedOccasion)); // Save to localStorage
+    sessionStorage.setItem("selectedOccasion", JSON.stringify(selectedOccasion)); // Save to localStorage
 
     sessionStorage.setItem(
       "subtotal",
       parseFloat(sessionStorage.getItem("subtotal")) +
-        parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("occprice"))
+      parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("occprice"))
     );
 
     sessionStorage.setItem(
       "TotalPrice",
       parseFloat(sessionStorage.getItem("TotalPrice")) +
-        parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("occprice"))
+      parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("occprice"))
     );
 
     sessionStorage.setItem("occprice", selectedOccasion.price);
@@ -167,7 +167,7 @@ const Occassions = () => {
               toast.error("Please fill out the text field!");
               return;
             }
-             console.log("dddddddddddddddddddddddddd:", dataArray);
+            console.log("dddddddddddddddddddddddddd:", dataArray);
             navigate("/CakesComponent");
           } else if (res.status === 403) {
             toast.error(
@@ -249,14 +249,14 @@ const Occassions = () => {
                             className="col-6 col-md-3 mb-3  text-center"
                             key={ind}
                             onClick={() => handleImageClick(ele)}
-                          
+
                           >
-                            <div 
-                            className={`${selectedOccasion?._id === ele?._id ? `gradientdark` : `bg-transparent`}`}
+                            <div
+                              className={`${selectedOccasion?._id === ele?._id ? `gradientdark` : `bg-transparent`}`}
                               style={{
                                 cursor: "pointer",
-                                border:"2px solid #fff",
-                                margin:"1px",                                
+                                border: "2px solid #fff",
+                                margin: "1px",
                                 color:
                                   selectedOccasion?._id === ele?._id
                                     ? "black"
@@ -278,7 +278,7 @@ const Occassions = () => {
                                   objectFit: "cover",
                                 }}
                               />
-                            <h6 className="mt-2">{ele.name}</h6>
+                              <h6 className="mt-2">{ele.name}</h6>
                             </div>
                           </div>
                         ))}
@@ -354,9 +354,8 @@ const Occassions = () => {
                                 </h2>
                                 <div
                                   id="collapseOne"
-                                  className={`accordion-collapse collapse ${
-                                    isOpen ? "show" : ""
-                                  }`}
+                                  className={`accordion-collapse collapse ${isOpen ? "show" : ""
+                                    }`}
                                   aria-labelledby="headingOne"
                                   data-bs-parent="#accordionExample"
                                 >
@@ -413,19 +412,19 @@ const Occassions = () => {
                                         </div>
                                       </div>
                                       <hr />
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                          }}
-                                        >
-                                          <div>Cake</div>
-                                          <div>
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div>Cake</div>
+                                        <div>
                                           ₹
-                                            {sessionStorage.getItem("cakeprice") ||
-                                              0}
-                                          </div>
+                                          {sessionStorage.getItem("cakeprice") ||
+                                            0}
                                         </div>
+                                      </div>
                                       <hr />
                                       <div
                                         style={{
@@ -483,7 +482,7 @@ const Occassions = () => {
                                         </div>
                                       </div>
                                       <hr />
-                                      <div
+                                      {/* <div
                                         style={{
                                           display: "flex",
                                           justifyContent: "space-between",
@@ -495,7 +494,50 @@ const Occassions = () => {
                                           {parseFloat(sessionStorage.getItem("theaterPrice") || 0) + parseFloat(sessionStorage.getItem("cakeprice") || 0) + parseFloat(sessionStorage.getItem("addons") || 0) + parseFloat(selectedOccasion?.price || 0) - parseFloat(sessionStorage.getItem("couponAmount") || 0)}
 
                                         </div>
+                                      </div> */}
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          gap: "8px",
+                                        }}
+                                      >
+                                        {/* Advance Amount */}
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                          }}
+                                        >
+                                          <div>Advance Amount</div>
+                                          <div>
+                                            ₹{parseFloat(sessionStorage.getItem("advancePayment") || 0).toFixed(2)}
+                                          </div>
+                                        </div>
+                                        <hr/>
+
+                                        {/* Balance Amount */}
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                          }}
+                                        >
+                                          <div>Balance Amount</div>
+                                          <div>
+                                            ₹
+                                            {(
+                                              parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
+                                              parseFloat(sessionStorage.getItem("cakeprice") || 0) +
+                                              parseFloat(sessionStorage.getItem("addons") || 0) +
+                                              parseFloat(selectedOccasion?.price || 0) -
+                                              parseFloat(sessionStorage.getItem("couponAmount") || 0) -
+                                              parseFloat(sessionStorage.getItem("advancePayment") || 0)
+                                            ).toFixed(2)}
+                                          </div>
+                                        </div>
                                       </div>
+
                                     </div>
                                   </div>
                                 </div>
