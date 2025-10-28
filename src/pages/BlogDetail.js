@@ -65,7 +65,7 @@ const BlogDetail = () => {
                                         >
                                             Book Your Private Theatre →
                                         </Link>
-                                    </div>
+                                    </div> 
                                 </article>
                             </div>
                         </div>

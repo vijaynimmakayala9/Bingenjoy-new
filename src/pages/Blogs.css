@@ -34,7 +34,7 @@
   transform: translateY(-10px);
   box-shadow: 0 12px 30px rgba(106, 61, 186, 0.25);
 }
-
+ 
 .blog-image img {
   height: 200px;
   object-fit: cover;

@@ -221,7 +221,7 @@ function Header() {
                 >
                   <i className="fas fa-times" />
                 </a>
-              </div>
+              </div> 
               <ul className="main-nav" >
                 <li>
                   <NavLink

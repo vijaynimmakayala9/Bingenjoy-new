@@ -7,7 +7,7 @@ import "./Blogs.css";
 const Blogs = () => {
     return (
         <>
-            <div className="home-page indexsix">
+            <div className="home-page indexsix"> 
                 <main className="main-wrapper">
                     <Header />
                     <div className="blogs-wrapper">
