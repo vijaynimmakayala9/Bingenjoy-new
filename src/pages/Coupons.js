@@ -113,7 +113,7 @@ const CouponSection = () => {
                       key={coupon._id}
                       className="col-md-4 d-flex justify-content-center"
                     >
-                      <div className="coupon-ticket shadow-lg rounded-3 position-relative overflow-hidden h-100">
+                      <div className="coupon-ticket shadow-lg rounded-3 position-relative overflow-hidden h-100 lightdark-back">
                         {/* Status ribbon */}
                         <div
                           className="position-absolute top-0 end-0 px-2 py-1 text-white fw-bold rounded-start"
@@ -132,7 +132,7 @@ const CouponSection = () => {
                             <BsTagFill className="me-2" />
                             {coupon.title}
                           </h5>
-                          <p className="text-muted small mb-4">
+                          <p className="text-black small mb-4">
                             {coupon.description || "Special offer for you!"}
                           </p>
 
@@ -156,25 +156,25 @@ const CouponSection = () => {
                             <div className="d-flex justify-content-between py-1 border-bottom">
                               <span className="fw-semibold text-dark">
                                 <FaCalendarAlt className="me-2 text-primary" />
-                                Valid Till
+                                Valid Till :
                               </span>
-                              <span>{new Date(coupon.toDate).toLocaleDateString()}</span>
+                              <span className="text-black">{new Date(coupon.toDate).toLocaleDateString()}</span>
                             </div>
                             <div className="d-flex justify-content-between py-1 border-bottom">
                               <span className="fw-semibold text-dark">
                                 <FaMapMarkerAlt className="me-2 text-primary" />
-                                Theaters
+                                Theaters :
                               </span>
-                              <span style={{ maxWidth: "130px", fontSize: "0.85rem" }}>
+                              <span className="text-black" style={{ maxWidth: "130px", fontSize: "0.85rem" }}>
                                 {coupon.theaters.map((t) => t.name).join(", ")}
                               </span>
                             </div>
                             <div className="d-flex justify-content-between py-1">
                               <span className="fw-semibold text-dark">
                                 <FaClock className="me-2 text-primary" />
-                                Slots
+                                Slots :
                               </span>
-                              <span>{coupon.slots.join(", ")}</span>
+                              <span className="text-black">{coupon.slots.join(", ")}</span>
                             </div>
                           </div>
 
