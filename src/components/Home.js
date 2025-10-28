@@ -681,7 +681,7 @@ function Home() {
     const fetchTestimonials = async () => {
       try {
         const res = await axios.post(
-          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni"
+          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni?websiteFor=bingenjoy"
         );
 
         if (res.data?.success && Array.isArray(res.data.testimoni)) {
@@ -714,7 +714,7 @@ function Home() {
     const fetchTestimonials = async () => {
       try {
         const res = await axios.post(
-          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni"
+          "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni?websiteFor=bingenjoy"
         );
 
         if (res.data?.success && Array.isArray(res.data.testimoni)) {
@@ -1827,7 +1827,7 @@ function Home() {
                                     >
                                       <img
                                         src={
-                                          review.image?.startsWith("upload/")
+                                          review.image?.startsWith("uploads/")
                                             ? `https://api.carnivalcastle.com/${review.image}`
                                             : review.image
                                         }
@@ -1851,7 +1851,7 @@ function Home() {
                                         <div className="d-flex align-items-center mb-3">
                                           <img
                                             src={
-                                              review.image?.startsWith("upload/")
+                                              review.image?.startsWith("uploads/")
                                                 ? `https://api.carnivalcastle.com/${review.image}`
                                                 : review.image
                                             }

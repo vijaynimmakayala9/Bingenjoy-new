@@ -167,7 +167,7 @@ function Gallery() {
                           >
                             <img
                               src={
-                                data.image?.startsWith("upload/")
+                                data.image?.startsWith("uploads/")
                                   ? `https://api.carnivalcastle.com/${data.image}`
                                   : data.image
                               }
