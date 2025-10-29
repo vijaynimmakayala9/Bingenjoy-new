@@ -316,7 +316,7 @@ const Basicplan = () => {
         <section
           className="shop-area pt-5 pb-5 p-relative lighter-back"
         >
-          <div className="container">
+          <div className="container-fluid">
             <button
               type="button"
               className="btn mb-3 light-back shadow-lg text-light"
@@ -325,7 +325,7 @@ const Basicplan = () => {
               <i className="far fa-arrow-alt-circle-left"></i> Back
             </button>
             <div className="row">
-              <div className="col-12 col-md-8">
+              <div className="col-12 col-md-7">
                 <div className="bg-white p-2 rounded w-100 mx-auto shadow-lg">
                   <div className="row">
                     <div className="col-12">
@@ -375,7 +375,7 @@ const Basicplan = () => {
                 </div>
               </div>
             </div>
-            <div className="container mt-4">
+            <div className="container-fluid mt-4">
               <form onSubmit={handleSubmit}>
                 <div className="row mb-4">
                   <div className="col-lg-8 col-md-7 bg-white shadow-sm rounded">
@@ -669,21 +669,43 @@ const Basicplan = () => {
                                       </div>
                                     </div>
                                     <hr />
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                      }}
-                                    >
-                                      <div>Total Amount</div>
-                                      <div>
-                                        {couponData.couponCode === "FLAT700COMBO" ? (
-                                          `₹0`
-                                        ) : (
-                                          `₹ ${Totaluserprice}`
-                                        )}
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div>Advance Payable</div>
+                                        <div>
+                                          ₹ {sessionStorage.getItem("advancePayment") || 0}
+                                        </div>
+                                      </div>
+                                      <hr />
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div>Balance Amount</div>
+                                        <div>
+                                          ₹{" "}
+                                          {(
+                                            (couponData.couponCode === "FLAT700COMBO"
+                                              ? 0
+                                              : Totaluserprice) -
+                                            (parseFloat(sessionStorage.getItem("advancePayment")) || 0)
+                                          ) < 0
+                                            ? 0
+                                            : (couponData.couponCode === "FLAT700COMBO"
+                                              ? 0
+                                              : Totaluserprice) -
+                                            (parseFloat(sessionStorage.getItem("advancePayment")) || 0)}
+                                        </div>
                                       </div>
                                     </div>
+
                                   </div>
                                 </div>
                               </div>

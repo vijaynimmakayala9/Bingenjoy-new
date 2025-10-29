@@ -228,7 +228,7 @@ const Occassions = () => {
               className="shop-area pt-5 pb-5 p-relative lightest-back"
               style={{ background: "white" }}
             >
-              <div className="container">
+              <div className="container-fluid">
                 <button
                   type="button"
                   className="btn light-back shadow-lg text-light"
@@ -237,11 +237,11 @@ const Occassions = () => {
                   {" "}
                   <i className="far fa-arrow-alt-circle-left"></i> Back
                 </button>
-                <div className="container mt-4">
+                <div className="container-fluid mt-4">
                   <div className="row mb-4">
                     {/* Occasions */}
                     {/* <div className="col-md-8 shadow-lg"> */}
-                    <div className="col-md-8 bg-white rounded-2">
+                    <div className="col-12 col-lg-8 col-md-7 bg-white rounded-2">
                       <h3 className="mt-3">Select Decoration</h3>
                       <div className="row">
                         {Occation.map((ele, ind) => (
@@ -252,7 +252,7 @@ const Occassions = () => {
 
                           >
                             <div
-                              className={`${selectedOccasion?._id === ele?._id ? `gradientdark` : `bg-transparent`}`}
+                              className={`${selectedOccasion?._id === ele?._id ? `lightdark-back` : `border-dark`}`}
                               style={{
                                 cursor: "pointer",
                                 border: "2px solid #fff",
@@ -299,22 +299,26 @@ const Occassions = () => {
                       </div>
                       {/* Text Field */}
                       {selectedOccasion && (
-                        <div
-                          ref={additionalImagesRef}
-                          className="m-4 col-md-12"
-                        >
+                        <div ref={additionalImagesRef} className="m-4 col-md-12">
                           <div className="m-4 col-md-6">
                             <input
                               type="text"
                               className="form-control"
-                              maxLength={6}
-                              placeholder="Special Person nick name"
+                              maxLength={8}
+                              placeholder="Special Person Nick Name"
                               value={textFieldValue}
                               onChange={handleChange}
                             />
+                            <small
+                              className="dark-text d-block mt-1"
+                              style={{ fontSize: "12px", opacity: 0.8 }}
+                            >
+                              Note: Maximum 8 characters allowed
+                            </small>
                           </div>
                         </div>
                       )}
+
                     </div>
 
                     {/* Booking Summary */}
@@ -509,12 +513,12 @@ const Occassions = () => {
                                             justifyContent: "space-between",
                                           }}
                                         >
-                                          <div>Advance Amount</div>
+                                          <div>Advance Payable</div>
                                           <div>
                                             ₹{parseFloat(sessionStorage.getItem("advancePayment") || 0).toFixed(2)}
                                           </div>
                                         </div>
-                                        <hr/>
+                                        <hr />
 
                                         {/* Balance Amount */}
                                         <div

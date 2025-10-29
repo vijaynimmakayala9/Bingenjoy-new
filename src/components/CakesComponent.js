@@ -824,7 +824,7 @@ const CakesComponent = () => {
                                           justifyContent: "space-between",
                                         }}
                                       >
-                                        <div>Advance Amount</div>
+                                        <div>Advance Payable</div>
                                         <div>
                                           ₹{parseFloat(sessionStorage.getItem("advancePayment") || 0).toFixed(2)}
                                         </div>

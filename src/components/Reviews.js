@@ -167,9 +167,9 @@ function Gallery() {
                           >
                             <img
                               src={
-                                data.image?.startsWith("uploads/")
-                                  ? `https://api.carnivalcastle.com/${data.image}`
-                                  : data.image
+                                data.profileImage?.startsWith("uploads/")
+                                  ? `https://api.carnivalcastle.com/${data.profileImage}`
+                                  : data.profileImage
                               }
                               alt={data.name}
                               style={{

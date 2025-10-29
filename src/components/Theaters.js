@@ -448,6 +448,31 @@ function Theaters() {
     return addr ? `${addr.name}, ${addr.city}` : "Unknown Location";
   };
 
+  useEffect(() => {
+     
+      getOneGst();
+  
+      
+    }, []);
+  
+
+  
+
+  const getOneGst = async () => {
+    try {
+      const res = await axios.post(URLS.GetCharges, {});
+      if (res.status === 200) {
+        
+        sessionStorage.setItem(
+          "advancePayment",
+          res.data.charges.advancePayment
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching GST:", error);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -524,7 +549,7 @@ function Theaters() {
                   <p className="text-white"><i>We’ve got the vibe, you bring the party.</i></p>
                 </div>
               </div>
-              <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
+              <div className="modal-dialog modal-dialog-centered modal-fullscreen" role="document">
                 <div
                   className="modal-content p-3 p-md-4 lightdark-back"
                   style={{ border: "2px solid #E9DCFF", borderRadius: "12px" }}
@@ -695,7 +720,7 @@ function Theaters() {
                   id="parallax"
                   className="slider-area breadcrumb-area d-flex align-items-center justify-content-center fix light-back"
                 >
-                  <div className="container">
+                  <div className="container-fluid">
                     <div className="row">
                       <div className="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                         <div className="breadcrumb-wrap text-center">
@@ -714,7 +739,7 @@ function Theaters() {
                   className="shop-area pt-0 pb-5 p-relative light-back"
                   style={{ background: "#F8EBFF" }}
                 >
-                  <div className="container-md">
+                  <div className="container-fluid">
                     <div className="row mb-3">
                       <div className="col-12">
                         <div
@@ -755,7 +780,7 @@ function Theaters() {
                       </div>
                     </div>
                     <br />
-                    <div className="container">
+                    <div className="container-fluid">
                       <div className="row">
                         {theaters && theaters.length > 0 ? (
                           theaters.map((data, i) => {
@@ -1187,7 +1212,7 @@ function Theaters() {
                 {/* ===== NEW SECTION: Theaters in Other Locations ===== */}
                 {location && Object.keys(allTheatersByLocation).length > 0 && (
                   <section className="shop-area pt-5 pb-5 p-relative light-back" style={{ background: "#FFF9F0" }}>
-                    <div className="container">
+                    <div className="container-fluid">
                       <h3 className="text-center mb-4" style={{ color: "#fff" }}>Theaters in Other Locations</h3>
                       {Object.entries(allTheatersByLocation).map(([addrId, group]) => {
                         // Skip current location

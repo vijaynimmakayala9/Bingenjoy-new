@@ -16,8 +16,27 @@ const BookingForm = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [heardFrom, setHeardFrom] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [showCouponSuccess, setShowCouponSuccess] = useState(false);
+  const [allCoupons, setAllCoupons] = useState([]);
   const navigate = useNavigate();
   const [policys, setpolicys] = useState([]);
+
+  // Options for "Where did you hear about us?"
+  const heardFromOptions = [
+    "Google Search",
+    "Social Media",
+    "Friend/Family Referral",
+    "Website/Blog",
+    "Advertisement",
+    "Instagram",
+    "Facebook",
+    "WhatsApp",
+    "Other"
+  ];
 
   useEffect(() => {
     // Load Razorpay script dynamically
@@ -29,11 +48,24 @@ const BookingForm = () => {
 
     GetTheatersData();
     GetPoliciesData();
+    getAllCoupons();
 
     return () => {
       document.body.removeChild(script);
     };
   }, []);
+
+  // Fetch all coupons from API
+  const getAllCoupons = async () => {
+    try {
+      const res = await axios.get(`https://api.carnivalcastle.com/v1/carnivalApi/admin/coupon/getallbingenjoycoupons`);
+      if (res.status === 200 && res.data.success) {
+        setAllCoupons(res.data.coupons || []);
+      }
+    } catch (error) {
+      console.error("Error fetching coupons:", error);
+    }
+  };
 
   const GetTheatersData = () => {
     axios.post(URLS.GetAllTheaters, {}).then((res) => {
@@ -48,7 +80,6 @@ const BookingForm = () => {
       if (res.status === 200) {
         let updatedTerms = res.data.policy.termsAndCondition;
 
-        // Replace the terms and conditions text
         updatedTerms = updatedTerms.replace(
           /https:\/\/carnivalcastle\.com/g,
           'https://bingenjoy.com'
@@ -62,10 +93,98 @@ const BookingForm = () => {
     });
   };
 
+  // Apply Coupon Code Function - With actual coupon validation
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.error("Please enter a coupon code");
+      return;
+    }
+
+    setIsApplyingCoupon(true);
+    
+    try {
+      const foundCoupon = allCoupons.find(coupon => 
+        coupon.couponCode && coupon.couponCode.toLowerCase() === couponCode.trim().toLowerCase()
+      );
+
+      if (foundCoupon) {
+        if (foundCoupon.status !== "active") {
+          toast.error("This coupon is not active");
+          setIsApplyingCoupon(false);
+          return;
+        }
+
+        const currentDate = new Date();
+        const fromDate = new Date(foundCoupon.fromDate);
+        const toDate = new Date(foundCoupon.toDate);
+        
+        if (currentDate < fromDate || currentDate > toDate) {
+          toast.error("This coupon is expired or not yet valid");
+          setIsApplyingCoupon(false);
+          return;
+        }
+
+        let discountAmount = 0;
+        
+        if (foundCoupon.discountType === "fixed") {
+          discountAmount = parseFloat(foundCoupon.value) || parseFloat(foundCoupon.amount) || 0;
+        } else if (foundCoupon.discountType === "percentage") {
+          const totalAmount = parseFloat(sessionStorage.getItem("TotalPrice") || 0);
+          discountAmount = (totalAmount * parseFloat(foundCoupon.value)) / 100;
+        } else {
+          discountAmount = parseFloat(foundCoupon.amount) || parseFloat(foundCoupon.value) || 0;
+        }
+
+        const couponData = {
+          couponCode: foundCoupon.couponCode,
+          discountAmount: discountAmount,
+          couponId: foundCoupon._id,
+          message: "Coupon applied successfully!",
+          couponDetails: foundCoupon
+        };
+        
+        setAppliedCoupon(couponData);
+        setShowCouponSuccess(true);
+        
+        sessionStorage.setItem("couponCode", couponData.couponCode);
+        sessionStorage.setItem("coupondis", couponData.discountAmount);
+        sessionStorage.setItem("couponAmount", couponData.discountAmount);
+        sessionStorage.setItem("couponId", couponData.couponId);
+        
+        toast.success(`Coupon applied successfully! Discount: ₹${discountAmount}`);
+      } else {
+        toast.error("Invalid coupon code");
+      }
+    } catch (error) {
+      console.error("Coupon apply error:", error);
+      toast.error("Failed to apply coupon");
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  // Remove Coupon Function
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setShowCouponSuccess(false);
+    
+    sessionStorage.removeItem("couponCode");
+    sessionStorage.removeItem("coupondis");
+    sessionStorage.removeItem("couponAmount");
+    sessionStorage.removeItem("couponId");
+    
+    toast.info("Coupon removed");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isAgreed) {
       toast.error("You must agree to the terms and conditions to proceed.");
+      return;
+    }
+    if (!heardFrom) {
+      toast.error("Please let us know where you heard about us.");
       return;
     }
     setShowPopup(true);
@@ -76,25 +195,32 @@ const BookingForm = () => {
     setIsLoading1(true);
 
     try {
-      // Construct payload from sessionStorage
+      const theaterPrice = parseFloat(sessionStorage.getItem("theaterPrice") || 0);
+      const cakePrice = parseFloat(sessionStorage.getItem("cakeprice") || 0);
+      const occPrice = parseFloat(sessionStorage.getItem("occprice") || 0);
+      const addons = parseFloat(sessionStorage.getItem("addons") || 0);
+      const totalPrice = parseFloat(sessionStorage.getItem("TotalPrice"));
+      const advancePayment = parseFloat(sessionStorage.getItem("advancePayment"));
+      
+      const subTotal = theaterPrice + cakePrice + occPrice + addons;
+
       const payload = {
         bookingId: sessionStorage.getItem("bookingid"),
-        totalPrice: parseFloat(sessionStorage.getItem("TotalPrice")),
-        subTotal:
-          parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
-          parseFloat(sessionStorage.getItem("cakeprice") || 0) +
-          parseFloat(sessionStorage.getItem("occprice") || 0) +
-          (parseFloat(sessionStorage.getItem("addons")) || 0),
-        advancePayment: parseFloat(sessionStorage.getItem("advancePayment")),
-        theatrePrice: parseFloat(sessionStorage.getItem("theaterPrice")),
-        couponId: sessionStorage.getItem("coupon_Id"),
-        couponAmount: parseFloat(sessionStorage.getItem("coupondis") || 0),
+        totalPrice: totalPrice,
+        subTotal: subTotal,
+        advancePayment: advancePayment,
+        theatrePrice: theaterPrice,
+        couponCode: appliedCoupon ? appliedCoupon.couponCode : "",
+        couponAmount: appliedCoupon ? appliedCoupon.discountAmount : 0,
         extraAddedPersonsForTheatre: 0,
         extraPersonPrice: parseFloat(sessionStorage.getItem("extraPersonperprice") || 0),
         cashType: "online",
-        remainingAmount: parseFloat(sessionStorage.getItem("TotalPrice")) - parseFloat(sessionStorage.getItem("advancePayment")),
+        remainingAmount: totalPrice - advancePayment,
         create_type: "web",
+        heardFrom: heardFrom,
       };
+
+      console.log("🟡 Frontend - Sending payload to updatebookingforPaymentforrazorpay:", JSON.stringify(payload, null, 2));
 
       const res = await axios.post(
         `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatebookingforPaymentforrazorpay`,
@@ -156,40 +282,38 @@ const BookingForm = () => {
       const extrapersiontheater = parseFloat(sessionStorage.getItem("countPeople"));
       const maxPeopletheater = parseFloat(sessionStorage.getItem("maxPeople"));
 
-      const totoalbasicprice =
-        parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
-        parseFloat(sessionStorage.getItem("cakeprice") || 0) +
-        parseFloat(sessionStorage.getItem("occprice") || 0) +
-        (parseFloat(sessionStorage.getItem("addons")) || 0) -
-        parseFloat(sessionStorage.getItem("couponAmount") || 0);
+      const theaterPrice = parseFloat(sessionStorage.getItem("theaterPrice") || 0);
+      const cakePrice = parseFloat(sessionStorage.getItem("cakeprice") || 0);
+      const occPrice = parseFloat(sessionStorage.getItem("occprice") || 0);
+      const addons = parseFloat(sessionStorage.getItem("addons") || 0);
+      const advancePayment = parseFloat(sessionStorage.getItem("advancePayment"));
 
-      const totoalbasicpricesubtotal =
-        parseFloat(sessionStorage.getItem("theaterPrice") || 0) +
-        parseFloat(sessionStorage.getItem("cakeprice") || 0) +
-        parseFloat(sessionStorage.getItem("occprice") || 0) +
-        (parseFloat(sessionStorage.getItem("addons")) || 0);
+      const totoalbasicpricesubtotal = theaterPrice + cakePrice + occPrice + addons;
+      const totoalbasicprice = totoalbasicpricesubtotal - (appliedCoupon ? appliedCoupon.discountAmount : 0);
 
-      // ✅ Correct payload for payment completion
       const data = {
         totalPrice: totoalbasicprice,
         subTotal: totoalbasicpricesubtotal,
-        advancePayment: parseFloat(sessionStorage.getItem("advancePayment")),
-        theatrePrice: parseFloat(sessionStorage.getItem("theaterPrice")),
+        advancePayment: advancePayment,
+        theatrePrice: theaterPrice,
         bookingId: sessionStorage.getItem("bookingid"),
-        couponId: sessionStorage.getItem("coupon_Id"),
-        couponAmount: sessionStorage.getItem("coupondis"),
+        couponCode: appliedCoupon ? appliedCoupon.couponCode : "",
+        couponAmount: appliedCoupon ? appliedCoupon.discountAmount : 0,
         extraAddedPersonsForTheatre: 0,
         cashType: "online",
-        remainingAmount: totoalbasicprice - parseFloat(sessionStorage.getItem("advancePayment")),
+        remainingAmount: totoalbasicprice - advancePayment,
         create_type: "web",
-        razorpayOrderId: paymentId, // This is the payment ID
-        razorpayPaymentId: paymentId, // Added for clarity
-        razorpaySignature: orderId, // Using order ID as signature
+        razorpayOrderId: orderId,
+        razorpayPaymentId: paymentId,
+        razorpaySignature: "signature_required",
+        heardFrom: heardFrom,
       };
 
       if (extrapersiontheater > maxPeopletheater) {
         data.extraPersonPrice = sessionStorage.getItem("extraPersonperprice") || 0;
       }
+
+      console.log("🟡 Frontend - Sending payload to completeRazorpayPayment:", JSON.stringify(data, null, 2));
 
       const res = await axios.post(
         `https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/completeRazorpayPayment`,
@@ -201,7 +325,6 @@ const BookingForm = () => {
 
       if (res.status === 200 && res.data.success) {
         if (res.data.data.transactionStatus === "completed") {
-          // Payment successful - submit cakes
           await submitCakes();
 
           const { bookingId, orderId, invoicePath } = res.data.data;
@@ -251,7 +374,7 @@ const BookingForm = () => {
     };
 
     try {
-      await axios.post(`http://localhost:5091/v1/carnivalApi/web/booking/new/updatecakes`, bodyData);
+      await axios.post(`https://api.carnivalcastle.com/v1/carnivalApi/web/booking/new/updatecakes`, bodyData);
     } catch (error) {
       console.error("Error submitting cakes:", error);
     }
@@ -259,6 +382,13 @@ const BookingForm = () => {
 
   const handleCancel = () => {
     setShowPopup(false);
+  };
+
+  // Handle Enter key press for coupon code
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      applyCoupon();
+    }
   };
 
   return (
@@ -288,47 +418,159 @@ const BookingForm = () => {
 
                 <div className="row">
                   <div className="col-12">
-                    <div className="shadow-lg bg-white text-black p-4 d-flex flex-column  terms-container">
-                      <div
-                        className="mt-2 flex-grow-1 terms-content"
-                        dangerouslySetInnerHTML={{
-                          __html: policys.termsAndCondition,
-                        }}
-                      ></div>
-
-                      <div className="mt-auto text-center agree-checkbox">
-                        <input
-                          type="checkbox"
-                          className="form-check-input me-2"
-                          id="agreeCheckbox"
-                          checked={isAgreed}
-                          onChange={(e) => setIsAgreed(e.target.checked)}
-                        />
-                        <label className="form-check-label" htmlFor="agreeCheckbox">
-                          I agree to all the above conditions.
+                    <div className="shadow-lg bg-white text-black p-4 d-flex flex-column terms-container">
+                      {/* Where did you hear about us? Section */}
+                      <div className="mb-4 heard-from-section">
+                        <label htmlFor="heardFrom" className="form-label fw-bold">
+                          Where did you hear about us? *
                         </label>
+                        <select
+                          className="form-select"
+                          id="heardFrom"
+                          value={heardFrom}
+                          onChange={(e) => setHeardFrom(e.target.value)}
+                          required
+                        >
+                          <option value="">Select an option</option>
+                          {heardFromOptions.map((option, index) => (
+                            <option key={index} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="form-text">
+                          Help us understand how you discovered Binge n Joy
+                        </div>
                       </div>
 
-                      <div className="d-flex justify-content-end mt-3">
-                        {isLoading1 ? (
-                          <button className="btn btn-outline-success main-booknow" disabled>
-                            Processing Payment...
-                          </button>
-                        ) : (
-                          <button
-                            className="btn"
-                            style={{
-                              background: isAgreed ? "#330C5F" : "#330C5F",
-                              border: "none",
-                              color: "white",
-                              fontWeight: "600",
-                            }}
-                            onClick={handleSubmit}
-                            disabled={!isAgreed || !razorpayLoaded}
-                          >
-                            Confirm & Pay Advance
-                          </button>
+                      {/* Apply Coupon Code Section */}
+                      <div className="mb-4 coupon-section">
+                        <label htmlFor="couponCode" className="form-label fw-bold">
+                          Apply Coupon Code
+                        </label>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="couponCode"
+                            placeholder="Enter coupon code"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            disabled={isApplyingCoupon || appliedCoupon}
+                          />
+                          {appliedCoupon ? (
+                            <button
+                              className="btn btn-outline-danger"
+                              type="button"
+                              onClick={removeCoupon}
+                              disabled={isApplyingCoupon}
+                            >
+                              Remove
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-outline-success"
+                              type="button"
+                              onClick={applyCoupon}
+                              disabled={isApplyingCoupon || !couponCode.trim()}
+                            >
+                              {isApplyingCoupon ? (
+                                <>
+                                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                  Applying...
+                                </>
+                              ) : (
+                                "Apply"
+                              )}
+                            </button>
+                          )}
+                        </div>
+                        
+                        {/* Applied Coupon Display */}
+                        {appliedCoupon && (
+                          <div className="mt-2 p-2 light-back text-white rounded">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                <div>
+                                  <strong>Coupon Applied:</strong> {appliedCoupon.couponCode}
+                                </div>
+                                <div>
+                                  <small>Discount: ₹{appliedCoupon.discountAmount}</small>
+                                </div>
+                                {appliedCoupon.couponDetails && (
+                                  <div>
+                                    <small>Title: {appliedCoupon.couponDetails.title}</small>
+                                  </div>
+                                )}
+                              </div>
+                              <button 
+                                type="button" 
+                                className="btn-close btn-close-white" 
+                                onClick={removeCoupon}
+                                aria-label="Remove coupon"
+                              ></button>
+                            </div>
+                          </div>
                         )}
+                        
+                        <div className="form-text">
+                          Enter your coupon code and press Apply or hit Enter
+                        </div>
+                      </div>
+
+                      {/* Terms and Conditions Section */}
+                      <div className="terms-section">
+                        <h5 className="mb-3">Terms & Conditions</h5>
+                        <div className="terms-content-container">
+                          <div
+                            className="terms-content"
+                            dangerouslySetInnerHTML={{
+                              __html: policys.termsAndCondition,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* Agreement Checkbox - Fixed at bottom */}
+                      <div className="terms-footer">
+                        <div className="agree-checkbox">
+                          <input
+                            type="checkbox"
+                            className="form-check-input me-2"
+                            id="agreeCheckbox"
+                            checked={isAgreed}
+                            onChange={(e) => setIsAgreed(e.target.checked)}
+                          />
+                          <label className="form-check-label" htmlFor="agreeCheckbox">
+                            I agree to all the above conditions.
+                          </label>
+                        </div>
+
+                        {/* Confirm Button */}
+                        <div className="confirm-button">
+                          {isLoading1 ? (
+                            <button className="btn btn-outline-success main-booknow" disabled>
+                              <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                              Processing Payment...
+                            </button>
+                          ) : (
+                            <button
+                              className="btn confirm-pay-btn"
+                              style={{
+                                background: (isAgreed && heardFrom) ? "#330C5F" : "#6c757d",
+                                border: "none",
+                                color: "white",
+                                fontWeight: "600",
+                                padding: "10px 30px",
+                              }}
+                              onClick={handleSubmit}
+                              disabled={!isAgreed || !heardFrom || !razorpayLoaded}
+                            >
+                              {razorpayLoaded ? "Confirm & Pay Advance" : "Loading Payment..."}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -337,6 +579,44 @@ const BookingForm = () => {
             </section>
             <Footer />
           </main>
+
+          {/* Coupon Success Modal */}
+          {showCouponSuccess && (
+            <div className="modal fade show" style={{ display: 'block', zIndex: 1060, display: "flex", alignItems: "center", justifyContent: "center" }} tabIndex="-1" role="dialog">
+              <div className="modal-dialog modal-sm" role="document">
+                <div className="modal-content">
+                  <div className="modal-header light-back text-white">
+                    <h5 className="modal-title">Congratulations! 🎉</h5>
+                    <button 
+                      type="button" 
+                      className="btn-close btn-close-white" 
+                      onClick={() => setShowCouponSuccess(false)}
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body text-center">
+                    <div className="mb-3">
+                      <i className="bi bi-gift-fill light-text" style={{ fontSize: '3rem' }}></i>
+                    </div>
+                    <h6 className="light-text">Coupon Applied Successfully!</h6>
+                    <p className="mb-0">
+                      <strong>Code:</strong> {appliedCoupon?.couponCode}<br/>
+                      <strong>Discount:</strong> ₹{appliedCoupon?.discountAmount}<br/>
+                    </p>
+                  </div>
+                  <div className="modal-footer justify-content-center">
+                    <button 
+                      type="button" 
+                      className="btn light-back text-white"
+                      onClick={() => setShowCouponSuccess(false)}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Payment Confirmation Modal */}
           {showPopup && (
@@ -362,12 +642,31 @@ const BookingForm = () => {
                       <div>
                         <p><strong>Balance Amount:</strong> ₹{sessionStorage.getItem("TotalPrice")}</p>
                       </div>
+                      {appliedCoupon && (
+                        <div>
+                          <p><strong>Coupon Applied:</strong> {appliedCoupon.couponCode} (₹{appliedCoupon.discountAmount} off)</p>
+                        </div>
+                      )}
+                      {heardFrom && (
+                        <div>
+                          <p><strong>Heard From:</strong> {heardFrom}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
-                    <button type="button" className="btn darkest-back text-white" onClick={handleConfirmPayment}>Confirm Payment</button>
+                    <button type="button" className="btn darkest-back text-white" onClick={handleConfirmPayment}>
+                      {isLoading1 ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                          Processing...
+                        </>
+                      ) : (
+                        "Confirm Payment"
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -389,15 +688,91 @@ const BookingForm = () => {
             .terms-container {
               height: 700px;
               border-radius: 10px;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+            }
+            
+            .heard-from-section {
+              border-bottom: 1px solid #dee2e6;
+              padding-bottom: 1rem;
+              flex-shrink: 0;
+            }
+            
+            .coupon-section {
+              border-bottom: 1px solid #dee2e6;
+              padding-bottom: 1rem;
+              flex-shrink: 0;
+            }
+            
+            .terms-section {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              min-height: 0;
+            }
+            
+            .terms-content-container {
+              flex: 1;
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
             }
             
             .terms-content {
               overflow-y: auto;
               padding-right: 10px;
+              flex: 1;
+              max-height: 100%;
+              border: 1px solid #e9ecef;
+              border-radius: 5px;
+              padding: 15px;
+              background: #f8f9fa;
+            }
+            
+            .terms-footer {
+              flex-shrink: 0;
+              border-top: 1px solid #dee2e6;
+              padding-top: 15px;
+              margin-top: 15px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: white;
             }
             
             .agree-checkbox {
-              padding: 15px 0;
+              display: flex;
+              align-items: center;
+              margin: 0;
+            }
+            
+            .confirm-button {
+              display: flex;
+              align-items: center;
+            }
+            
+            .confirm-pay-btn {
+              min-width: 200px;
+            }
+            
+            /* Scrollbar Styling */
+            .terms-content::-webkit-scrollbar {
+              width: 8px;
+            }
+            
+            .terms-content::-webkit-scrollbar-track {
+              background: #f1f1f1;
+              border-radius: 4px;
+            }
+            
+            .terms-content::-webkit-scrollbar-thumb {
+              background: #c1c1c1;
+              border-radius: 4px;
+            }
+            
+            .terms-content::-webkit-scrollbar-thumb:hover {
+              background: #a8a8a8;
             }
           `}</style>
         </div>

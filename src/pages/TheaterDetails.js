@@ -10,7 +10,7 @@ const TheaterDetails = () => {
     return (
         <Container fluid className="py-5">
             {/* Section 1 */}
-            <Row className="align-items-center justify-content-center mb-5 text-center">
+            <Row className="align-items-center justify-content-center py-5  text-center gradient135">
                 {/* Image first on mobile */}
                 <Col
                     xs={12}
@@ -59,7 +59,7 @@ const TheaterDetails = () => {
             </Row>
 
             {/* Section 2 */}
-            <Row className="align-items-center justify-content-center bg-light py-5 px-3 rounded text-center">
+            <Row className="align-items-center justify-content-center bg-light py-5 px-3 text-center gradient135">
                 {/* Image first on mobile */}
                 <Col
                     xs={12}

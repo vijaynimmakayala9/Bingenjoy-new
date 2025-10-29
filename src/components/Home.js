@@ -694,6 +694,7 @@ function Home() {
           );
 
           setTestimonials(videoTestimonials);
+          console.log("Video Testimonials:", videoTestimonials);
 
           // ✅ Set first video testimonial as default selected
           if (videoTestimonials.length > 0) {
@@ -730,7 +731,7 @@ function Home() {
             rating: Number(t.rating) || 5,
             description: t.description || "",
             image: `https://api.carnivalcastle.com/${t.image}`,
-            avatar: `https://api.carnivalcastle.com/${t.image}`, // using same image as avatar
+            avatar: `https://api.carnivalcastle.com/${t.profileImage}`, // using same image as avatar
             occasion: t.type === "Yes" ? "Special Celebration" : "",
           }));
 
@@ -1058,18 +1059,16 @@ function Home() {
                           {/* Desktop View (side thumbnails) */}
                           <div className="d-none d-lg-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
                             {/* Side Thumbnails */}
-                            {testimonials
-                              .filter((item) => selected && item.videoId !== selected.videoId)
-                              .map((user, idx) => (
+                            {testimonials.map((user, idx) => (
                                 <div
                                   key={idx}
                                   className="side-card d-flex align-items-center justify-content-center rounded shadow"
                                   style={{
                                     width: "70px",
                                     height: "200px",
-                                    backgroundImage: `url(${user.image?.startsWith("upload/")
-                                      ? `https://api.carnivalcastle.com/${user.image}`
-                                      : user.image
+                                    backgroundImage: `url(${user.profileImage?.startsWith("upload/")
+                                      ? `https://api.carnivalcastle.com/${user.profileImage}`
+                                      : user.profileImage
                                       })`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
@@ -1851,9 +1850,9 @@ function Home() {
                                         <div className="d-flex align-items-center mb-3">
                                           <img
                                             src={
-                                              review.image?.startsWith("uploads/")
-                                                ? `https://api.carnivalcastle.com/${review.image}`
-                                                : review.image
+                                              review.profileImage?.startsWith("uploads/")
+                                                ? `https://api.carnivalcastle.com/${review.profileImage}`
+                                                : review.profileImage
                                             }
                                             alt="avatar"
                                             className="rounded-circle me-3 border-2 border-light"

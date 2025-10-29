@@ -239,7 +239,7 @@ const AddOns = () => {
               className="shop-area pt-5 pb-5 p-relative lightest-back"
               style={{ background: "white" }}
             >
-              <div className="container">
+              <div className="container-fluid">
                 <button
                   type="button"
                   className="btn light-back shadow-lg text-light"
@@ -247,9 +247,9 @@ const AddOns = () => {
                 >
                   <i className="far fa-arrow-alt-circle-left"></i> Back
                 </button>
-                <div className="container mt-4">
+                <div className="container-fluid mt-4">
                   <div className="row mb-4">
-                    <div className="col-md-8 bg-white rounded-2">
+                    <div className="col-lg-8 col-md-8 bg-white rounded-2">
                       {addOns && addOns.length > 0 ? (
                         addOns.map((data, key) => (
                           <div key={key}>
@@ -275,11 +275,11 @@ const AddOns = () => {
                                             (addIds) =>
                                               addIds._id === String(ele._id)
                                           )
-                                            ? "gradientdark"
+                                            ? "lightdark-back border-0"
                                             : "bg-transparent"}`}
                                         style={{
                                           padding: "10px",
-                                          border: "",
+                                          border: "black 2px solid",
                                           borderRadius: "10px",
                                           color: selectedOccasions?.some(
                                             (addIds) =>
@@ -341,7 +341,7 @@ const AddOns = () => {
                       </div>
                     </div>
 
-                    <div className="col-lg-4 col-md-5">
+                    <div className="col-lg-4 col-md-4">
                       <div className="position-sticky" style={{ top: "20px" }}>
                         <div className="bg-white mb-3">
                           <div className="card-body mt-3">
@@ -496,7 +496,7 @@ const AddOns = () => {
                                             justifyContent: "space-between",
                                           }}
                                         >
-                                          <div>Advance Amount</div>
+                                          <div>Advance Payable</div>
                                           <div>
                                             ₹{advanceAmount.toFixed(2)}
                                           </div>
