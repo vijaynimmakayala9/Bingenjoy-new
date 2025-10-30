@@ -35,6 +35,7 @@ import comboPackageImg from "./images/cake 4.jpg";
 import { Carousel, Card, Container, Row, Col, Button } from "react-bootstrap";
 import TheaterDetails from "../pages/TheaterDetails";
 import CouponSection from "../pages/Coupons";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 function Home() {
 
@@ -832,7 +833,9 @@ function Home() {
   }, []); // Empty dependency array = runs only once on mount
 
   const [banner, setBanner] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Fetch Banner Data
   useEffect(() => {
     const fetchBanner = async () => {
       try {
@@ -849,10 +852,33 @@ function Home() {
     fetchBanner();
   }, []);
 
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    if (!banner?.desktopImages?.length) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex + 1 >= banner.desktopImages.length ? 0 : prevIndex + 1
+      );
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [banner]);
+
   if (!banner) return null;
 
-  const desktopImg = `https://api.carnivalcastle.com/${banner.bannerImg[0]}`;
-  const mobileImg = `https://api.carnivalcastle.com/${banner.bannerImg[1]}`;
+  // Get current image
+  const desktopImage1 = `https://api.carnivalcastle.com/${banner.desktopImages[currentIndex]}`;
+  const mobileImage = `https://api.carnivalcastle.com/${banner.mobileImages[currentIndex]}`;
+
+  // Manual navigation
+  const prevSlide = () =>
+    setCurrentIndex((prev) =>
+      prev === 0 ? banner.desktopImages.length - 1 : prev - 1
+    );
+  const nextSlide = () =>
+    setCurrentIndex((prev) =>
+      prev + 1 >= banner.desktopImages.length ? 0 : prev + 1
+    );
+
 
   return (
     <>
@@ -872,8 +898,6 @@ function Home() {
           <div
             className="text-center"
             style={{
-              // background:
-              //   "linear-gradient(329deg, rgba(191, 63, 249, 1) 0%, rgba(113, 51, 210, 1) 100%)",
               backgroundColor: "var(--charcoal-black)",
               height: "100vh",
               display: "flex",
@@ -900,9 +924,9 @@ function Home() {
 
                 <div className="scrollbar">
                   <Slider {...settings}>
-
-                    {Sliders?.map((data, i) => (
-                      <div key={i}>
+                    {/* Desktop images ko map karo */}
+                    {banner?.desktopImages?.map((desktopImage, index) => (
+                      <div key={index}>
                         <div className="mt-0">
                           {PopUp1.modalEnabled && (
                             <div style={{ backgroundColor: "#fa462af2" }} className="text-center py-2">
@@ -913,22 +937,49 @@ function Home() {
                           )}
                         </div>
                         <section
-                          className="banner-section d-flex align-items-center position-relative text-white"
+                          className="banner-section d-flex align-items-center position-relative text-white overflow-hidden"
                           style={{
-                            backgroundImage: `url(${desktopImg})`,
+                            backgroundImage: `url(https://api.carnivalcastle.com/${desktopImage})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            height: "100vh",
+                            transition: "background-image 1s ease-in-out",
                           }}
                         >
-                          <div className="overlay"></div>
-                          <div className="smoke"></div>
+                          {/* Overlay */}
+                          <div
+                            className="overlay position-absolute w-100 h-100"
+                            style={{
+                              background: "rgba(0, 0, 0, 0.4)",
+                              top: 0,
+                              left: 0,
+                              zIndex: 1,
+                            }}
+                          ></div>
 
+                          {/* Content */}
                           <div className="container position-relative h-100" style={{ zIndex: 2 }}>
                             <div className="row justify-content-center text-center text-md-start h-100">
                               <div className="col-lg-10 d-flex flex-column justify-content-center h-100">
-                                <div className="banner-buttons d-flex flex-column flex-sm-row gap-3 z-[9999]">
-                                  <a href="/theaters" className="btn btn-lg px-4 fw-bold btn-purple">
+                                <h1 className="fw-bold mb-3 animate__animated animate__fadeInDown">
+                                  {banner.title}
+                                </h1>
+                                <p className="lead mb-4 animate__animated animate__fadeInUp">
+                                  {banner.description}
+                                </p>
+
+                                <div className="banner-buttons d-flex flex-column flex-sm-row gap-3">
+                                  <a
+                                    href="/theaters"
+                                    className="btn btn-lg px-4 fw-bold btn-purple"
+                                  >
                                     Book Now
                                   </a>
-                                  <a href="tel:8977917555" className="btn btn-lg px-4 fw-bold btn-purple">
+                                  <a
+                                    href="tel:8977917555"
+                                    className="btn btn-lg px-4 fw-bold btn-purple"
+                                  >
                                     Book via Call
                                   </a>
                                 </div>
@@ -936,18 +987,43 @@ function Home() {
                             </div>
                           </div>
 
-                          {/* Mobile version background */}
+                          
+
+                          {/* Slide Dots */}
+                          <div
+                            className="position-absolute w-100 d-flex justify-content-center gap-2"
+                            style={{ bottom: "25px", zIndex: 3 }}
+                          >
+                            {banner.desktopImages.map((_, index) => (
+                              <div
+                                key={index}
+                                onClick={() => setCurrentIndex(index)}
+                                style={{
+                                  width: currentIndex === index ? "12px" : "8px",
+                                  height: currentIndex === index ? "12px" : "8px",
+                                  borderRadius: "50%",
+                                  background:
+                                    currentIndex === index
+                                      ? "#fff"
+                                      : "rgba(255,255,255,0.5)",
+                                  cursor: "pointer",
+                                  transition: "all 0.3s ease",
+                                }}
+                              ></div>
+                            ))}
+                          </div>
+
+                          {/* Mobile background override */}
                           <style>
                             {`
           @media (max-width: 768px) {
             .banner-section {
-              background-image: url(${mobileImg}) !important;
+              background-image: url(${mobileImage}) !important;
             }
           }
         `}
                           </style>
                         </section>
-
 
 
                         {/* Floating Cards Section */}
@@ -1060,29 +1136,29 @@ function Home() {
                           <div className="d-none d-lg-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
                             {/* Side Thumbnails */}
                             {testimonials.map((user, idx) => (
-                                <div
-                                  key={idx}
-                                  className="side-card d-flex align-items-center justify-content-center rounded shadow"
-                                  style={{
-                                    width: "70px",
-                                    height: "200px",
-                                    backgroundImage: `url(${user.profileImage?.startsWith("upload/")
-                                      ? `https://api.carnivalcastle.com/${user.profileImage}`
-                                      : user.profileImage
-                                      })`,
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    cursor: "pointer",
-                                    position: "relative",
-                                  }}
-                                  onClick={() => setSelected(user)}
-                                >
-                                  <h6 className="vertical-text text-white fw-bold m-0">
-                                    {user.name}
-                                  </h6>
-                                  <div className="overlay"></div>
-                                </div>
-                              ))}
+                              <div
+                                key={idx}
+                                className="side-card d-flex align-items-center justify-content-center rounded shadow"
+                                style={{
+                                  width: "70px",
+                                  height: "200px",
+                                  backgroundImage: `url(${user.profileImage?.startsWith("upload/")
+                                    ? `https://api.carnivalcastle.com/${user.profileImage}`
+                                    : user.profileImage
+                                    })`,
+                                  backgroundSize: "cover",
+                                  backgroundPosition: "center",
+                                  cursor: "pointer",
+                                  position: "relative",
+                                }}
+                                onClick={() => setSelected(user)}
+                              >
+                                <h6 className="vertical-text text-white fw-bold m-0">
+                                  {user.name}
+                                </h6>
+                                <div className="overlay"></div>
+                              </div>
+                            ))}
 
                             {/* Main Video */}
                             {selected && (
@@ -1688,7 +1764,7 @@ function Home() {
                 </section>
 
 
-                <CouponSection/>
+                <CouponSection />
 
 
 
