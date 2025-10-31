@@ -1772,7 +1772,7 @@ function Theaters() {
                               <button
                                 type="submit"
                                 className="btn course-btn"
-                                onClick={() => navigateTheatres("/theaters")}
+                                onClick={() => navigateTheatres("/locations")}
                               >
                                 <i className="far fa-arrow-alt-circle-left"></i>
                                 <span> Back</span>

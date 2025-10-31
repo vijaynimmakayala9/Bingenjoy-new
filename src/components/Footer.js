@@ -76,7 +76,7 @@ function Footer() {
                   <ul>
                     <li><NavLink to="/" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Home</NavLink></li>
                     <li><NavLink to="/about" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> About</NavLink></li>
-                    <li><NavLink to="/theaters" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Theaters</NavLink></li>
+                    <li><NavLink to="/locations" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Theaters</NavLink></li>
                     <li><NavLink to="/cakes" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Cake's</NavLink></li>
                     <li><NavLink to="/enquiry" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Enquiry</NavLink></li>
                     <li><NavLink to="/Faqs" style={{ color: "white" }}><i className="fas fa-angle-double-right" /> Faq's</NavLink></li>

@@ -270,7 +270,7 @@ const BookingForm = () => {
       toast.error(error.response?.data?.message || "Failed to start payment");
 
       if (error.response?.status === 400 || error.response?.status === 406) {
-        setTimeout(() => navigate("/theaters"), 2000);
+        setTimeout(() => navigate("/locations"), 2000);
       }
     } finally {
       setIsLoading1(false);

@@ -148,13 +148,13 @@ function About() {
                       <div className="col-md-6 col-lg-4 col-sm-12" key={i}>
                         <div className="content-wrapper">
                           <div className="blog-image">
-                            <a href="/theaters">
+                            <a href="/locations">
                             </a>
                           </div>
                           <div className="blog-content">
                             <a href="javascript:void(0);" className="post-date">
                               <span className="btn lioght-back text-white">
-                                <a href="/theaters">
+                                <a href="/locations">
                                   <b className="title-name">{data.name}</b>
                                 </a>
                               </span>

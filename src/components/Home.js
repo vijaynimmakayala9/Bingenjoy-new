@@ -299,13 +299,30 @@ function Home() {
   };
 
   const [images, setImages] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const [displayImages, setDisplayImages] = useState([]);
 
   const GetAllGalleryDate = () => {
     axios.post(URLS.GetAllGallery, {}, {}).then((res) => {
       if (res.status === 200) {
-        setImages(res?.data?.gallerys?.slice(0, 3));
+        const galleryData = res?.data?.gallerys || [];
+        setImages(galleryData);
+        setDisplayImages(galleryData.slice(0, 3)); // Show first 3 initially
       }
     });
+  };
+
+  useEffect(() => {
+    GetAllGalleryDate();
+  }, []);
+
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+    if (!showAll) {
+      setDisplayImages(images); // Show all
+    } else {
+      setDisplayImages(images.slice(0, 3)); // Collapse to first 3
+    }
   };
 
   // Static array of coupon codes, each coupon has its unique code
@@ -971,7 +988,7 @@ function Home() {
 
                                 <div className="banner-buttons d-flex flex-column flex-sm-row gap-3">
                                   <a
-                                    href="/theaters"
+                                    href="/locations"
                                     className="btn btn-lg px-4 fw-bold btn-purple"
                                   >
                                     Book Now
@@ -987,7 +1004,7 @@ function Home() {
                             </div>
                           </div>
 
-                          
+
 
                           {/* Slide Dots */}
                           <div
@@ -1032,79 +1049,84 @@ function Home() {
                           style={{ marginTop: "-80px", zIndex: 3 }}
                         >
                           <div className="row g-4 justify-content-center">
-                            {/* Movie Night */}
-                            <div className="col-md-4">
+                            {/* Birthday Celebrations */}
+                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
                                   <i className="fas fa-film text-purple me-2 fs-4"></i>
-                                  <h5 className="mb-0 text-purple">Movie Night</h5>
+                                  <h5 className="mb-0 text-purple">Birthday Celebrations</h5>
                                 </div>
                                 <p className="text-muted small mt-2">
-                                  Enjoy a private cinema experience with Dolby Atmos sound and
-                                  4K visuals. Perfect for couples, friends, or family movie marathons.
+                                  Turn your birthday into a cinematic event! Celebrate with your favorite
+                                  movie, personalized decorations, and a private theatre experience that
+                                  makes you feel like the star of the show. Perfect for intimate gatherings
+                                  or grand celebrations.
                                 </p>
                               </div>
                             </div>
 
-                            {/* Corporate Events */}
-                            <div className="col-md-4">
+                            {/* Proposals */}
+                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
-                                  <i className="fas fa-briefcase text-purple me-2 fs-4"></i>
-                                  <h5 className="mb-0 text-purple">Corporate Events</h5>
+                                  <i className="fas fa-heart text-purple me-2 fs-4"></i>
+                                  <h5 className="mb-0 text-purple">Proposals</h5>
                                 </div>
                                 <p className="text-muted small mt-2">
-                                  Host business meetings, product launches, or team gatherings
-                                  in a unique private theatre setting that leaves a lasting impression.
+                                  Make your special moment unforgettable with a cinematic proposal.
+                                  Surprise your loved one with a private screening, a custom video,
+                                  and a romantic ambience that sets the perfect stage to say “Yes!”
                                 </p>
                               </div>
                             </div>
 
                             {/* Special Celebrations */}
-                            <div className="col-md-4">
+                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
                                   <i className="fas fa-star text-purple me-2 fs-4"></i>
                                   <h5 className="mb-0 text-purple">Special Celebrations</h5>
                                 </div>
                                 <p className="text-muted small mt-2">
-                                  From anniversaries to surprise parties, make your special moments
-                                  unforgettable with a luxurious private theatre experience.
+                                  Celebrate life’s biggest milestones in style — anniversaries, surprises,
+                                  or achievements. Create magical memories with cinematic visuals, mood
+                                  lighting, and luxurious comfort that elevate every celebration.
                                 </p>
                               </div>
                             </div>
 
                             {/* Hover CSS */}
                             <style>{`
-                                    .card123 {
-                                      border-radius: 12px;
-                                      transition: all 0.3s ease;
-                                      cursor: pointer;
-                                    }
+      .card123 {
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
 
-                                    .card123:hover {
-                                      transform: translateY(-10px) scale(1.03);
-                                      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-                                      background: linear-gradient(135deg, #7b2cbf, #9d4dff);
-                                      color: #fff;
-                                    }
+      .card123:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+        background: linear-gradient(135deg, #7b2cbf, #9d4dff);
+        color: #fff;
+      }
 
-                                    .card123:hover h5,
-                                    .card123:hover p,
-                                    .card123:hover i {
-                                      color: #fff !important;
-                                    }
+      .card123:hover h5,
+      .card123:hover p,
+      .card123:hover i {
+        color: #fff !important;
+      }
 
-                                    .card123 i {
-                                      transition: transform 0.3s ease, color 0.3s ease;
-                                    }
+      .card123 i {
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
 
-                                    .card123:hover i {
-                                      transform: rotate(10deg) scale(1.2);
-                                    }
-                                  `}</style>
+      .card123:hover i {
+        transform: rotate(10deg) scale(1.2);
+      }
+    `}</style>
                           </div>
                         </div>
+
 
 
 
@@ -1118,206 +1140,448 @@ function Home() {
                 {testimonials.length > 0 && (
                   <section
                     className="py-5 position-relative text-dark"
-                    style={{ backgroundColor: "#fff" }}
+                    style={{ backgroundColor: "#fff", overflowX: "hidden" }}
                   >
                     <Container fluid="lg">
-                      <Row className="align-items-center">
-                        {/* LEFT SECTION */}
-                        <Col xs={12} lg={3} className="text-center text-lg-start mb-4 mb-lg-0">
+                      <Row className="flex-column align-items-center text-center">
+                        {/* TITLE */}
+                        <Col xs={12} className="mb-4">
                           <h2 className="fw-bold mt-3 dark-text">Testimonials</h2>
                           <p className="light-text fs-6">
                             Real stories. Real celebrations. Real magic at Binge N Joy.
                           </p>
                         </Col>
 
-                        {/* RIGHT SECTION */}
-                        <Col xs={12} lg={9}>
-                          {/* Desktop View (side thumbnails) */}
-                          <div className="d-none d-lg-flex flex-wrap flex-lg-nowrap align-items-start justify-content-center gap-3">
-                            {/* Side Thumbnails */}
-                            {testimonials.map((user, idx) => (
-                              <div
-                                key={idx}
-                                className="side-card d-flex align-items-center justify-content-center rounded shadow"
-                                style={{
-                                  width: "70px",
-                                  height: "200px",
-                                  backgroundImage: `url(${user.profileImage?.startsWith("upload/")
-                                    ? `https://api.carnivalcastle.com/${user.profileImage}`
-                                    : user.profileImage
-                                    })`,
-                                  backgroundSize: "cover",
-                                  backgroundPosition: "center",
-                                  cursor: "pointer",
-                                  position: "relative",
-                                }}
-                                onClick={() => setSelected(user)}
-                              >
-                                <h6 className="vertical-text text-white fw-bold m-0">
-                                  {user.name}
-                                </h6>
-                                <div className="overlay"></div>
-                              </div>
-                            ))}
-
-                            {/* Main Video */}
-                            {selected && (
-                              <div
-                                className="main-video-card position-relative rounded shadow overflow-hidden"
-                                style={{
-                                  width: "100%",
-                                  maxWidth: "400px",
-                                  backgroundColor: "#000",
-                                }}
-                              >
-                                <iframe
-                                  width="100%"
-                                  height="300"
-                                  src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=1&mute=1`}
-                                  title={selected.name}
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                  allowFullScreen
-                                ></iframe>
-
-                                {/* Label BELOW iframe */}
-                                <div className="label-card mt-2">
-                                  <div className="bg-white px-3 py-2 rounded-4 w-100 shadow-sm text-center">
-                                    <strong className="dark-text">{selected.name}</strong>
-                                    <br />
-                                    {/* <small className="text-dark">{selected.role}</small> */}
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Mobile Carousel */}
+                        {/* SLIDER */}
+                        <Col xs={12} className="d-flex justify-content-center position-relative">
                           <div
-                            id="testimonialCarousel"
-                            className="carousel slide d-lg-none"
+                            id="testimonial3DCarousel"
+                            className="carousel slide carousel-fade position-relative"
                             data-bs-ride="false"
                           >
-                            <div className="carousel-inner">
-                              {testimonials.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className={`carousel-item ${index === 0 ? "active" : ""}`}
-                                >
-                                  <div className="d-flex flex-column align-items-center">
-                                    <div
-                                      className="main-video-card rounded shadow overflow-hidden"
-                                      style={{
-                                        width: "100%",
-                                        maxWidth: "400px",
-                                        backgroundColor: "#000",
-                                      }}
-                                    >
-                                      <iframe
-                                        width="100%"
-                                        height="220"
-                                        src={`https://www.youtube.com/embed/${item.videoId}?autoplay=0&mute=1`}
-                                        title={item.name}
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                      ></iframe>
-                                    </div>
+                            <div className="carousel-inner w-100">
+                              {testimonials.map((item, index) => {
+                                const prevIndex = index === 0 ? testimonials.length - 1 : index - 1;
+                                const nextIndex = index === testimonials.length - 1 ? 0 : index + 1;
 
-                                    {/* Label BELOW iframe */}
-                                    <div className="label-card mt-2 text-center">
-                                      <div className="bg-white px-3 py-2 rounded-4 shadow-sm w-100">
-                                        <strong className="dark-text">{item.name}</strong>
-                                        <br />
-                                        <small className="text-dark">{item.role}</small>
+                                return (
+                                  <div
+                                    key={index}
+                                    className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                  >
+                                    <div className="d-flex justify-content-center align-items-center gap-3 px-3">
+                                      {/* LEFT SMALL CARD - PREVIOUS TESTIMONIAL */}
+                                      <div
+                                        className="side-video small-card shadow rounded overflow-hidden d-none d-md-block"
+                                        style={{
+                                          width: "150px",
+                                          height: "200px",
+                                          backgroundImage: `url(${testimonials[prevIndex]?.profileImage
+                                            ? testimonials[prevIndex]?.profileImage.replace(/\\/g, "/").startsWith("uploads/")
+                                              ? `https://api.carnivalcastle.com/${testimonials[prevIndex]?.profileImage.replace(/\\/g, "/")}`
+                                              : testimonials[prevIndex]?.profileImage
+                                            : ""
+                                            })`,
+
+                                          backgroundSize: "cover",
+                                          backgroundPosition: "center",
+                                          opacity: "0.7",
+                                        }}
+                                      >
+                                        <div className="w-100 h-100 d-flex align-items-end justify-content-center p-2">
+                                          <div className="bg-dark bg-opacity-75 text-white px-2 py-1 rounded small">
+                                            {testimonials[prevIndex]?.name}
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* MAIN VIDEO - CURRENT TESTIMONIAL */}
+                                      <div
+                                        className="main-video-card position-relative shadow rounded overflow-hidden"
+                                        style={{ width: "400px" }}
+                                      >
+                                        <iframe
+                                          width="100%"
+                                          height="300"
+                                          src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=0`}
+                                          title={item.name}
+                                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                          allowFullScreen
+                                        ></iframe>
+
+                                        <div className="label-card mt-3">
+                                          <div className="bg-white px-3 py-2 rounded-4 shadow-sm text-center">
+                                            <strong className="dark-text">{item.name}</strong>
+                                            <br />
+                                            <small className="text-dark">{item.role}</small>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* RIGHT SMALL CARD - NEXT TESTIMONIAL */}
+                                      <div
+                                        className="side-video small-card shadow rounded overflow-hidden d-none d-md-block"
+                                        style={{
+                                          width: "150px",
+                                          height: "200px",
+                                          backgroundImage: `url(${testimonials[nextIndex]?.profileImage?.replace(/\\/g, "/").startsWith("uploads/")
+                                              ? `https://api.carnivalcastle.com/${testimonials[nextIndex]?.profileImage.replace(/\\/g, "/")}`
+                                              : testimonials[nextIndex]?.profileImage
+                                            })`,
+
+                                          backgroundSize: "cover",
+                                          backgroundPosition: "center",
+                                          opacity: "0.7",
+                                        }}
+                                      >
+                                        <div className="w-100 h-100 d-flex align-items-end justify-content-center p-2">
+                                          <div className="bg-dark bg-opacity-75 text-white px-2 py-1 rounded small">
+                                            {testimonials[nextIndex]?.name}
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                );
+                              })}
+                            </div>
+
+                            {/* Desktop Indicators - Top position */}
+                            <div className="carousel-indicators position-relative mt-4 d-none d-md-flex justify-content-center">
+                              {testimonials.map((_, index) => (
+                                <button
+                                  key={index}
+                                  type="button"
+                                  data-bs-target="#testimonial3DCarousel"
+                                  data-bs-slide-to={index}
+                                  className={index === 0 ? "active" : ""}
+                                  aria-current={index === 0 ? "true" : "false"}
+                                  aria-label={`Slide ${index + 1}`}
+                                ></button>
                               ))}
                             </div>
 
-                            {/* Manual Controls */}
+                            {/* Mobile Navigation Buttons - Bottom position */}
+                            <div className="d-md-none mobile-navigation-buttons position-absolute w-100 d-flex justify-content-center align-items-center gap-3">
+                              <button
+                                className="mobile-nav-btn mobile-prev-btn bg-dark text-white border-0 rounded-circle d-flex align-items-center justify-content-center"
+                                type="button"
+                                data-bs-target="#testimonial3DCarousel"
+                                data-bs-slide="prev"
+                                aria-label="Previous testimonial"
+                              >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                              </button>
+
+                              {/* Mobile Slide Indicators */}
+                              <div className="d-flex align-items-center gap-2">
+                                {testimonials.map((_, index) => (
+                                  <button
+                                    key={index}
+                                    type="button"
+                                    data-bs-target="#testimonial3DCarousel"
+                                    data-bs-slide-to={index}
+                                    className={`mobile-indicator-btn ${index === 0 ? "active" : ""}`}
+                                    aria-label={`Go to slide ${index + 1}`}
+                                  ></button>
+                                ))}
+                              </div>
+
+                              <button
+                                className="mobile-nav-btn mobile-next-btn bg-dark text-white border-0 rounded-circle d-flex align-items-center justify-content-center"
+                                type="button"
+                                data-bs-target="#testimonial3DCarousel"
+                                data-bs-slide="next"
+                                aria-label="Next testimonial"
+                              >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M9 18l6-6-6-6" />
+                                </svg>
+                              </button>
+                            </div>
+
+                            {/* Desktop Controls */}
                             <button
-                              className="carousel-control-prev"
+                              className="carousel-control-prev d-none d-md-flex"
                               type="button"
-                              data-bs-target="#testimonialCarousel"
+                              data-bs-target="#testimonial3DCarousel"
                               data-bs-slide="prev"
                             >
                               <span
                                 className="carousel-control-prev-icon bg-dark rounded-circle p-2"
                                 aria-hidden="true"
                               ></span>
+                              <span className="visually-hidden">Previous</span>
                             </button>
                             <button
-                              className="carousel-control-next"
+                              className="carousel-control-next d-none d-md-flex"
                               type="button"
-                              data-bs-target="#testimonialCarousel"
+                              data-bs-target="#testimonial3DCarousel"
                               data-bs-slide="next"
                             >
                               <span
                                 className="carousel-control-next-icon bg-dark rounded-circle p-2"
                                 aria-hidden="true"
                               ></span>
+                              <span className="visually-hidden">Next</span>
                             </button>
                           </div>
                         </Col>
                       </Row>
                     </Container>
 
-                    {/* Styles */}
+                    {/* CSS */}
                     <style jsx>{`
-      .side-card {
+      #testimonial3DCarousel {
+        margin: 0 auto;
+        max-width: 900px;
+        width: 100%;
         position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease;
+        padding-bottom: 80px; /* Space for mobile navigation */
       }
 
-      .side-card:hover {
-        transform: scale(1.05);
-      }
-
-      .vertical-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        transform: rotate(180deg);
-        font-size: 0.85rem;
-        z-index: 2;
+      .carousel-inner {
         text-align: center;
       }
 
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1;
+      .carousel-item {
+        transition: transform 0.6s ease-in-out;
       }
 
-      .main-video-card iframe {
+      .carousel-item.active .main-video-card {
+        transform: scale(1.05);
+        transition: transform 0.6s ease;
+      }
+
+      .carousel-item.active .side-video {
+        opacity: 1 !important;
+        transform: scale(0.9);
+        transition: all 0.4s ease;
+      }
+
+      .main-video-card {
+        transition: all 0.6s ease;
+        z-index: 2;
+        flex-shrink: 0;
+      }
+
+      .side-video {
+        transition: all 0.4s ease;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .side-video:hover {
+        opacity: 0.9 !important;
+        transform: scale(0.95);
+      }
+
+      /* Desktop Indicators */
+      .carousel-indicators.position-relative {
+        margin-top: 2rem;
+      }
+
+      .carousel-indicators.position-relative button {
+        background-color: #dee2e6;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
         border: none;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+      }
+
+      .carousel-indicators.position-relative .active {
+        background-color: #7b2cbf;
+        width: 25px;
+        border-radius: 10px;
+      }
+
+      /* Mobile Navigation Buttons */
+      .mobile-navigation-buttons {
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        padding: 0 20px;
+        z-index: 10;
+      }
+
+      .mobile-nav-btn {
+        width: 44px;
+        height: 44px;
+        background-color: #7b2cbf !important;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .mobile-nav-btn:hover {
+        background-color: #6a1b9a !important;
+        transform: scale(1.1);
+      }
+
+      .mobile-nav-btn:active {
+        transform: scale(0.95);
+      }
+
+      .mobile-nav-btn svg {
+        color: white;
+      }
+
+      /* Mobile Slide Indicators */
+      .mobile-indicator-btn {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: none;
+        background-color: #dee2e6;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 2px;
+      }
+
+      .mobile-indicator-btn.active {
+        background-color: #7b2cbf;
+        width: 25px;
+        border-radius: 10px;
+      }
+
+      .mobile-indicator-btn:hover {
+        background-color: #7b2cbf;
+        transform: scale(1.2);
+      }
+
+      .carousel-control-prev,
+      .carousel-control-next {
+        width: auto;
+        opacity: 1;
+      }
+
+      .carousel-control-prev {
+        left: -50px;
+      }
+
+      .carousel-control-next {
+        right: -50px;
+      }
+
+      /* Mobile-specific styles */
+      @media (max-width: 1200px) {
+        .carousel-control-prev {
+          left: -30px;
+        }
+        .carousel-control-next {
+          right: -30px;
+        }
       }
 
       @media (max-width: 992px) {
-        .side-card {
-          width: 60px;
-          height: 150px;
+        .main-video-card {
+          width: 100% !important;
+          max-width: 350px;
+        }
+
+        .side-video {
+          display: none !important;
+        }
+
+        .carousel-control-prev {
+          left: -20px;
+        }
+        .carousel-control-next {
+          right: -20px;
+        }
+
+        #testimonial3DCarousel {
+          padding-bottom: 70px;
+        }
+
+        .mobile-navigation-buttons {
+          bottom: 5px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .mobile-nav-btn {
+          width: 40px;
+          height: 40px;
+        }
+
+        .mobile-indicator-btn {
+          width: 8px;
+          height: 8px;
+        }
+
+        .mobile-indicator-btn.active {
+          width: 20px;
         }
       }
 
       @media (max-width: 576px) {
-        .side-card {
-          width: 50px;
-          height: 120px;
+        .main-video-card iframe {
+          height: 220px;
+        }
+        
+        .carousel-control-prev,
+        .carousel-control-next {
+          display: none;
         }
 
-        .main-video-card {
-          height: 220px;
+        #testimonial3DCarousel {
+          padding-bottom: 60px;
+        }
+
+        .mobile-navigation-buttons {
+          bottom: 0;
+          padding: 0 15px;
+        }
+
+        .mobile-nav-btn {
+          width: 36px;
+          height: 36px;
+        }
+
+        .mobile-indicator-btn {
+          width: 7px;
+          height: 7px;
+        }
+
+        .mobile-indicator-btn.active {
+          width: 18px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .mobile-nav-btn {
+          width: 32px;
+          height: 32px;
+        }
+
+        .mobile-indicator-btn {
+          width: 6px;
+          height: 6px;
+          margin: 0 1px;
+        }
+
+        .mobile-indicator-btn.active {
+          width: 16px;
+        }
+
+        #testimonial3DCarousel {
+          padding-bottom: 50px;
+        }
+
+        .mobile-navigation-buttons {
+          gap: 2px;
         }
       }
     `}</style>
                   </section>
                 )}
+
 
 
 
@@ -1428,7 +1692,7 @@ function Home() {
                               <button
                                 className="btn text-white w-100"
                                 style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
-                                onClick={() => navigateTheater("/theaters")}
+                                onClick={() => navigateTheater("/locations")}
                               >
                                 {pkg.buttonText}
                               </button>
@@ -1510,7 +1774,7 @@ function Home() {
                                     <button
                                       className="btn text-white w-100"
                                       style={{ backgroundColor: "#a259ff", borderRadius: "10px" }}
-                                      onClick={() => navigateTheater("/theaters")}
+                                      onClick={() => navigateTheater("/locations")}
                                     >
                                       {pkg.buttonText}
                                     </button>
@@ -1812,7 +2076,7 @@ function Home() {
                                   </ul>
                                   <div className="mt-4 text-end">
                                     <Button
-                                      onClick={() => window.location.href = "/theaters"}
+                                      onClick={() => window.location.href = "/locations"}
                                       className="rounded-3 px-4 py-2 fw-semibold dark-back"
                                     >
                                       <i className="fas fa-ticket-alt me-2" />
@@ -1862,18 +2126,16 @@ function Home() {
                     <h2 className="text-center fw-bold mb-3 dark-text">
                       What Our Customers Say
                     </h2>
-                    <p className="text-center mb-5 fs-5 light-text">
+                    <p className="text-center fs-5 light-text">
                       Real stories. Real celebrations. Real magic at Binge N Joy.
                     </p>
 
                     {(() => {
-                      // Responsive group size
                       const screenWidth = window.innerWidth;
                       let groupSize = 3;
                       if (screenWidth < 768) groupSize = 1;
                       else if (screenWidth < 992) groupSize = 2;
 
-                      // Helper to chunk testimonials
                       const chunkArray = (arr, size) =>
                         arr.reduce(
                           (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
@@ -1886,8 +2148,8 @@ function Home() {
                         <Carousel
                           controls={false}
                           indicators={false}
-                          interval={4000} // auto slide every 4s
-                          pause={false} // continuous autoplay
+                          interval={4000}
+                          pause={false}
                           fade={false}
                           wrap
                         >
@@ -1898,66 +2160,79 @@ function Home() {
                                   <Col lg={4} md={6} sm={12} key={index}>
                                     <div
                                       className="review-card position-relative rounded-4 overflow-hidden shadow mb-4"
-                                      style={{ height: "400px" }}
+                                      style={{
+                                        height: "340px",
+                                        maxHeight: "360px",
+                                      }}
                                     >
+                                      {/* Background Image */}
                                       <img
                                         src={
-                                          review.image?.startsWith("uploads/")
-                                            ? `https://api.carnivalcastle.com/${review.image}`
-                                            : review.image
+                                          review.image
+                                            ? review.image.startsWith("uploads")
+                                              ? `https://api.carnivalcastle.com/${review.image.replace(/\\/g, "/")}`
+                                              : review.image
+                                            : "https://via.placeholder.com/400x300" // fallback
                                         }
                                         alt="Review background"
                                         className="w-100 h-100 object-fit-cover"
-                                        style={{ filter: "brightness(70%)" }}
+                                        style={{
+                                          filter: "brightness(70%)",
+                                        }}
                                       />
 
-
-                                      {/* Bottom overlay card */}
+                                      {/* Overlay Card */}
                                       <div
-                                        className="position-absolute bottom-0 start-50 translate-middle-x p-4 rounded-top-4"
+                                        className="position-absolute bottom-0 start-50 translate-middle-x p-3 rounded-top-4"
                                         style={{
-                                          height: "auto",
-                                          minHeight: "45%",
-                                          width: "90%",
-                                          backgroundColor: "rgba(233, 220, 255, 0.95)",
-                                          backdropFilter: "blur(4px)",
+                                          width: "92%",
+                                          backgroundColor: "#fff",
+                                          backdropFilter: "blur(5px)",
+                                          minHeight: "43%",
                                         }}
                                       >
-                                        <div className="d-flex align-items-center mb-3">
+                                        <div className="d-flex align-items-center mb-2">
                                           <img
                                             src={
-                                              review.profileImage?.startsWith("uploads/")
-                                                ? `https://api.carnivalcastle.com/${review.profileImage}`
-                                                : review.profileImage
+                                              review.profileImage
+                                                ? review.profileImage.startsWith("uploads")
+                                                  ? `https://api.carnivalcastle.com/${review.profileImage.replace(/\\/g, "/")}`
+                                                  : review.profileImage
+                                                : "https://via.placeholder.com/60" // fallback
                                             }
                                             alt="avatar"
-                                            className="rounded-circle me-3 border-2 border-light"
-                                            width="60"
-                                            height="60"
+                                            className="rounded-circle me-3 border border-light"
+                                            width="55"
+                                            height="55"
+                                            style={{ objectFit: "cover" }}
                                           />
                                           <div>
-                                            <h6 className="mb-0 fw-bold text-dark">
-                                              {review.name}
-                                            </h6>
-                                            <small className="text-dark">
-                                              {review.location}
-                                            </small>
+                                            <h6 className="mb-0 fw-bold text-dark">{review.name}</h6>
+                                            <small className="text-muted">{review.location}</small>
                                           </div>
                                         </div>
 
-                                        <div className="text-warning mb-2 fs-5">
+                                        <div className="text-warning mb-1 fs-6">
                                           {"★".repeat(review.rating)}
                                           {"☆".repeat(5 - review.rating)}
                                         </div>
 
-                                        <p className="mb-2 text-dark" style={{ fontSize: "0.9rem" }}>
+                                        <p
+                                          className="mb-1 text-dark"
+                                          style={{
+                                            fontSize: "0.85rem",
+                                            lineHeight: "1.3rem",
+                                            maxHeight: "65px",
+                                            overflow: "hidden",
+                                          }}
+                                        >
                                           {review.description}
                                         </p>
 
                                         {review.occasion && (
                                           <p
                                             className="mb-0 text-dark"
-                                            style={{ fontSize: "0.85rem" }}
+                                            style={{ fontSize: "0.8rem" }}
                                           >
                                             <strong>Occasion:</strong> {review.occasion}
                                           </p>
@@ -1983,22 +2258,40 @@ function Home() {
       }
 
       .review-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      @media (max-width: 992px) {
+        .review-card {
+          height: 320px !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .review-card {
+          height: 300px !important;
+        }
+        .review-card img {
+          object-position: center;
+        }
+        .review-card .p-3 {
+          padding: 1rem !important;
+        }
       }
 
       @media (max-width: 576px) {
         .review-card {
-          height: 380px;
+          height: 280px !important;
         }
-
-        .position-absolute.bottom-0 {
-          padding: 1.2rem !important;
+        .review-card img {
+          filter: brightness(75%);
         }
       }
     `}</style>
                   </Container>
                 </section>
+
 
 
 
@@ -2010,7 +2303,9 @@ function Home() {
                     <div className="section-wraper row d-flex align-items-center">
                       <div className="col-md-12 section-header mb-0 mt-3">
                         <h2 className="text-center fw-bold mb-3 dark-text">Gallery</h2>
-                        <p className="text-center mb-5 fs-5 light-text">See how our guests made memories at Binge N Joy.</p>
+                        <p className="text-center mb-5 fs-5 light-text">
+                          See how our guests made memories at Binge N Joy.
+                        </p>
                       </div>
 
                       <div className="row justify-content-center">
@@ -2030,53 +2325,57 @@ function Home() {
                               item={itemTemplate}
                               thumbnail={thumbnailTemplate}
                             />
+
+                            {/* Thumbnails Grid */}
                             <div>
                               <div className="row mb-2">
-                                {images.map((image, index) => {
-                                  return (
+                                {displayImages.map((image, index) => (
+                                  <div
+                                    className="col-lg-4 col-md-6 col-sm-12 mt-3 mb-4"
+                                    key={index}
+                                  >
                                     <div
-                                      className="col-lg-4 col-md-4 mt-3 mb-4"
-                                      key={index}
+                                      className="zoom-container position-relative"
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => {
+                                        setActiveIndex(index);
+                                        galleria.current.show();
+                                      }}
                                     >
-                                      <div
-                                        className="zoom-container"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => {
-                                          setActiveIndex(index);
-                                          galleria.current.show();
+                                      <img
+                                        src={URLS.Base + image.image}
+                                        alt={image.alt}
+                                        style={{
+                                          width: "100%",
+                                          height: "300px",
+                                          objectFit: "cover",
+                                          border: "1px solid #F5E7B6",
+                                          borderRadius: "8px",
                                         }}
-                                      >
-                                        <img
-                                          src={URLS.Base + image.image}
-                                          alt={image.alt}
-                                          style={{
-                                            width: "100%",
-                                            height: "300px",
-                                            border: "1px solid #F5E7B6",
-                                          }}
-                                        />
-                                        {/* Zoom Icon */}
-                                        <span className="zoom-icon">
-                                          <i className="fas fa-search-plus"></i>
-                                        </span>
-                                      </div>
+                                      />
+                                      <span className="zoom-icon position-absolute top-50 start-50 translate-middle text-white fs-3 opacity-75">
+                                        <i className="fas fa-search-plus"></i>
+                                      </span>
                                     </div>
-                                  );
-                                })}
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* View All Button - Centered at Bottom */}
+                      {/* Buttons */}
                       <div className="col-md-12 text-center mt-3 mb-4">
-                        <a
-                          href="/gallery"
-                          className="btn btn-primary fw-bold dark-back"
+                        <button
+                          onClick={toggleShowAll}
+                          className="btn dark-back fw-bold me-2  text-white"
                         >
-                          View Gallery<i className="bi bi-arrow-right ms-2"></i>
+                          {showAll ? "Show Less" : "Show All"}
+                        </button>
 
+                        <a href="/gallery" className="btn btn-primary fw-bold dark-back">
+                          View Gallery <i className="bi bi-arrow-right ms-2"></i>
                         </a>
                       </div>
                     </div>
@@ -2168,7 +2467,7 @@ function Home() {
                       {/* Book Now Button */}
                       <div className="col-md-12 text-center mt-3 mb-4">
                         <a
-                          href="/theaters"
+                          href="/locations"
                           className="btn btn-primary fw-bold dark-back"
                         >
                           Book Now

@@ -401,7 +401,7 @@ const CakesComponent = () => {
     //       } else if (error.response && error.response.status === 406) {
     //         toast.error(error.response.message);
     //         setTimeout(() => {
-    //           navigate("/theaters");
+    //           navigate("/locations");
     //         }, 2000);
     //       }
     //     }

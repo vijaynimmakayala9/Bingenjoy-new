@@ -173,7 +173,7 @@ const Occassions = () => {
             toast.error(
               "Access Denied: You do not have permission to view this page."
             );
-            navigate("/theaters");
+            navigate("/locations");
           }
         },
         (error) => {

@@ -40,6 +40,7 @@ import { CouponProvider } from "./components/couponContext";
 import ScrollToTop from "./pages/ScrollToTop";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
+import LocationSelector from "./pages/Locations";
 
 function App() {
   return (
@@ -53,7 +54,8 @@ function App() {
         <Route path="/Reviews" element={<Reviews />} />
         <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/theaters" element={<Theaters />} />
+        <Route path="/locations" element={<LocationSelector />} />
+        <Route path="/theaters/:slug" element={<Theaters />} />
         <Route path="/booknow" element={<Theaters />} />
         <Route path="/Checkout" element={<Checkout />} />
         <Route path="/RefundPolicy" element={<RefundPolicy />} />

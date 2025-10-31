@@ -167,9 +167,11 @@ function Gallery() {
                           >
                             <img
                               src={
-                                data.profileImage?.startsWith("uploads/")
-                                  ? `https://api.carnivalcastle.com/${data.profileImage}`
-                                  : data.profileImage
+                                data.profileImage
+                                  ? data.profileImage.startsWith("uploads")
+                                    ? `https://api.carnivalcastle.com/${data.profileImage.replace(/\\/g, "/")}`
+                                    : data.profileImage
+                                  : "https://via.placeholder.com/60" // fallback if no image
                               }
                               alt={data.name}
                               style={{

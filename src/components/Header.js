@@ -240,7 +240,7 @@ function Header() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/theaters" style={{ color: currentPage() === "theaters" ? "#800080" : "", }}>THEATRE'S</NavLink>
+                  <NavLink to="/locations" style={{ color: currentPage() === "locations" ? "#800080" : "", }}>THEATRE'S</NavLink>
                 </li>
                 <li>
                   <NavLink to="/cakes" style={{ color: currentPage() === "cakes" ? "#800080" : "", }}>Cakes</NavLink>
@@ -272,9 +272,9 @@ function Header() {
             </div>
             <ul className="nav header-navbar-rht book-now-btn">
               <li className="nav-item contact-item">
-                {/* <a href="/theaters" className="btn main-booknow"> */}
+                {/* <a href="/locations" className="btn main-booknow"> */}
                 <a
-                  href="/theaters"
+                  href="/locations"
                   className="btn dark-back text-white"
                   style={{ backgroundColor: "#242724", color: "#f5e7b6" }}
                 >

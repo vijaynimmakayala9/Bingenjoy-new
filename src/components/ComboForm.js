@@ -206,7 +206,7 @@ const ComboForm = () => {
 
   const navigate = useNavigate();
   const handleClick = () => {
-    navigateOccassions("/theaters");
+    navigateOccassions("/locations");
   };
   return (
     <>

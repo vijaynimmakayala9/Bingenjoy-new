@@ -205,7 +205,7 @@ function Cakes() {
                                         id="bgshadow"
                                       >
                                         <div
-                                          className="food-category item"
+                                          className="food-category item border border-black"
                                           data-type="occasions"
                                           data-id={8}
                                           data-name="Anniversary"
@@ -281,7 +281,7 @@ function Cakes() {
                                         id="bgshadow"
                                       >
                                         <div
-                                          className="food-category item"
+                                          className="food-category item border border-black"
                                           data-type="occasions"
                                           data-id={8}
                                           data-name="Anniversary"

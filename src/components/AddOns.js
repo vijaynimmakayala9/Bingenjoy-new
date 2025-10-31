@@ -171,14 +171,14 @@ const AddOns = () => {
           toast.error(
             "Access Denied: You do not have permission to view this page."
           );
-          navigate("/theaters");
+          navigate("/locations");
         }
       })
       .catch((error) => {
         if (error.response) {
           toast.error(error.response.message || "An error occurred");
           if (error.response.status === 406) {
-            setTimeout(() => navigate("/theaters"), 2000);
+            setTimeout(() => navigate("/locations"), 2000);
           }
         }
       });
