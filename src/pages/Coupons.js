@@ -23,11 +23,17 @@ const CouponSection = () => {
           "https://api.carnivalcastle.com/v1/carnivalApi/admin/coupon/getallbingenjoycoupons"
         );
         if (res.data.success) {
-          // ✅ Show ONLY active coupons
-          const activeCoupons = res.data.coupons.filter(
-            (coupon) => coupon.status === "active"
-          );
-          setCoupons(activeCoupons);
+          // ✅ Filter: show only active and non-expired coupons
+          const currentDate = new Date();
+          const validCoupons = res.data.coupons.filter((coupon) => {
+            const expiryDate = new Date(coupon.toDate);
+            return (
+              coupon.status === "active" &&
+              expiryDate >= currentDate &&
+              !isNaN(expiryDate.getTime())
+            );
+          });
+          setCoupons(validCoupons);
         }
       } catch (error) {
         console.error("Error fetching coupons:", error);
@@ -57,9 +63,43 @@ const CouponSection = () => {
 
   if (coupons.length === 0) {
     return (
-      <div className="text-center py-5">
-        <h5>No active coupons available</h5>
-      </div>
+      <section className="py-5 bg-light">
+        <div className="container text-center">
+          <h2 className="fw-bold mb-4" style={{ color: "#330C5F" }}>
+            <FaTicketAlt className="me-2" />
+            Exclusive Binge n Joy Coupons
+          </h2>
+
+          {/* Empty State Card */}
+          <div
+            className="d-inline-block p-5 rounded-4 shadow-sm"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(157,77,255,0.08), rgba(255,255,255,0.9))",
+              maxWidth: "400px",
+            }}
+          >
+            <div
+              className="mb-3 d-flex align-items-center justify-content-center"
+              style={{
+                width: "100px",
+                height: "100px",
+                backgroundColor: "rgba(157,77,255,0.15)",
+                borderRadius: "50%",
+                margin: "0 auto",
+              }}
+            >
+              <FaTicketAlt size={48} color="#9D4DFF" />
+            </div>
+            <h5 className="fw-semibold mt-3" style={{ color: "#40008C" }}>
+              No Active Coupons Right Now
+            </h5>
+            <p className="text-secondary small mt-2 mb-0">
+              Please check back later — new offers and discounts are coming soon!
+            </p>
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -128,7 +168,10 @@ const CouponSection = () => {
                         </div>
 
                         <div className="p-4 d-flex flex-column">
-                          <h5 className="fw-bold mb-2" style={{ color: "#40008C" }}>
+                          <h5
+                            className="fw-bold mb-2"
+                            style={{ color: "#40008C" }}
+                          >
                             <BsTagFill className="me-2" />
                             {coupon.title}
                           </h5>
@@ -138,7 +181,10 @@ const CouponSection = () => {
 
                           {/* Discount & Code */}
                           <div className="text-center border rounded-3 py-3 mb-4 bg-light">
-                            <div className="fw-bold fs-5" style={{ color: "#40008C" }}>
+                            <div
+                              className="fw-bold fs-5"
+                              style={{ color: "#40008C" }}
+                            >
                               {coupon.discountType === "fixed"
                                 ? `₹${coupon.value} OFF`
                                 : `${coupon.value}% OFF`}
@@ -158,14 +204,22 @@ const CouponSection = () => {
                                 <FaCalendarAlt className="me-2 text-primary" />
                                 Valid Till :
                               </span>
-                              <span className="text-black">{new Date(coupon.toDate).toLocaleDateString()}</span>
+                              <span className="text-black">
+                                {new Date(coupon.toDate).toLocaleDateString()}
+                              </span>
                             </div>
                             <div className="d-flex justify-content-between py-1 border-bottom">
                               <span className="fw-semibold text-dark">
                                 <FaMapMarkerAlt className="me-2 text-primary" />
                                 Theaters :
                               </span>
-                              <span className="text-black" style={{ maxWidth: "130px", fontSize: "0.85rem" }}>
+                              <span
+                                className="text-black"
+                                style={{
+                                  maxWidth: "130px",
+                                  fontSize: "0.85rem",
+                                }}
+                              >
                                 {coupon.theaters.map((t) => t.name).join(", ")}
                               </span>
                             </div>
@@ -174,7 +228,9 @@ const CouponSection = () => {
                                 <FaClock className="me-2 text-primary" />
                                 Slots :
                               </span>
-                              <span className="text-black">{coupon.slots.join(", ")}</span>
+                              <span className="text-black">
+                                {coupon.slots.join(", ")}
+                              </span>
                             </div>
                           </div>
 
@@ -203,7 +259,7 @@ const CouponSection = () => {
             ))}
           </div>
 
-          {/* Controls (optional - you can remove if you want auto-only) */}
+          {/* Controls */}
           {coupons.length > 3 && (
             <>
               <button
@@ -212,7 +268,10 @@ const CouponSection = () => {
                 data-bs-target="#couponsCarousel"
                 data-bs-slide="prev"
               >
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span
+                  className="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
                 <span className="visually-hidden">Previous</span>
               </button>
               <button
@@ -221,7 +280,10 @@ const CouponSection = () => {
                 data-bs-target="#couponsCarousel"
                 data-bs-slide="next"
               >
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span
+                  className="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
                 <span className="visually-hidden">Next</span>
               </button>
             </>
@@ -229,7 +291,7 @@ const CouponSection = () => {
         </div>
       </div>
 
-     
+      <ToastContainer />
 
       <style jsx>{`
         .coupon-ticket {
@@ -275,14 +337,14 @@ const CouponSection = () => {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #9D4DFF;
+          background-color: #9d4dff;
           opacity: 0.5;
           transition: opacity 0.2s;
         }
 
         .carousel-indicators .active {
           opacity: 1;
-          background-color: #9D4DFF;
+          background-color: #9d4dff;
         }
       `}</style>
     </section>
