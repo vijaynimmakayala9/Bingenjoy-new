@@ -34727,7 +34727,7 @@ h2.footer-title:after {
 /* breadcrumb */
 .breadcrumb-area {
   /*min-height: 600px;*/
-  padding-top: 130px !important;
+  padding-top: 0px !important;
   padding-bottom: 10px;
   /* updating 100px to 10px */
   background-position: center;
@@ -35624,12 +35624,12 @@ h2.footer-title:after {
 /*  home scroll bar */
 
 .scrollbar {
-  margin-top: 140px;
+  margin-top: 0px;
 }
 
 @media(max-width:991px) {
   .scrollbar {
-    margin-top: 100px !important;
+    margin-top: 0px !important;
   }
 }
 
@@ -35863,8 +35863,10 @@ footer {
     border-radius: 5px;
 }  */
 
+
+/* header hide */
 .header.main-header.headersix {
-  position: fixed;
+  position: relative;
   top: 0;
   width: 100%;
   z-index: 1000;

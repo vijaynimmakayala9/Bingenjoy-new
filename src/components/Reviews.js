@@ -16,13 +16,29 @@ function Gallery() {
   }, []);
 
   const GetReviews = () => {
-    axios.post(URLS.AllModules, {}, {}).then((res) => {
-      if (res.status === 200) {
-        setTestimonial(res.data.testimonials);
+    setIsLoading(true);
+
+    axios
+      .post(
+        "https://api.carnivalcastle.com/v1/carnivalApi/admin/testimonial/getalltestimoni?websiteFor=bingenjoy",
+        {}, // body
+        {}  // config
+      )
+      .then((res) => {
+        if (res.status === 200 && res.data.success) {
+          setTestimonial(res.data.testimoni); // ✅ correct key from API
+        } else {
+          setTestimonial([]); // fallback
+        }
         setIsLoading(false);
-      }
-    });
+      })
+      .catch((err) => {
+        console.error("Failed to load testimonials:", err);
+        setTestimonial([]);
+        setIsLoading(false);
+      });
   };
+
 
   //   const Testimonial = [
   //   {

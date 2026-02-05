@@ -36,6 +36,26 @@ import { Carousel, Card, Container, Row, Col, Button } from "react-bootstrap";
 import TheaterDetails from "../pages/TheaterDetails";
 import CouponSection from "../pages/Coupons";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import PopupModal from './PopupModal';
+
+export const fetchPopupImage = async () => {
+  try {
+    const res = await fetch(
+      "https://api.carnivalcastle.com/v1/carnivalApi/admin/popup/getpopupimage?type=Bingenjoy"
+    );
+
+    const data = await res.json();
+
+    if (data.success && data.data?.length > 0) {
+      return data.data[0]; // return first popup
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Popup fetch error:", error);
+    return null;
+  }
+};
 
 function Home() {
 
@@ -142,6 +162,24 @@ function Home() {
       }
     );
   };
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupImage, setPopupImage] = useState("");
+
+  useEffect(() => {
+    const loadPopup = async () => {
+      const popup = await fetchPopupImage();
+
+      // ✅ Only open if modalEnabled is true
+      if (popup?.modalEnabled) {
+        setPopupImage(popup.image);
+        setShowPopup(true);
+      }
+    };
+
+    loadPopup();
+  }, []);
+
 
   const settings = {
     dots: false,
@@ -837,9 +875,9 @@ function Home() {
 
     // Only proceed if popup hasn't been seen before
     if (!hasSeenPopup) {
-      axios.get(URLS.GetPopUp).then(res => {
-        if (res.data?.success && res.data.data?.image) {
-          setPopUp(res.data.data);
+      axios.post(URLS.GetFooter).then(res => {
+        if (res.data?.success && res.data.popup?.image) {
+          setPopUp(res?.data?.popup[0].image);
           setLgShow(true);
           localStorage.setItem('hasSeenPopup', 'true'); // Mark as seen
         }
@@ -945,7 +983,7 @@ function Home() {
                     {banner?.desktopImages?.map((desktopImage, index) => (
                       <div key={index}>
                         <div className="mt-0">
-                          {PopUp1.modalEnabled && (
+                          {PopUp1?.modalEnabled && (
                             <div style={{ backgroundColor: "#fa462af2" }} className="text-center py-2">
                               <marquee className="text-white fw-bold">
                                 LAST MINUTE OFFER: {PopUp1.title}
@@ -1035,7 +1073,7 @@ function Home() {
                             {`
           @media (max-width: 768px) {
             .banner-section {
-              background-image: url(${mobileImage}) !important;
+              background-image: url(https://api.carnivalcastle.com/${mobileImage}) !important;
             }
           }
         `}
@@ -1050,7 +1088,7 @@ function Home() {
                         >
                           <div className="row g-4 justify-content-center">
                             {/* Birthday Celebrations */}
-                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
+                            <div className="col-md-4" onClick={() => navigate('/locations')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
                                   <i className="fas fa-film text-purple me-2 fs-4"></i>
@@ -1066,7 +1104,7 @@ function Home() {
                             </div>
 
                             {/* Proposals */}
-                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
+                            <div className="col-md-4" onClick={() => navigate('/locations')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
                                   <i className="fas fa-heart text-purple me-2 fs-4"></i>
@@ -1081,7 +1119,7 @@ function Home() {
                             </div>
 
                             {/* Special Celebrations */}
-                            <div className="col-md-4" onClick={() => navigate('/theaters')}>
+                            <div className="col-md-4" onClick={() => navigate('/locations')}>
                               <div className="card shadow border-0 h-100 p-3 card123">
                                 <div className="d-flex align-items-center mb-2">
                                   <i className="fas fa-star text-purple me-2 fs-4"></i>
@@ -1225,8 +1263,8 @@ function Home() {
                                           width: "150px",
                                           height: "200px",
                                           backgroundImage: `url(${testimonials[nextIndex]?.profileImage?.replace(/\\/g, "/").startsWith("uploads/")
-                                              ? `https://api.carnivalcastle.com/${testimonials[nextIndex]?.profileImage.replace(/\\/g, "/")}`
-                                              : testimonials[nextIndex]?.profileImage
+                                            ? `https://api.carnivalcastle.com/${testimonials[nextIndex]?.profileImage.replace(/\\/g, "/")}`
+                                            : testimonials[nextIndex]?.profileImage
                                             })`,
 
                                           backgroundSize: "cover",
@@ -1951,7 +1989,7 @@ function Home() {
                             <button
                               className="btn px-5 py-2 rounded-3 fw-bold dark-back text-light"
                               style={{ width: "80%", maxWidth: "500px" }}
-                              onClick={() => navigate('/theaters')}
+                              onClick={() => navigate('/locations')}
                             >
                               Proceed <i className="bi bi-arrow-right ms-2"></i>
                             </button>
@@ -2670,7 +2708,7 @@ function Home() {
 
 
                 {/*  Your modal component */}
-                <Modal
+                {/* <Modal
                   size="md"
                   show={lgShow}
                   onHide={() => setLgShow(false)}
@@ -2700,7 +2738,14 @@ function Home() {
                       &times;
                     </button>
                   </div>
-                </Modal>
+                </Modal> */}
+
+                <PopupModal
+                  show={showPopup}
+                  handleClose={() => setShowPopup(false)}
+                  image={popupImage}
+                />
+
                 <ToastContainer />
                 <Footer />
               </>

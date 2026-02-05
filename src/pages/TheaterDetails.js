@@ -51,7 +51,7 @@ const TheaterDetails = () => {
                             fontSize: "1.1rem",
                             fontWeight: "600",
                         }}
-                        onClick={()=>navigate('/theaters')}
+                        onClick={()=>navigate('/locations')}
                     >
                         BOOK NOW
                     </Button>
