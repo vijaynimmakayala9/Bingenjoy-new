@@ -1073,7 +1073,7 @@ function Home() {
                             {`
           @media (max-width: 768px) {
             .banner-section {
-              background-image: url(https://api.carnivalcastle.com/${mobileImage}) !important;
+              background-image: url(${mobileImage}) !important;
             }
           }
         `}
